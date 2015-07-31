@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "name": "sashay",
+  "description": "",
+  "version": "0.0.0",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "main": "./lib/index.js",
+  "bin": {
+    "sashay": "./bin/sashay"
+  },
+  "scripts": {
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
+    "style": "./node_modules/eslint-config-percolate/node_modules/.bin/eslint --config ./node_modules/eslint-config-percolate/.eslintrc --ext '.js,.jsx' ./lib/ ./test/",
+    "test": "npm run style && ./node_modules/.bin/mocha --reporter spec --grep ''"
+  },
+  "dependencies": {
+    "bluebird": "^2.9.30",
+    "commander": "^2.8.1",
+    "fs-extra": "^0.21.0",
+    "handlebars": "^3.0.3",
+    "joi": "^6.5.0",
+    "lodash": "^3.9.3",
+    "slug": "^0.9.1",
+    "swagger-parser": "^2.4.3",
+    "watchpack": "^0.2.8"
+  },
+  "devDependencies": {
+    "assert-dir-equal": "^1.0.1",
+    "chai": "^3.0.0",
+    "eslint-config-percolate": "git+https://git@github.com/percolate/eslint-config-percolate.git#remove_consistent_return",
+    "istanbul": "^0.3.17",
+    "mocha": "^2.2.5"
+  }
+}
