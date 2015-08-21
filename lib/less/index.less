@@ -1,0 +1,136 @@
+html,
+body {
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    font-family: sans-serif;
+    height: 100vh;
+}
+
+.hide {
+    display: none;
+}
+
+nav {
+    background-color: #fafcfc;
+    border-right: solid 1px #f0f4f7;
+    color: #939da3;
+    flex: 0 0 221px;
+    overflow-y: scroll;
+    h2 {
+        color: #939da3;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 18px;
+        padding: 20px 20px 0;
+        text-transform: uppercase;
+    }
+    a {
+        color: #4c555a;
+        display: block;
+        font-size: 14px;
+        line-height: 20px;
+        overflow: hidden;
+        padding: 6px 20px;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        &.selected {
+            color: #f16421;
+        }
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        ul a {
+            font-size: 13px;
+            padding-left: 36px;
+            white-space: nowrap;
+        }
+    }
+}
+
+main {
+    flex: 1;
+    overflow-y: scroll;
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 32px;
+        margin: 1.00em 0;
+    }
+    h6 {
+        color: #939da3;
+        font-size: 12px;
+        font-weight: 400;
+        margin: 40px 0 0;
+        text-transform: uppercase;
+    }
+    p {
+        line-height: 26px;
+        margin: 20px 0 0;
+    }
+    article {
+        border-top: solid 1px #f0f4f7;
+        color: #4c555a;
+        flex: 1;
+        padding: 30px 40px;
+    }
+    aside {
+        background-color: #2d3132;
+        border-top: solid 1px #33383a;
+        box-sizing: border-box;
+        color: #d0d4d7;
+        flex: 0 0 55%;
+        padding: 30px 40px;
+        code {
+            background-color: #272b2d;
+            display: block;
+            margin: 0 -40px;
+            padding: 20px 40px;
+        }
+    }
+    section {
+        display: flex;
+    }
+    .parameters {
+        border-top: solid 1px #e1e8ed;
+        margin: 8px 0 40px;
+        padding: 0;
+        li {
+            border-bottom: solid 1px #f0f4f7;
+            display: flex;
+            font-size: 13px;
+            line-height: 21px;
+            padding: 20px 0;
+            &:last-child {
+                border-color: #e1e8ed;
+            }
+        }
+        .parameter-spec {
+            flex: 0 0 180px;
+            font-weight: bold;
+            padding-right: 20px;
+            text-align: right;
+        }
+        .parameter-desc {
+            flex: 1;
+            p {
+                margin-top: 0;
+            }
+        }
+        .parameter-required {
+            color: #f16421;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+    }
+}

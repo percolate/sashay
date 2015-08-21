@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Percolate API Reference</title>
+        <link href="/app.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div id="root"><div class="container"><nav><h2>Versions</h2><ul><li><a href="/v5/">v5</a></li><li><a href="/v4/">v4</a></li><li><a href="/v3/">v3</a></li></ul><h2>Methods</h2><ul><li><a href="#charge">/charge</a><ul class="hide"><li><a href="#delete-charge">DELETE</a></li><li><a href="#get-charge">GET</a></li><li><a href="#post-charge">POST</a></li></ul></li></ul></nav><main><section><article><h1>Percolate API Reference</h1><h2>Methods</h2></article><aside></aside></section><div><section id="charge"><article><h3>/charge</h3></article><aside></aside></section><section id="delete-charge"><article><h4>DELETE</h4><div><p>n/a</p>
+</div></article><aside><h5>Definition</h5><pre>
+<code>DELETE https://api.percolate.com/charge</code></pre></aside></section><section id="get-charge"><article><h4>GET</h4><div><p>To charge a credit card, you create a charge object. If your API key is in test mode, the supplied payment source (e.g., card or Bitcoin receiver) won&#39;t actually be charged, though everything else will occur as if in live mode. (Stripe assumes that the charge would have completed successfully).</p>
+</div><div><h6>Parameters</h6><ul class="parameters"><li><div class="parameter-spec"><div>otp_secret_setup_token</div><div class="parameter-required">Required</div></div><div class="parameter-desc"><p>A positive integer in the smallest currency unit (e.g 100 cents to charge $1.00, or 1 to charge ¥1, a 0-decimal currency) representing how much to charge the card. The minimum amount is $0.50 (or equivalent in charge currency).</p>
+</div></li></ul></div></article><aside><h5>Definition</h5><pre>
+<code>GET https://api.percolate.com/charge</code></pre></aside></section><section id="post-charge"><article><h4>POST</h4><div><p>n/a</p>
+</div><div><h6>Parameters</h6><ul class="parameters"><li><div class="parameter-spec"><div>scope_id</div><div class="parameter-required">Required</div></div></li><li><div class="parameter-spec"><div>source</div></div></li><li><div class="parameter-spec"><div>target</div><div class="parameter-required">Required</div></div></li><li><div class="parameter-spec"><div>text</div><div class="parameter-required">Required</div></div></li></ul></div></article><aside><h5>Definition</h5><pre>
+<code>POST https://api.percolate.com/charge</code></pre></aside></section></div></main></div></div>
+        <script src="/app.js"></script>
+        <script>app({"basePath":"/v5","host":"api.percolate.com","info":{"title":"Percolate API Reference","version":"5.0.0"},"schemes":["https"],"methodGroups":[{"methods":[{"description":"n/a","name":"DELETE","parameters":[],"pathname":"/charge","slug":"delete-charge","tags":["public"],"verb":"delete"},{"description":"To charge a credit card, you create a charge object. If your API key is in test mode, the supplied payment source (e.g., card or Bitcoin receiver) won't actually be charged, though everything else will occur as if in live mode. (Stripe assumes that the charge would have completed successfully).\n","name":"GET","parameters":[{"description":"A positive integer in the smallest currency unit (e.g 100 cents to charge $1.00, or 1 to charge ¥1, a 0-decimal currency) representing how much to charge the card. The minimum amount is $0.50 (or equivalent in charge currency).\n","name":"otp_secret_setup_token","required":true,"type":"string"}],"pathname":"/charge","slug":"get-charge","tags":["stable"],"verb":"get"},{"description":"n/a","name":"POST","parameters":[{"name":"scope_id","required":true,"type":"[string]"},{"name":"source","required":false,"type":"string"},{"name":"target","required":true,"type":"string"},{"name":"text","required":true,"type":"string"}],"pathname":"/charge","slug":"post-charge","tags":["deprecated"],"verb":"post"}],"name":"/charge","slug":"charge"}]})</script>
+    </body>
+</html>

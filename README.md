@@ -1,27 +1,31 @@
 # sashay
 
 [![Circle CI](https://circleci.com/gh/percolate/sashay.svg?style=svg&circle-token=fa8012bb291abb365e5b0ff8f2a520e0ff889c02)](https://circleci.com/gh/percolate/sashay)
+[![codecov.io](http://codecov.io/github/percolate/sashay/coverage.svg?branch=master)](http://codecov.io/github/percolate/sashay?branch=master)
 
-Generates API documentation from a Swagger definition.
-
-## Installation
-
-```sh
-npm install git+ssh://git@github.com/percolate/sashay.git
-```
+A CLI for generating API documentation from a Swagger definition.
 
 ## Usage
 
-Start the development server (watches `swagger.yaml` for changes):
-
 ```sh
-./node_modules/.bin/sashay up ./swagger.yaml
+$ sashay [options] <command>
 ```
 
-Build the website:
+## Advanced
+
+Some commands require the following environment variables:
+
+```
+AWS_ACCESS_KEY
+AWS_SECRET_KEY
+SWAGGER_AUTH_TOKEN
+```
+
+Pull the latest Swagger definitions from percolate.com and build:
 
 ```sh
-./node_modules/.bin/sashay build ./swagger.yaml
+export $(cat .env | grep -v ^# | xargs); make fetch
+make web
 ```
 
 ## Deploy

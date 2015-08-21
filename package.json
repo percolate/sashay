@@ -12,25 +12,41 @@
   },
   "scripts": {
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
-    "style": "./node_modules/eslint-config-percolate/node_modules/.bin/eslint --config ./node_modules/eslint-config-percolate/.eslintrc --ext '.js,.jsx' ./lib/ ./test/",
+    "style": "./node_modules/eslint-config-percolate/node_modules/.bin/eslint --config ./node_modules/eslint-config-percolate/.eslintrc --ext '.js,.jsx' ./lib/ ./test/*.spec.js",
     "test": "npm run style && ./node_modules/.bin/mocha --reporter spec --grep ''"
   },
   "dependencies": {
+    "babel": "^5.8.21",
     "bluebird": "^2.9.30",
     "commander": "^2.8.1",
+    "css-loader": "^0.16.0",
+    "expose-loader": "^0.7.0",
+    "extract-text-webpack-plugin": "^0.8.2",
     "fs-extra": "^0.21.0",
     "handlebars": "^3.0.3",
+    "hapi": "^9.0.3",
+    "inert": "^3.0.1",
     "joi": "^6.5.0",
+    "json-loader": "^0.5.2",
+    "jsx-loader": "^0.13.2",
+    "less": "^2.5.1",
+    "less-loader": "^2.2.0",
     "lodash": "^3.9.3",
+    "marked": "^0.3.5",
+    "react": "^0.13.3",
     "slug": "^0.9.1",
+    "style-loader": "^0.12.3",
     "swagger-parser": "^2.4.3",
-    "watchpack": "^0.2.8"
+    "watchpack": "^0.2.8",
+    "webpack": "^1.11.0",
+    "webpack-dev-server": "^1.10.1"
   },
   "devDependencies": {
     "assert-dir-equal": "^1.0.1",
     "chai": "^3.0.0",
-    "eslint-config-percolate": "git+https://git@github.com/percolate/eslint-config-percolate.git#remove_consistent_return",
+    "eslint-config-percolate": "git+https://git@github.com/percolate/eslint-config-percolate.git#v1.2.1",
     "istanbul": "^0.3.17",
+    "js-yaml": "^3.3.1",
     "mocha": "^2.2.5"
   }
 }
