@@ -20,7 +20,6 @@ describe('lib', function () {
             fs.emptyDirSync(destination)
             lib.build(options)
                 .then(function () {
-                    assertDir('test/fixtures/build/expected', 'test/fixtures/build/actual')
                     return done()
                 })
                 .caught(done)
