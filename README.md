@@ -13,7 +13,7 @@ $ sashay [options] <command>
 
 ## Advanced
 
-Some commands require the following environment variables:
+Install [AWS CLI](https://aws.amazon.com/cli/). Some commands require the following environment variables:
 
 ```
 AWS_ACCESS_KEY
@@ -21,11 +21,12 @@ AWS_SECRET_KEY
 SWAGGER_AUTH_TOKEN
 ```
 
-Pull the latest Swagger definitions from percolate.com and build:
+Pull the latest Swagger definitions from percolate.com, build and sync with AWS S3:
 
 ```sh
-export $(cat .env | grep -v ^# | xargs); make fetch
+make fetch
 make web
+make sync
 ```
 
 ## Deploy
