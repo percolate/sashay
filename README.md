@@ -32,3 +32,11 @@ make sync
 ## Deploy
 
 Every push to master is pushed to the percolate-sashay Heroku application.
+
+## Logs
+
+Login with the Heroku CLI and run:
+
+```sh
+heroku logs --app percolate-sashay
+```
