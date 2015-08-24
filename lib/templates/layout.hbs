@@ -1,23 +1,13 @@
-# {{info.title}} {{info.version}}
-
-{{#if extension}}{{&extension}}{{/if}}
-
-{{#each methodGroups}}
-
-{{#if name}}## {{name}}{{/if}}
-
-{{#each methods}}
-
-{{#if name}}### {{name}}{{/if}}
-
-{{#if description}}{{description}}{{/if}}
-
-{{#if parameters}}
-| Name | Type | Description
-|-|-|-
-{{#each parameters}}
-| {{name}} {{#if required}}*{{/if}} | {{type}}  | {{description}}
-{{/each}}
-{{/if}}
-{{/each}}
-{{/each}}
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>{{title}}</title>
+        {{#if css}}<link href="{{css}}" rel="stylesheet" type="text/css" />{{/if}}
+    </head>
+    <body>
+        <div id="root">{{&markup}}</div>
+        <script src="{{js}}"></script>
+        <script>app({{&data}})</script>
+    </body>
+</html>

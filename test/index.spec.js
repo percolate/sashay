@@ -1,60 +1,40 @@
 var assertDir = require('assert-dir-equal')
 var expect = require('chai').expect
 var fs = require('fs-extra')
-var sashay = require('../')
+var lib = require('../')
 var path = require('path')
+var yaml = require('js-yaml')
 
-var SCHEMA = path.resolve(__dirname, './fixtures/swagger.yaml')
+var INPUT = yaml.safeLoad(fs.readFileSync(path.resolve(__dirname, './fixtures/swagger.yml'), 'utf8'))
 
-describe('sashay', function () {
-
+describe('lib', function () {
     describe('build()', function () {
+        this.timeout(20e3)
 
         it('should build with options', function (done) {
-            var buildPath = path.resolve(__dirname, './fixtures/basic/actual/')
+            var destination = path.resolve(__dirname, './fixtures/build/actual/')
             var options = {
-                destination: buildPath,
-                filename: 'my-output.md',
-                schema: SCHEMA,
+                destination: destination,
+                input: INPUT,
             }
-            fs.emptyDirSync(buildPath)
-            sashay.build(options)
+            fs.emptyDirSync(destination)
+            lib.build(options)
                 .then(function () {
-                    assertDir('test/fixtures/basic/expected', 'test/fixtures/basic/actual')
                     return done()
                 })
                 .caught(done)
         })
-
-        it('should build with extension', function (done) {
-            var buildPath = path.resolve(__dirname, './fixtures/extension/actual/')
-            var options = {
-                destination: buildPath,
-                extension: path.resolve(__dirname, './fixtures/extension.md'),
-                schema: SCHEMA,
-            }
-            fs.emptyDirSync(buildPath)
-            sashay.build(options)
-                .then(function () {
-                    assertDir('test/fixtures/extension/expected', 'test/fixtures/extension/actual')
-                    return done()
-                })
-                .caught(done)
-        })
-
     })
 
-    describe('parse()', function () {
-
-        it('should parse the Swagger schema', function (done) {
+    describe('preprocess()', function () {
+        it('should preprocess the Swagger schema', function (done) {
             var options = {
-                schema: SCHEMA,
+                input: INPUT,
             }
-            sashay.parse(options)
+            lib.preprocess(options)
                 .then(function (res) {
                     expect(res).to.deep.equal({
                         basePath: '/v5',
-                        extension: undefined,
                         methodGroups: [
                             {
                                 name: '/charge',
@@ -141,9 +121,9 @@ describe('sashay', function () {
         it('should filter operations by tag', function (done) {
             var options = {
                 filter: ['public'],
-                schema: SCHEMA,
+                input: INPUT,
             }
-            sashay.parse(options)
+            lib.preprocess(options)
                 .then(function (res) {
                     expect(res.methodGroups[0].methods).to.deep.equal([
                         {
@@ -162,7 +142,23 @@ describe('sashay', function () {
                 })
                 .caught(done)
         })
-
     })
 
+    describe('template()', function () {
+        it('should template with options', function (done) {
+            var destination = path.resolve(__dirname, './fixtures/template/actual/')
+            var options = {
+                destination: destination,
+                filename: 'my-output.md',
+                input: INPUT,
+            }
+            fs.emptyDirSync(destination)
+            lib.template(options)
+                .then(function () {
+                    assertDir('test/fixtures/template/expected', 'test/fixtures/template/actual')
+                    return done()
+                })
+                .caught(done)
+        })
+    })
 })
