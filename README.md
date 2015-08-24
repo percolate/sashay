@@ -23,3 +23,7 @@ Build the website:
 ```sh
 ./node_modules/.bin/sashay build ./swagger.yaml
 ```
+
+## Deploy
+
+Every push to master is pushed to the percolate-sashay Heroku application.
