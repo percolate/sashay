@@ -44,6 +44,7 @@
   "devDependencies": {
     "assert-dir-equal": "^1.0.1",
     "chai": "^3.0.0",
+    "codecov.io": "^0.1.6",
     "eslint-config-percolate": "git+https://git@github.com/percolate/eslint-config-percolate.git#v1.2.1",
     "istanbul": "^0.3.17",
     "js-yaml": "^3.3.1",
