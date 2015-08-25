@@ -8,7 +8,7 @@ A CLI for generating API documentation from a Swagger definition.
 ## Usage
 
 ```sh
-$ sashay [options] <command>
+sashay [options] <command>
 ```
 
 ## Advanced
@@ -29,14 +29,18 @@ make web
 make sync
 ```
 
-## Deploy
+## Deployment
 
 Every push to master is pushed to the percolate-sashay Heroku application.
 
-## Logs
+### Configuration
 
-Login with the Heroku CLI and run:
+When creating a new Heroku application, run the following configuration:
 
 ```sh
-heroku logs --app percolate-sashay
+heroku buildpacks:set https://github.com/heroku/heroku-buildpack-multi.git
+heroku addons:create scheduler:standard
+heroku addons:open scheduler
 ```
+
+Then [schedule the job](https://devcenter.heroku.com/articles/scheduler#scheduling-jobs) `make update`.
