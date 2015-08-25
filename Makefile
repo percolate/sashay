@@ -7,7 +7,6 @@ sync:
 	aws s3 sync ./build/ s3://percolate-sashay/ --exclude '*' --include '*.js' --include '*.css' --include '*.html'
 
 update:
-	pip install -r ./requirements.txt
 	make fetch
 	make web
 	make sync
