@@ -1,14 +1,14 @@
 # sashay
 
 [![Circle CI](https://circleci.com/gh/percolate/sashay.svg?style=svg&circle-token=fa8012bb291abb365e5b0ff8f2a520e0ff889c02)](https://circleci.com/gh/percolate/sashay)
-[![codecov.io](http://codecov.io/github/percolate/sashay/coverage.svg?branch=master)](http://codecov.io/github/percolate/sashay?branch=master)
+[![codecov.io](http://codecov.io/github/percolate/sashay/coverage.svg?branch=master&token=kdC8b1dlwH)](http://codecov.io/github/percolate/sashay?branch=master)
 
 A CLI for generating API documentation from a Swagger definition.
 
 ## Usage
 
 ```sh
-$ sashay [options] <command>
+sashay [options] <command>
 ```
 
 ## Advanced
@@ -29,14 +29,18 @@ make web
 make sync
 ```
 
-## Deploy
+## Deployment
 
 Every push to master is pushed to the percolate-sashay Heroku application.
 
-## Logs
+### Configuration
 
-Login with the Heroku CLI and run:
+When creating a new Heroku application, run the following configuration:
 
 ```sh
-heroku logs --app percolate-sashay
+heroku buildpacks:set https://github.com/heroku/heroku-buildpack-multi.git
+heroku addons:create scheduler:standard
+heroku addons:open scheduler
 ```
+
+Then [schedule the job](https://devcenter.heroku.com/articles/scheduler#scheduling-jobs) `make update`.
