@@ -10,7 +10,7 @@
 
 - **`output`** `String`
 
-    The output format. Must be `json` or `web`. Default `json`.
+    The output format. Must be `'json'` or `'web'`. Default `'json'`.
 
 - **`source`** `String`
 
@@ -18,4 +18,4 @@
 
 - **`watch`** `Boolean`
 
-    Watches files for changes and rebuilds. In `web` mode, starts a preview server at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). Default `false`.
+    Watches files for changes and rebuilds. In `'web'` mode, starts a preview server at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). Default `false`.
