@@ -95,3 +95,5 @@
         example: user:1
         description: |
           Who created the post (could be `null` for ingested posts).
+    example:
+      $ref: examples.yml#/post

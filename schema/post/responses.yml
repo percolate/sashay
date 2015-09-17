@@ -16,7 +16,3 @@
         type: array
         items:
           $ref: schemas.yml#/post
-      examples:
-        application/json:
-          -
-            $ref: examples.yml#/post

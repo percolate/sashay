@@ -81,11 +81,11 @@ module.exports = React.createClass({
                                                         }),
                                                     ].join(' ')}</code>
                                                 </pre>
-                                                {!_.isEmpty(operation.response) && (
+                                                {_.has(operation, 'responses.200.schema.example') && (
                                                     <div>
                                                         <h5>Example response</h5>
                                                         <pre>
-                                                            <code>{JSON.stringify(operation.response.example, undefined, 2)}</code>
+                                                            <code>{JSON.stringify(operation.responses['200'].schema.example, undefined, 2)}</code>
                                                         </pre>
                                                     </div>
                                                 )}
