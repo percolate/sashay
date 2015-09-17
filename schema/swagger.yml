@@ -1,0 +1,20 @@
+---
+  basePath: /api/v5
+  host: percolate.com
+  info:
+    title: Percolate API Reference
+    version: 5.0.0
+  paths:
+    /post:
+      $ref: post/path-item.yml
+    /post/{id}:
+      $ref: post/id-path-item.yml
+  schemes:
+    - https
+  swagger: "2.0"
+  tags:
+    -
+      name: post
+      description: Posts
+      x-schema:
+        $ref: post/schemas.yml#/post

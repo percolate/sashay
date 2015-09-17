@@ -1,0 +1,97 @@
+---
+  post:
+    description: |
+      A post is a piece of content intended to live on a specific channel][channel]/[platform][platform]. Platforms native to Percolate can leverage a publishing queue that automatically pushes the content live. Each channel supports multiple post types defined by a [schema (ex. facebook video post vs facebook link post).
+    type: object
+    required:
+      - asset_ids
+      - channel_id
+      - created_at
+      - ext
+      - id
+      - ingested
+      - link_ids
+      - name
+      - platform_id
+      - schema_id
+      - scope_id
+      - status
+      - updated_at
+    properties:
+      approval_group_id:
+        $ref: properties.yml#/approval_group_id
+      approval_workflow_id:
+        type: string
+        example: approval_workflow:1
+        description: |
+          The approval workflow generated from the `approval_group_id`.
+      asset_ids:
+        type: array
+        example: ["asset:1"]
+        description: |
+          An array of aggregated asset IDs extracted from all fields of type asset][schema_asset] and all image URLs found inside of [text][schema_text],[textarea][schema_textarea], and [html fields.
+      channel_id:
+        $ref: properties.yml#/channel_id
+      created_at:
+        type: string
+        format: dateTime
+        example: 2014-06-10T00:00:00+00:00
+        description: |
+          When this post was created.
+      description:
+        $ref: properties.yml#/description
+      ext:
+        $ref: properties.yml#/ext
+      id:
+        type: string
+        example: post:1
+        description: |
+          The unique post ID.
+      ingested:
+        type: boolean
+        example: false
+        description: |
+          Whether this post was ingested directly from the [channel](#).
+      link_ids:
+        type: array
+        example: ["link:1"]
+        description: |
+          An array of aggregated link IDs extracted from all fields of type link][schema_link] and all URLs found inside of [text][schema_text],[textarea][schema_textarea], and [html fields.
+      live_at:
+        $ref: properties.yml#/live_at
+      live_at_timezone:
+        $ref: properties.yml#/live_at_timezone
+      name:
+        $ref: properties.yml#/name
+      origin_ids:
+        $ref: properties.yml#/origin_ids
+      platform_id:
+        $ref: properties.yml#/platform_id
+      schema_id:
+        $ref: properties.yml#/schema_id
+      scope_id:
+        $ref: properties.yml#/scope_id
+      status:
+        $ref: properties.yml#/status
+      term_ids:
+        $ref: properties.yml#/term_ids
+      topic_ids:
+        $ref: properties.yml#/topic_ids
+      updated_at:
+        type: string
+        format: dateTime
+        example: 2014-06-10T00:00:00+00:00
+        description: |
+          When this post was updated.
+      url:
+        type: string
+        example: https://percolate.com/path/to/the/post
+        description: |
+          The URL this post was published to.
+
+          Required if `status` is `"live"`.
+      user_id:
+        type: string
+        example: user:1
+        description: |
+          Who created the post (could be `null` for ingested posts).
