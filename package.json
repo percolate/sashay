@@ -16,6 +16,7 @@
     "test": "npm run style && ./node_modules/.bin/mocha --reporter spec --grep ''"
   },
   "dependencies": {
+    "ajv": "^1.4.0",
     "babel": "^5.8.21",
     "bluebird": "^2.9.30",
     "commander": "^2.8.1",
@@ -36,7 +37,7 @@
     "react": "^0.13.3",
     "slug": "^0.9.1",
     "style-loader": "^0.12.3",
-    "swagger-parser": "^2.4.3",
+    "swagger-parser": "^3.0.0-alpha.8",
     "watchpack": "^0.2.8",
     "webpack": "^1.11.0",
     "webpack-dev-server": "^1.10.1"
