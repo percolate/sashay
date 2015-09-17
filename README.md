@@ -8,8 +8,10 @@ A CLI for generating API documentation from a Swagger definition.
 ## Usage
 
 ```sh
-sashay [options] <command>
+sashay [options] <source>
 ```
+
+See [REFERENCE](https://github.com/percolate/sashay/blob/master/REFERENCE.md).
 
 ## Advanced
 
