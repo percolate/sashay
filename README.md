@@ -11,11 +11,19 @@ A CLI for generating API documentation from a Swagger definition.
 sashay [options] <source>
 ```
 
-See [REFERENCE](https://github.com/percolate/sashay/blob/master/REFERENCE.md).
+See [REFERENCE](https://github.com/percolate/sashay/blob/master/REFERENCE.md) for complete API reference.
 
-## Advanced
+### Writing and previewing documentation
 
-Install [AWS CLI](https://aws.amazon.com/cli/). Some commands require the following environment variables:
+The following command will start a local web server at [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and watch your local files. Changes to `swagger.yml` will be reflected in your web browser.
+
+```sh
+sashay swagger.yml --output web --watch
+```
+
+### Pushing to S3
+
+Documentation is hosted on AWS S3. To update the docs, just generate the new web assets and sync. You must have the [AWS CLI](https://aws.amazon.com/cli/). Some commands require the following environment variables:
 
 ```
 AWS_ACCESS_KEY
@@ -23,7 +31,7 @@ AWS_SECRET_KEY
 SWAGGER_AUTH_TOKEN
 ```
 
-Pull the latest Swagger definitions from percolate.com, build and sync with AWS S3:
+The following commands pull the latest Swagger definitions from percolate.com, build and sync with AWS S3:
 
 ```sh
 make fetch
@@ -33,7 +41,7 @@ make sync
 
 ## Deployment
 
-Every push to master is pushed to the percolate-sashay Heroku application.
+Every push to master is pushed to the percolate-sashay Heroku application. The sync command run a cron every 10 minutes.
 
 ### Configuration
 
