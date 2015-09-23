@@ -1,0 +1,9 @@
+---
+post:
+  summary: n/a
+  description: n/a
+  tags:
+    - shortlink
+  responses:
+    '200':
+      description: n/a

@@ -1,0 +1,17 @@
+---
+post:
+  summary: n/a
+  description: n/a
+  tags:
+    - platform
+  responses:
+    '200':
+      description: n/a
+get:
+  summary: n/a
+  description: n/a
+  tags:
+    - platform
+  responses:
+    '200':
+      description: n/a

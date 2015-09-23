@@ -1,0 +1,16 @@
+---
+get:
+  summary: n/a
+  description: n/a
+  tags:
+    - stream
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: stream_id
+      description: n/a
+      type: string
+      required: true

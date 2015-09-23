@@ -1,0 +1,31 @@
+---
+get:
+  summary: n/a
+  description: n/a
+  tags:
+    - mobile_app
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: mobile_app_id
+      description: n/a
+      type: string
+      required: true
+put:
+  summary: n/a
+  description: n/a
+  tags:
+    - mobile_app
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: mobile_app_id
+      description: n/a
+      type: string
+      required: true

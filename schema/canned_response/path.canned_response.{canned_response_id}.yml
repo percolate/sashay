@@ -1,0 +1,46 @@
+---
+get:
+  summary: n/a
+  description: n/a
+  tags:
+    - canned_response
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: canned_response_id
+      description: n/a
+      type: string
+      required: true
+put:
+  summary: n/a
+  description: n/a
+  tags:
+    - canned_response
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: canned_response_id
+      description: n/a
+      type: string
+      required: true
+delete:
+  summary: n/a
+  description: n/a
+  tags:
+    - canned_response
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: canned_response_id
+      description: n/a
+      type: string
+      required: true

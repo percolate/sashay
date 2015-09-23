@@ -1,0 +1,31 @@
+---
+get:
+  summary: n/a
+  description: n/a
+  tags:
+    - interaction
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: interaction_id
+      description: n/a
+      type: string
+      required: true
+put:
+  summary: n/a
+  description: n/a
+  tags:
+    - interaction
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: interaction_id
+      description: n/a
+      type: string
+      required: true

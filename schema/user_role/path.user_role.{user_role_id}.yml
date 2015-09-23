@@ -1,0 +1,31 @@
+---
+get:
+  summary: n/a
+  description: n/a
+  tags:
+    - user_role
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: user_role_id
+      description: n/a
+      type: string
+      required: true
+delete:
+  summary: n/a
+  description: n/a
+  tags:
+    - user_role
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: user_role_id
+      description: n/a
+      type: string
+      required: true

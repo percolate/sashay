@@ -1,0 +1,46 @@
+---
+get:
+  summary: n/a
+  description: n/a
+  tags:
+    - mobile_app_push_token
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: mobile_app_push_token_id
+      description: n/a
+      type: string
+      required: true
+put:
+  summary: n/a
+  description: n/a
+  tags:
+    - mobile_app_push_token
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: mobile_app_push_token_id
+      description: n/a
+      type: string
+      required: true
+delete:
+  summary: n/a
+  description: n/a
+  tags:
+    - mobile_app_push_token
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: mobile_app_push_token_id
+      description: n/a
+      type: string
+      required: true
