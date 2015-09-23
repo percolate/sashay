@@ -5,16 +5,213 @@
     title: Percolate API Reference
     version: 5.0.0
   paths:
-    /post:
-      $ref: post/path-item.yml
-    /post/{id}:
-      $ref: post/id-path-item.yml
+    /autocomplete/:
+      $ref: "autocomplete/path.autocomplete.yml"
+    /campaign/:
+      $ref: "campaign/path.campaign.yml"
+    /campaign/{campaign_id}:
+      $ref: "campaign/path.campaign.{campaign_id}.yml"
+    /campaign_brief/:
+      $ref: "campaign_brief/path.campaign_brief.yml"
+    /campaign_brief/{campaign_brief_id}:
+      $ref: "campaign_brief/path.campaign_brief.{campaign_brief_id}.yml"
+    /campaign_workspace/:
+      $ref: "campaign_workspace/path.campaign_workspace.yml"
+    /campaign_workspace/{campaign_workspace_id}:
+      $ref: "campaign_workspace/path.campaign_workspace.{campaign_workspace_id}.yml"
+    /canned_response/:
+      $ref: "canned_response/path.canned_response.yml"
+    /canned_response/{canned_response_id}:
+      $ref: "canned_response/path.canned_response.{canned_response_id}.yml"
+    /channel/:
+      $ref: "channel/path.channel.yml"
+    /channel/{channel_id}:
+      $ref: "channel/path.channel.{channel_id}.yml"
+    /comment/:
+      $ref: "comment/path.comment.yml"
+    /export/:
+      $ref: "export/path.export.yml"
+    /feature/:
+      $ref: "feature/path.feature.yml"
+    /feature/{feature_id}:
+      $ref: "feature/path.feature.{feature_id}.yml"
+    /feature_gate/{feature_gate_id}:
+      $ref: "feature_gate/path.feature_gate.{feature_gate_id}.yml"
+    /interaction/:
+      $ref: "interaction/path.interaction.yml"
+    /interaction/{interaction_id}:
+      $ref: "interaction/path.interaction.{interaction_id}.yml"
+    /legal/:
+      $ref: "legal/path.legal.yml"
+    /legal/{legal_id}:
+      $ref: "legal/path.legal.{legal_id}.yml"
+    /license_group/:
+      $ref: "license_group/path.license_group.yml"
+    /license_group/{license_group_id}:
+      $ref: "license_group/path.license_group.{license_group_id}.yml"
+    /mobile_app/:
+      $ref: "mobile_app/path.mobile_app.yml"
+    /mobile_app/{mobile_app_id}:
+      $ref: "mobile_app/path.mobile_app.{mobile_app_id}.yml"
+    /mobile_app_push_token/:
+      $ref: "mobile_app_push_token/path.mobile_app_push_token.yml"
+    /mobile_app_push_token/{mobile_app_push_token_id}:
+      $ref: "mobile_app_push_token/path.mobile_app_push_token.{mobile_app_push_token_id}.yml"
+    /oauth/redirect:
+      $ref: "oauth/path.oauth.redirect.yml"
+    /oauth/token/save:
+      $ref: "oauth/path.oauth.token.save.yml"
+    /otp_secret/:
+      $ref: "otp_secret/path.otp_secret.yml"
+    /otp_secret/{otp_secret_id}:
+      $ref: "otp_secret/path.otp_secret.{otp_secret_id}.yml"
+    /platform/:
+      $ref: "platform/path.platform.yml"
+    /platform/{platform_id}:
+      $ref: "platform/path.platform.{platform_id}.yml"
+    /post/:
+      $ref: "post/path.post.yml"
+    /post/{post_id}:
+      $ref: "post/path.post.{post_id}.yml"
+    /preference/:
+      $ref: "preference/path.preference.yml"
+    /preference/{preference_id}:
+      $ref: "preference/path.preference.{preference_id}.yml"
+    /role/:
+      $ref: "role/path.role.yml"
+    /role/{role_id}:
+      $ref: "role/path.role.{role_id}.yml"
+    /schema/:
+      $ref: "schema/path.schema.yml"
+    /schema/{schema_id}:
+      $ref: "schema/path.schema.{schema_id}.yml"
+    /session/:
+      $ref: "session/path.session.yml"
+    /session/{session_id}:
+      $ref: "session/path.session.{session_id}.yml"
+    /shortlink/:
+      $ref: "shortlink/path.shortlink.yml"
+    /stream/:
+      $ref: "stream/path.stream.yml"
+    /stream/{stream_id}:
+      $ref: "stream/path.stream.{stream_id}.yml"
+    /stream_group/:
+      $ref: "stream_group/path.stream_group.yml"
+    /stream_group/{stream_group_id}:
+      $ref: "stream_group/path.stream_group.{stream_group_id}.yml"
+    /term/:
+      $ref: "term/path.term.yml"
+    /term/{term_id}:
+      $ref: "term/path.term.{term_id}.yml"
+    /me/:
+      $ref: "user/path.me.yml"
+    /user/:
+      $ref: "user/path.user.yml"
+    /user/password:
+      $ref: "user/path.user.password.yml"
+    /user/{user_id}:
+      $ref: "user/path.user.{user_id}.yml"
+    /user/{user_id}/password:
+      $ref: "user/path.user.{user_id}.password.yml"
+    /user_role/:
+      $ref: "user_role/path.user_role.yml"
+    /user_role/{user_role_id}:
+      $ref: "user_role/path.user_role.{user_role_id}.yml"
+    /waiver/:
+      $ref: "waiver/path.waiver.yml"
+    /waiver/{waiver_id}:
+      $ref: "waiver/path.waiver.{waiver_id}.yml"
   schemes:
     - https
   swagger: "2.0"
   tags:
     -
-      name: post
-      description: Posts
-      x-schema:
-        $ref: post/schemas.yml#/post
+      name: "autocomplete"
+      description: "Autocomplete"
+    -
+      name: "campaign"
+      description: "Campaigns"
+    -
+      name: "campaign_brief"
+      description: "Campaign Briefs"
+    -
+      name: "campaign_workspace"
+      description: "Campaign Workspaces"
+    -
+      name: "canned_response"
+      description: "Canned Responses"
+    -
+      name: "channel"
+      description: "Channels"
+    -
+      name: "comment"
+      description: "Comments"
+    -
+      name: "export"
+      description: "Exports"
+    -
+      name: "feature"
+      description: "Features"
+    -
+      name: "feature_gate"
+      description: "Feature Gates"
+    -
+      name: "interaction"
+      description: "Interactions"
+    -
+      name: "legal"
+      description: "Legal"
+    -
+      name: "license_group"
+      description: "License Groups"
+    -
+      name: "mobile_app"
+      description: "Mobile Apps"
+    -
+      name: "mobile_app_push_token"
+      description: "Mobile App Push Tokens"
+    -
+      name: "oauth"
+      description: "OAuth"
+    -
+      name: "otp_secret"
+      description: "OTP Secrets"
+    -
+      name: "platform"
+      description: "Platforms"
+    -
+      name: "post"
+      description: "Posts"
+    -
+      name: "preference"
+      description: "Preferences"
+    -
+      name: "role"
+      description: "Roles"
+    -
+      name: "schema"
+      description: "Schemas"
+    -
+      name: "session"
+      description: "Sessions"
+    -
+      name: "shortlink"
+      description: "Shortlinks"
+    -
+      name: "stream"
+      description: "Streams"
+    -
+      name: "stream_group"
+      description: "Stream Groups"
+    -
+      name: "term"
+      description: "Terms"
+    -
+      name: "user"
+      description: "Users"
+    -
+      name: "user_role"
+      description: "User Roles"
+    -
+      name: "waiver"
+      description: "Waivers"
