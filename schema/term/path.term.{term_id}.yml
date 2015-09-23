@@ -1,6 +1,6 @@
 ---
 get:
-  summary: n/a
+  summary: 'TODO get'
   description: n/a
   tags:
     - term
@@ -15,7 +15,7 @@ get:
       type: string
       required: true
 put:
-  summary: n/a
+  summary: 'TODO put'
   description: n/a
   tags:
     - term
@@ -30,7 +30,7 @@ put:
       type: string
       required: true
 delete:
-  summary: n/a
+  summary: 'TODO delete'
   description: n/a
   tags:
     - term

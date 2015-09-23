@@ -1,6 +1,6 @@
 ---
 get:
-  summary: n/a
+  summary: 'TODO get'
   description: n/a
   tags:
     - mobile_app
@@ -15,7 +15,7 @@ get:
       type: string
       required: true
 put:
-  summary: n/a
+  summary: 'TODO put'
   description: n/a
   tags:
     - mobile_app

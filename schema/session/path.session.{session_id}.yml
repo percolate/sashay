@@ -1,6 +1,6 @@
 ---
 get:
-  summary: n/a
+  summary: 'TODO get'
   description: n/a
   tags:
     - session
@@ -15,7 +15,7 @@ get:
       type: string
       required: true
 delete:
-  summary: n/a
+  summary: 'TODO delete'
   description: n/a
   tags:
     - session

@@ -1,6 +1,6 @@
 ---
 put:
-  summary: n/a
+  summary: 'TODO put'
   description: n/a
   tags:
     - stream_group
@@ -15,7 +15,7 @@ put:
       type: string
       required: true
 delete:
-  summary: n/a
+  summary: 'TODO delete'
   description: n/a
   tags:
     - stream_group

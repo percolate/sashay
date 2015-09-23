@@ -1,6 +1,6 @@
 ---
 get:
-  summary: n/a
+  summary: 'TODO get'
   description: n/a
   tags:
     - term
@@ -8,7 +8,7 @@ get:
     '200':
       description: n/a
 post:
-  summary: n/a
+  summary: 'TODO post'
   description: n/a
   tags:
     - term

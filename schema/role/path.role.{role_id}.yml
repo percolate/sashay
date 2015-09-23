@@ -1,6 +1,6 @@
 ---
 post:
-  summary: n/a
+  summary: 'TODO post'
   description: n/a
   tags:
     - role
@@ -15,7 +15,7 @@ post:
       type: string
       required: true
 put:
-  summary: n/a
+  summary: 'TODO put'
   description: n/a
   tags:
     - role
