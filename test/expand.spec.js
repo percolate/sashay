@@ -44,11 +44,20 @@ describe('expand()', function () {
             })
     })
 
-    it('should throw for missing summary', function (done) {
+    it('should throw for missing summary but support parameters', function (done) {
         var options = {
             source: _.merge({}, BASE, {
                 paths: {
-                    '/foo': {
+                    '/foo/{id}': {
+                        parameters: [
+                            {
+                                in: 'path',
+                                name: 'id',
+                                required: true,
+                                type: 'string',
+                                description: 'The id.',
+                            },
+                        ],
                         get: {
                             responses: {
                                 200: {
