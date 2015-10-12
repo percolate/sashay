@@ -42,56 +42,54 @@ module.exports = React.createClass({
                                 </article>
                                 <aside />
                             </section>
-                            {_.map(group.operations, function (operation) {
+                            {_.map(group.operations, function (operation, i) {
                                 return (
-                                    <div
+                                    <section
                                         id={operation.slug}
-                                        key={operation.slug}
+                                        key={i}
                                         ref={operation.slug}
                                     >
-                                        <section>
-                                            <article>
-                                                <h4>{operation.summary}</h4>
-                                                {!_.isEmpty(operation.description) && (
+                                        <article>
+                                            <h4>{operation.summary}</h4>
+                                            {!_.isEmpty(operation.description) && (
+                                                <div dangerouslySetInnerHTML={{
+                                                    __html: marked(operation.description),
+                                                }} />
+                                            )}
+                                            {(!_.isEmpty(operation.parameters)) && (
+                                                <Parameters parameters={operation.parameters} />
+                                            )}
+                                            {!_.isEmpty(operation.response) && (
+                                                <div>
+                                                    <h4>Returns</h4>
                                                     <div dangerouslySetInnerHTML={{
-                                                        __html: marked(operation.description),
+                                                        __html: marked(operation.response.description),
                                                     }} />
-                                                )}
-                                                {(!_.isEmpty(operation.parameters)) && (
-                                                    <Parameters parameters={operation.parameters} />
-                                                )}
-                                                {!_.isEmpty(operation.response) && (
-                                                    <div>
-                                                        <h4>Returns</h4>
-                                                        <div dangerouslySetInnerHTML={{
-                                                            __html: marked(operation.response.description),
-                                                        }} />
-                                                    </div>
-                                                )}
-                                            </article>
-                                            <aside>
-                                                <h5>Definition</h5>
-                                                <pre>
-                                                    <code>{[
-                                                        operation.verb.toUpperCase(),
-                                                        url.format({
-                                                            host: this.props.host,
-                                                            pathname: [this.props.basePath, operation.path].join(''),
-                                                            protocol: _.first(this.props.schemes),
-                                                        }),
-                                                    ].join(' ')}</code>
-                                                </pre>
-                                                {_.has(operation, 'responses.200.schema.example') && (
-                                                    <div>
-                                                        <h5>Example response</h5>
-                                                        <pre>
-                                                            <code>{JSON.stringify(operation.responses['200'].schema.example, undefined, 2)}</code>
-                                                        </pre>
-                                                    </div>
-                                                )}
-                                            </aside>
-                                        </section>
-                                    </div>
+                                                </div>
+                                            )}
+                                        </article>
+                                        <aside>
+                                            <h5>Definition</h5>
+                                            <pre>
+                                                <code>{[
+                                                    operation.verb.toUpperCase(),
+                                                    url.format({
+                                                        host: this.props.host,
+                                                        pathname: [this.props.basePath, operation.path].join(''),
+                                                        protocol: _.first(this.props.schemes),
+                                                    }),
+                                                ].join(' ')}</code>
+                                            </pre>
+                                            {_.has(operation, 'responses.200.schema.example') && (
+                                                <div>
+                                                    <h5>Example response</h5>
+                                                    <pre>
+                                                        <code>{JSON.stringify(operation.responses['200'].schema.example, undefined, 2)}</code>
+                                                    </pre>
+                                                </div>
+                                            )}
+                                        </aside>
+                                    </section>
                                 )
                             }, this)}
                         </div>

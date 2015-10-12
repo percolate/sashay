@@ -35,9 +35,9 @@ module.exports = React.createClass({
                                     ref={group.name}
                                 >{group.description}</a>
                                 <ul className={!isExpanded && 'hide'}>
-                                    {_.map(group.operations, function (operation) {
+                                    {_.map(group.operations, function (operation, i) {
                                         return (
-                                            <li key={operation.slug}>
+                                            <li key={i}>
                                                 <a
                                                     className={(operation.slug === this.props.hash) ? 'selected' : undefined}
                                                     href={'#' + operation.slug}
