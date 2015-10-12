@@ -13,6 +13,7 @@
 
 @HIGHLIGHT_PRIMARY: #0099e5;
 @HIGHLIGHT_SECONDARY: #ffae54;
+@HIGHLIGHT_TERTIARY: #b93d6a;
 
 html,
 body {
@@ -101,6 +102,15 @@ main {
         padding: 30px 40px;
         a {
             color: @FOREGROUND_PRIMARY;
+        }
+        code {
+            background-color: @BACKGROUND_SECONDARY;
+            border: 1px solid @SEPARATOR_PRIMARY;
+            border-radius: 4px;
+            color: @HIGHLIGHT_TERTIARY;
+            display: inline-block;
+            line-height: 1.25em;
+            padding: 0 5px;
         }
     }
     aside {
