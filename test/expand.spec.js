@@ -150,6 +150,32 @@ describe('expand()', function () {
             })
     })
 
+    it('should throw for invalid `x-` attributes', function (done) {
+        var options = {
+            source: _.merge({}, BASE, {
+                paths: {
+                    '/foo': {
+                        get: {
+                            summary: 'n/a',
+                            responses: {
+                                200: {
+                                    description: '',
+                                },
+                            },
+                            'x-public': true,
+                            'x-whatever': 'whatever...',
+                        },
+                    },
+                },
+            }),
+        }
+        expand(options)
+            .caught(function (err) {
+                expect(err).to.be.an.instanceof(Error)
+                return done()
+            })
+    })
+
     it('should expand without examples', function (done) {
         var options = {
             source: _.merge({}, BASE, {
