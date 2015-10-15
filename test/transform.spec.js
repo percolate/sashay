@@ -92,18 +92,20 @@ describe('transform()', function () {
                         },
                     },
                     '/c/{id}': {
+                        parameters: [
+                            {
+                                in: 'path',
+                                name: 'id',
+                                required: true,
+                                type: 'string',
+                                description: 'The id.',
+                            },
+                        ],
                         put: {
                             tags: ['z'],
                             summary: 'C',
                             description: 'C.',
                             parameters: [
-                                {
-                                    in: 'path',
-                                    name: 'id',
-                                    required: true,
-                                    type: 'string',
-                                    description: 'The id.',
-                                },
                                 {
                                     in: 'body',
                                     name: 'body',
@@ -254,13 +256,6 @@ describe('transform()', function () {
                                 description: 'C.',
                                 parameters: [
                                     {
-                                        in: 'path',
-                                        name: 'id',
-                                        required: true,
-                                        type: 'string',
-                                        description: 'The id.',
-                                    },
-                                    {
                                         in: 'body',
                                         name: 'body',
                                         schema: {
@@ -275,6 +270,13 @@ describe('transform()', function () {
                                                 },
                                             },
                                         },
+                                    },
+                                    {
+                                        in: 'path',
+                                        name: 'id',
+                                        required: true,
+                                        type: 'string',
+                                        description: 'The id.',
                                     },
                                 ],
                                 responses: {
