@@ -10,7 +10,7 @@ module.exports = React.createClass({
     ],
     propTypes: {
         hash: React.PropTypes.string,
-        methodGroups: React.PropTypes.array.isRequired,
+        groups: React.PropTypes.array.isRequired,
     },
 
     render: function () {
@@ -24,25 +24,25 @@ module.exports = React.createClass({
                 </ul>
                 <h2>Methods</h2>
                 <ul>
-                    {_.map(this.props.methodGroups, function (methodGroup) {
-                        var isSelected = (methodGroup.slug === this.props.hash)
-                        var isExpanded = isSelected || !!_.findWhere(methodGroup.methods, { slug: this.props.hash })
+                    {_.map(this.props.groups, function (group) {
+                        var isSelected = (group.name === this.props.hash)
+                        var isExpanded = isSelected || !!_.findWhere(group.operations, { slug: this.props.hash })
                         return (
-                            <li key={methodGroup.slug}>
+                            <li key={group.name}>
                                 <a
                                     className={isSelected ? 'selected' : undefined}
-                                    href={'#' + methodGroup.slug}
-                                    ref={methodGroup.slug}
-                                >{methodGroup.name}</a>
+                                    href={'#' + group.name}
+                                    ref={group.name}
+                                >{group.description}</a>
                                 <ul className={!isExpanded && 'hide'}>
-                                    {_.map(methodGroup.methods, function (method) {
+                                    {_.map(group.operations, function (operation, i) {
                                         return (
-                                            <li key={method.slug}>
+                                            <li key={i}>
                                                 <a
-                                                    className={(method.slug === this.props.hash) ? 'selected' : undefined}
-                                                    href={'#' + method.slug}
-                                                    ref={method.slug}
-                                                >{method.name}</a>
+                                                    className={(operation.slug === this.props.hash) ? 'selected' : undefined}
+                                                    href={'#' + operation.slug}
+                                                    ref={operation.slug}
+                                                >{operation.summary}</a>
                                             </li>
                                         )
                                     }, this)}

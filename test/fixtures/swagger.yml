@@ -1,74 +1,18 @@
 swagger: "2.0"
-
-basePath: /v5
-
-host: api.percolate.com
-
+host: a
 info:
-  title: Percolate API Reference
-  version: "5.0.0"
-
+  title: a
+  version: "1.0.0"
 paths:
-  /charge:
-    delete:
-      description: n/a
-      responses:
-        "200":
-          description: n/a
-      tags:
-        - public
-    get:
-      description: |
-        To charge a credit card, you create a charge object. If your API key is in test mode, the supplied payment source (e.g., card or Bitcoin receiver) won't actually be charged, though everything else will occur as if in live mode. (Stripe assumes that the charge would have completed successfully).
-      parameters:
-        - in: formData
-          description: |
-            A positive integer in the smallest currency unit (e.g 100 cents to charge $1.00, or 1 to charge ¥1, a 0-decimal currency) representing how much to charge the card. The minimum amount is $0.50 (or equivalent in charge currency).
-          name: otp_secret_setup_token
-          required: true
-          type: string
-      responses:
-        "200":
-          description: n/a
-      summary: Create a charge
-      tags:
-        - stable
+  /foo:
     post:
-      description: n/a
-      parameters:
-        - in: body
-          description: n/a
-          name: body
-          schema:
-            properties:
-              scope_id:
-                items:
-                  type: string
-                type: array
-              source:
-                type: string
-              target:
-                type: string
-              text:
-                type: string
-            required:
-              - scope_id
-              - target
-              - text
-            type: object
-      responses:
-        "200":
-          description: n/a
-      summary: n/a
       tags:
-        - deprecated
-schemes:
-    - https
-
+        - y
+      summary: n/a
+      responses:
+        200:
+          description: n/a
 tags:
   -
-    name: deprecated
-  -
-    name: public
-  -
-    name: stable
+    name: y
+    description: Y

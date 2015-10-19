@@ -1,0 +1,9 @@
+---
+get:
+  summary: 'TODO get'
+  description: n/a
+  tags:
+    - autocomplete
+  responses:
+    '200':
+      description: n/a

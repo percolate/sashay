@@ -1,0 +1,16 @@
+---
+put:
+  summary: 'TODO put'
+  description: n/a
+  tags:
+    - feature_gate
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: feature_gate_id
+      description: n/a
+      type: string
+      required: true

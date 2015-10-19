@@ -1,0 +1,17 @@
+---
+get:
+  summary: 'TODO get'
+  description: n/a
+  tags:
+    - channel
+  responses:
+    '200':
+      description: n/a
+post:
+  summary: 'TODO post'
+  description: n/a
+  tags:
+    - channel
+  responses:
+    '200':
+      description: n/a

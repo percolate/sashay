@@ -1,0 +1,9 @@
+---
+get:
+  summary: 'TODO get'
+  description: n/a
+  tags:
+    - stream
+  responses:
+    '200':
+      description: n/a

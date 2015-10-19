@@ -1,3 +1,20 @@
+@FOREGROUND_PRIMARY: #4c555a;
+@FOREGROUND_SECONDARY: #939da3;
+@FOREGROUND_TERTIARY: #d0d4d7;
+
+@BACKGROUND_PRIMARY: #fff;
+@BACKGROUND_SECONDARY: #fafcfc;
+@BACKGROUND_TERTIARY: #2d3132;
+@BACKGROUND_QUATERNARY: #272b2d;
+
+@SEPARATOR_PRIMARY: #f0f4f7;
+@SEPARATOR_SECONDARY: #e1e8ed;
+@SEPARATOR_TERTIARY: #33383a;
+
+@HIGHLIGHT_PRIMARY: #0099e5;
+@HIGHLIGHT_SECONDARY: #ffae54;
+@HIGHLIGHT_TERTIARY: #b93d6a;
+
 html,
 body {
     margin: 0;
@@ -14,13 +31,13 @@ body {
 }
 
 nav {
-    background-color: #fafcfc;
-    border-right: solid 1px #f0f4f7;
-    color: #939da3;
+    background-color: @BACKGROUND_SECONDARY;
+    border-right: solid 1px @SEPARATOR_PRIMARY;
+    color: @FOREGROUND_SECONDARY;
     flex: 0 0 221px;
     overflow-y: scroll;
     h2 {
-        color: #939da3;
+        color: @FOREGROUND_SECONDARY;
         font-size: 12px;
         font-weight: 500;
         line-height: 18px;
@@ -28,7 +45,7 @@ nav {
         text-transform: uppercase;
     }
     a {
-        color: #4c555a;
+        color: @FOREGROUND_PRIMARY;
         display: block;
         font-size: 14px;
         line-height: 20px;
@@ -37,7 +54,7 @@ nav {
         text-decoration: none;
         text-overflow: ellipsis;
         &.selected {
-            color: #f16421;
+            color: @HIGHLIGHT_PRIMARY;
         }
         &:hover {
             text-decoration: underline;
@@ -68,7 +85,7 @@ main {
         margin: 1.00em 0;
     }
     h6 {
-        color: #939da3;
+        color: @FOREGROUND_SECONDARY;
         font-size: 12px;
         font-weight: 400;
         margin: 40px 0 0;
@@ -79,22 +96,39 @@ main {
         margin: 20px 0 0;
     }
     article {
-        border-top: solid 1px #f0f4f7;
-        color: #4c555a;
+        border-top: solid 1px @SEPARATOR_PRIMARY;
+        color: @FOREGROUND_PRIMARY;
         flex: 1;
         padding: 30px 40px;
+        a {
+            color: @FOREGROUND_PRIMARY;
+        }
+        code {
+            background-color: @BACKGROUND_SECONDARY;
+            border: 1px solid @SEPARATOR_PRIMARY;
+            border-radius: 4px;
+            color: @HIGHLIGHT_TERTIARY;
+            display: inline-block;
+            line-height: 1.25em;
+            padding: 0 5px;
+        }
     }
     aside {
-        background-color: #2d3132;
-        border-top: solid 1px #33383a;
+        background-color: @BACKGROUND_TERTIARY;
+        border-top: solid 1px @SEPARATOR_TERTIARY;
         box-sizing: border-box;
-        color: #d0d4d7;
+        color: @FOREGROUND_TERTIARY;
         flex: 0 0 55%;
         padding: 30px 40px;
+        pre {
+            font-size: 13px;
+            line-height: 1.5em;
+        }
         code {
-            background-color: #272b2d;
+            background-color: @BACKGROUND_QUATERNARY;
             display: block;
             margin: 0 -40px;
+            overflow-x: auto;
             padding: 20px 40px;
         }
     }
@@ -102,17 +136,37 @@ main {
         display: flex;
     }
     .parameters {
-        border-top: solid 1px #e1e8ed;
+        border-top: solid 1px @SEPARATOR_SECONDARY;
         margin: 8px 0 40px;
         padding: 0;
-        li {
-            border-bottom: solid 1px #f0f4f7;
+        .parameter {
+            border-bottom: solid 1px @SEPARATOR_PRIMARY;
             display: flex;
             font-size: 13px;
             line-height: 21px;
             padding: 20px 0;
             &:last-child {
-                border-color: #e1e8ed;
+                border-color: @SEPARATOR_SECONDARY;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            p,
+            ul,
+            pre {
+                font-size: 13px;
+                line-height: 21px;
+                margin-bottom: 1em;
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+            h1,
+            h2,
+            h3,
+            h4 {
+                font-weight: bold;
             }
         }
         .parameter-spec {
@@ -127,8 +181,12 @@ main {
                 margin-top: 0;
             }
         }
+        .parameter-info {
+            color: @FOREGROUND_SECONDARY;
+            font-weight: normal;
+        }
         .parameter-required {
-            color: #f16421;
+            color: @HIGHLIGHT_SECONDARY;
             font-size: 10px;
             text-transform: uppercase;
         }

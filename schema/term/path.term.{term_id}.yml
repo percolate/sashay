@@ -1,0 +1,46 @@
+---
+get:
+  summary: 'TODO get'
+  description: n/a
+  tags:
+    - term
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: term_id
+      description: n/a
+      type: string
+      required: true
+put:
+  summary: 'TODO put'
+  description: n/a
+  tags:
+    - term
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: term_id
+      description: n/a
+      type: string
+      required: true
+delete:
+  summary: 'TODO delete'
+  description: n/a
+  tags:
+    - term
+  responses:
+    '200':
+      description: n/a
+  parameters:
+    -
+      in: path
+      name: term_id
+      description: n/a
+      type: string
+      required: true
