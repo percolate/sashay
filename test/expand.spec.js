@@ -23,8 +23,10 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.equal('Error resolving $ref pointer "#/bogus/path". \nToken "bogus" does not exist.')
                 return done()
             })
+            .caught(done)
     })
 
     it('should throw for invalid swagger', function (done) {
@@ -40,11 +42,13 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.equal('Swagger schema validation failed. \n  Missing required property: responses at paths//foo/post \nJSON_OBJECT_VALIDATION_FAILED')
                 return done()
             })
+            .caught(done)
     })
 
-    it('should throw for missing summary but support parameters', function (done) {
+    it('should allow parameters', function (done) {
         var options = {
             source: _.merge({}, BASE, {
                 paths: {
@@ -59,6 +63,33 @@ describe('expand()', function () {
                             },
                         ],
                         get: {
+                            summary: 'n/a',
+                            tags: ['foo'],
+                            responses: {
+                                200: {
+                                    description: '',
+                                },
+                            },
+                            'x-deprecated-at': null,
+                            'x-public': false,
+                        },
+                    },
+                },
+            }),
+        }
+        expand(options)
+            .then(function () {
+                return done()
+            })
+            .caught(done)
+    })
+
+    it('should throw for missing summary', function (done) {
+        var options = {
+            source: _.merge({}, BASE, {
+                paths: {
+                    '/foo/': {
+                        get: {
                             responses: {
                                 200: {
                                     description: '',
@@ -72,8 +103,10 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.equal('child "summary" fails because ["summary" is required] at /foo/.get')
                 return done()
             })
+            .caught(done)
     })
 
     it('should throw for invalid request example', function (done) {
@@ -83,6 +116,7 @@ describe('expand()', function () {
                     '/foo': {
                         post: {
                             summary: 'n/a',
+                            tags: ['foo'],
                             parameters: [
                                 {
                                     name: '',
@@ -104,6 +138,8 @@ describe('expand()', function () {
                                     description: '',
                                 },
                             },
+                            'x-deprecated-at': null,
+                            'x-public': false,
                         },
                     },
                 },
@@ -112,8 +148,10 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.equal('Example #/foo.post.parameters[n].body.schema.example.[\n  {\n    "keyword": "required",\n    "dataPath": ".foo",\n    "message": "is a required property"\n  }\n] does not match schema')
                 return done()
             })
+            .caught(done)
     })
 
     it('should throw for invalid response example', function (done) {
@@ -123,6 +161,7 @@ describe('expand()', function () {
                     '/foo': {
                         get: {
                             summary: 'n/a',
+                            tags: ['foo'],
                             responses: {
                                 200: {
                                     description: '',
@@ -138,6 +177,8 @@ describe('expand()', function () {
                                     },
                                 },
                             },
+                            'x-deprecated-at': null,
+                            'x-public': false,
                         },
                     },
                 },
@@ -146,8 +187,10 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.equal('Example #/foo.get.responses.200.schema.example.[\n  {\n    "keyword": "required",\n    "dataPath": ".foo",\n    "message": "is a required property"\n  }\n] does not match schema')
                 return done()
             })
+            .caught(done)
     })
 
     it('should throw for invalid `x-` attributes', function (done) {
@@ -157,12 +200,14 @@ describe('expand()', function () {
                     '/foo': {
                         get: {
                             summary: 'n/a',
+                            tags: ['foo'],
                             responses: {
                                 200: {
                                     description: '',
                                 },
                             },
-                            'x-public': true,
+                            'x-deprecated-at': null,
+                            'x-public': false,
                             'x-whatever': 'whatever...',
                         },
                     },
@@ -172,8 +217,10 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.equal('"x-whatever" is not allowed at /foo.get')
                 return done()
             })
+            .caught(done)
     })
 
     it('should expand without examples', function (done) {
@@ -183,11 +230,14 @@ describe('expand()', function () {
                     '/foo': {
                         get: {
                             summary: 'n/a',
+                            tags: ['foo'],
                             responses: {
                                 200: {
                                     description: '',
                                 },
                             },
+                            'x-deprecated-at': null,
+                            'x-public': false,
                         },
                     },
                 },
@@ -206,11 +256,14 @@ describe('expand()', function () {
                         '/foo': {
                             get: {
                                 summary: 'n/a',
+                                tags: ['foo'],
                                 responses: {
                                     200: {
                                         description: '',
                                     },
                                 },
+                                'x-deprecated-at': null,
+                                'x-public': false,
                             },
                         },
                     },
@@ -227,6 +280,7 @@ describe('expand()', function () {
                     '/foo': {
                         post: {
                             summary: 'n/a',
+                            tags: ['foo'],
                             parameters: [
                                 {
                                     name: '',
@@ -262,6 +316,8 @@ describe('expand()', function () {
                                     },
                                 },
                             },
+                            'x-deprecated-at': null,
+                            'x-public': false,
                         },
                     },
                 },
@@ -280,6 +336,7 @@ describe('expand()', function () {
                         '/foo': {
                             post: {
                                 summary: 'n/a',
+                                tags: ['foo'],
                                 parameters: [
                                     {
                                         name: '',
@@ -315,6 +372,8 @@ describe('expand()', function () {
                                         },
                                     },
                                 },
+                                'x-deprecated-at': null,
+                                'x-public': false,
                             },
                         },
                     },

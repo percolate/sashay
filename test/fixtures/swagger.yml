@@ -12,6 +12,8 @@ paths:
       responses:
         200:
           description: n/a
+      x-deprecated-at: null
+      x-public: false
 tags:
   -
     name: y
