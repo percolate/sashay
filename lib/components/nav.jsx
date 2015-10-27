@@ -16,33 +16,46 @@ module.exports = React.createClass({
     render: function () {
         return (
             <nav>
-                <h2>Versions</h2>
-                <ul>
-                    <li><a href="/v5/">v5</a></li>
-                    <li><a href="/v4/">v4</a></li>
-                    <li><a href="/v3/">v3</a></li>
-                </ul>
+                {!_.isEmpty(this.props.topics) && (
+                    <div>
+                        <h2>Topics</h2>
+                        <ul>
+                            {_.map(this.props.topics, function (topic) {
+                                var isSelected = (topic.slug === this.props.hash)
+                                return (
+                                    <li key={topic.slug}>
+                                        <a
+                                            className={isSelected ? 'selected' : undefined}
+                                            href={'#' + topic.slug}
+                                            ref={topic.slug}
+                                        >{topic.displayName}</a>
+                                    </li>
+                                )
+                            }, this)}
+                        </ul>
+                    </div>
+                )}
                 <h2>Methods</h2>
                 <ul>
                     {_.map(this.props.groups, function (group) {
-                        var isSelected = (group.name === this.props.hash)
-                        var isExpanded = isSelected || !!_.findWhere(group.operations, { slug: this.props.hash })
+                        var isSelected = (group.slug === this.props.hash)
+                        var isExpanded = isSelected || !!_.findWhere(group.methods, { slug: this.props.hash })
                         return (
-                            <li key={group.name}>
+                            <li key={group.displayName}>
                                 <a
                                     className={isSelected ? 'selected' : undefined}
-                                    href={'#' + group.name}
-                                    ref={group.name}
-                                >{group.description}</a>
+                                    href={'#' + group.slug}
+                                    ref={group.slug}
+                                >{group.displayName}</a>
                                 <ul className={!isExpanded && 'hide'}>
-                                    {_.map(group.operations, function (operation, i) {
+                                    {_.map(group.methods, function (method, i) {
                                         return (
                                             <li key={i}>
                                                 <a
-                                                    className={(operation.slug === this.props.hash) ? 'selected' : undefined}
-                                                    href={'#' + operation.slug}
-                                                    ref={operation.slug}
-                                                >{operation.summary}</a>
+                                                    className={(method.slug === this.props.hash) ? 'selected' : undefined}
+                                                    href={'#' + method.slug}
+                                                    ref={method.slug}
+                                                >{method.displayName}</a>
                                             </li>
                                         )
                                     }, this)}

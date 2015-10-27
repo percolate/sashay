@@ -38,20 +38,20 @@ module.exports = React.createClass({
         if (slug === this.state.hash) return
         if (slug) this.refs.nav.refs[slug].getDOMNode().scrollIntoView(false)
         this.setState({ hash: slug })
-        var replaceState = slug ? ['#', slug].join('') : ' '
-        window.history.replaceState(undefined, undefined, replaceState)
+        var url = slug ? ['#', slug].join('') : ' '
+        window.history.replaceState(undefined, undefined, url)
     },
 
     componentDidMount: function () {
         if (!IS_BROWSER) return
         this._updateOffsets()
-        this._updateHash(window.document)
+        this._updateHash()
         this.refs.main.getDOMNode().addEventListener('scroll', _.debounce(_.bind(this._updateHash, this), 20))
     },
 
     componentWillUnmount: function () {
         if (!IS_BROWSER) return
-        window.removeEventListener('scroll')
+        this.refs.main.getDOMNode().removeEventListener('scroll')
     },
 
     getInitialState: function () {

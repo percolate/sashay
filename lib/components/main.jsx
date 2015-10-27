@@ -1,9 +1,9 @@
 var _ = require('lodash')
+var helper = require('../helper')
 var marked = require('marked')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react/addons').addons.PureRenderMixin
 var React = require('react')
-var url = require('url')
 
 module.exports = React.createClass({
 
@@ -13,10 +13,9 @@ module.exports = React.createClass({
     ],
     propTypes: {
         basePath: React.PropTypes.string,
+        baseUri: React.PropTypes.string,
         host: React.PropTypes.string,
-        info: React.PropTypes.shape({
-            title: React.PropTypes.string.isRequired,
-        }).isRequired,
+        title: React.PropTypes.string.isRequired,
         groups: React.PropTypes.array.isRequired,
         schemes: React.PropTypes.array,
     },
@@ -26,66 +25,100 @@ module.exports = React.createClass({
             <main ref="main">
                 <section>
                     <article>
-                        <h1>{this.props.info.title}</h1>
+                        <h1>{this.props.title} {this.props.version.toUpperCase()}</h1>
                     </article>
                     <aside />
                 </section>
-                {_.map(this.props.groups, function (group) {
+                {_.map(this.props.topics, function (topic) {
                     return (
-                        <div key={group.name}>
+                        <div key={topic.slug}>
                             <section
-                                id={group.name}
-                                ref={group.name}
+                                id={topic.slug}
+                                ref={topic.slug}
                             >
                                 <article>
-                                    <h3>{group.description}</h3>
+                                    <h3>{topic.displayName}</h3>
+                                    <div dangerouslySetInnerHTML={{
+                                        __html: marked(topic.content),
+                                    }} />
                                 </article>
                                 <aside />
                             </section>
-                            {_.map(group.operations, function (operation, i) {
+                        </div>
+                    )
+                })}
+                {_.map(this.props.groups, function (group) {
+                    return (
+                        <div key={group.displayName}>
+                            <section
+                                id={group.slug}
+                                ref={group.slug}
+                            >
+                                <article>
+                                    <h3>{group.displayName}</h3>
+                                    {!_.isEmpty(group.description) && (
+                                        <div dangerouslySetInnerHTML={{
+                                            __html: marked(group.description),
+                                        }} />
+                                    )}
+                                </article>
+                                <aside />
+                            </section>
+                            {_.map(group.methods, function (method, i) {
+                                var body = helper.getBodyFromMethod(method)
+                                var successResponse = helper.getSuccessResponseFromMethod(method)
                                 return (
                                     <section
-                                        id={operation.slug}
+                                        id={method.slug}
                                         key={i}
-                                        ref={operation.slug}
+                                        ref={method.slug}
                                     >
                                         <article>
-                                            <h4>{operation.summary}</h4>
-                                            {!_.isEmpty(operation.description) && (
+                                            <h4>{method.displayName}</h4>
+                                            {!_.isEmpty(method.description) && (
                                                 <div dangerouslySetInnerHTML={{
-                                                    __html: marked(operation.description),
+                                                    __html: marked(method.description),
                                                 }} />
                                             )}
-                                            {(!_.isEmpty(operation.parameters)) && (
-                                                <Parameters parameters={operation.parameters} />
+                                            {(!_.isEmpty(method.uriParameters)) && (
+                                                <Parameters
+                                                    displayName="URI Parameters"
+                                                    parameters={method.uriParameters}
+                                                />
                                             )}
-                                            {!_.isEmpty(operation.response) && (
+                                            {(!_.isEmpty(method.queryParameters)) && (
+                                                <Parameters
+                                                    displayName="Query Parameters"
+                                                    parameters={method.queryParameters}
+                                                />
+                                            )}
+                                            {_.has(body, 'schema') && (
                                                 <div>
-                                                    <h4>Returns</h4>
-                                                    <div dangerouslySetInnerHTML={{
-                                                        __html: marked(operation.response.description),
-                                                    }} />
+                                                    <h6>Body</h6>
+                                                    <pre>
+                                                        <code>{_.get(body, 'schema')}</code>
+                                                    </pre>
                                                 </div>
                                             )}
                                         </article>
                                         <aside>
-                                            <h5>Definition</h5>
-                                            <pre>
-                                                <code>{[
-                                                    operation.verb.toUpperCase(),
-                                                    url.format({
-                                                        host: this.props.host,
-                                                        pathname: [this.props.basePath, operation.path].join(''),
-                                                        protocol: _.first(this.props.schemes),
-                                                    }),
-                                                ].join(' ')}</code>
-                                            </pre>
-                                            {_.has(operation, 'responses.200.schema.example') && (
+                                            {_.has(method, 'method') && (
                                                 <div>
-                                                    <h5>Example response</h5>
+                                                    <h5>Definition</h5>
                                                     <pre>
-                                                        <code>{JSON.stringify(operation.responses['200'].schema.example, undefined, 2)}</code>
+                                                        <code>{[
+                                                            method.method.toUpperCase(),
+                                                            this.props.baseUri + method.absoluteUri,
+                                                        ].join(' ')}</code>
                                                     </pre>
+                                                    {_.has(successResponse, 'example') && (
+                                                        <div>
+                                                            <h5>Example response</h5>
+                                                            <pre>
+                                                                <code>{_.get(successResponse, 'example')}</code>
+                                                            </pre>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             )}
                                         </aside>

@@ -6,7 +6,8 @@ module.exports = React.createClass({
 
     displayName: 'Parameters',
     propTypes: {
-        parameters: React.PropTypes.array.isRequired,
+        displayName: React.PropTypes.string.isRequired,
+        parameters: React.PropTypes.object.isRequired,
     },
 
     render: function () {
@@ -21,7 +22,7 @@ module.exports = React.createClass({
             .value()
         return (
             <div>
-                <h6>Parameters</h6>
+                <h6>{this.props.displayName}</h6>
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
                         return (
@@ -30,7 +31,7 @@ module.exports = React.createClass({
                                 key={i}
                             >
                                 <div className="parameter-spec">
-                                    <div>{parameter.name}</div>
+                                    <div>{parameter.displayName}</div>
                                     <div className="parameter-info">
                                         <span>{parameter.type}</span>
                                         {(!_.isEmpty(parameter.default)) && (
