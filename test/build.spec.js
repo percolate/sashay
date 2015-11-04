@@ -1,11 +1,16 @@
 var build = require('../lib/')
 var expect = require('chai').expect
+var fs = require('fs-extra')
 var path = require('path')
 
 var SOURCE = path.resolve(__dirname, './fixtures/valid/index.raml')
 var DESTINATION = path.resolve(__dirname, './fixtures/temp/build/')
 
 describe('build()', function () {
+    afterEach(function () {
+        fs.removeSync(DESTINATION)
+    })
+
     it('should throw for invalid options', function (done) {
         var options = {
             output: 'invalid output!',
