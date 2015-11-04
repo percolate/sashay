@@ -3,4 +3,4 @@
 /coverage/
 /data/*.json
 /node_modules/
-/test/fixtures/*/
+/test/fixtures/*/build/

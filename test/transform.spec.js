@@ -2,315 +2,83 @@ var _ = require('lodash')
 var expand = require('../lib/expand')
 var expect = require('chai').expect
 var transform = require('../lib/transform')
+var path = require('path')
 
 describe('transform()', function () {
-    it('should transform the schema', function (done) {
+    it('should transform', function (done) {
         var options = {
-            source: {
-                swagger: '2.0',
-                host: 'foo',
-                info: {
-                    title: 'foo',
-                    version: '1.0.0',
-                },
-                paths: {
-                    '/a': {
-                        get: {
-                            tags: ['y'],
-                            summary: 'A',
-                            description: 'A.',
-                            parameters: [
-                                {
-                                    in: 'query',
-                                    name: 'ids',
-                                    required: true,
-                                    type: 'array',
-                                    collectionFormat: 'csv',
-                                    items: {
-                                        type: 'string',
-                                    },
-                                    description: 'The ids.',
-                                },
-                            ],
-                            responses: {
-                                200: {
-                                    description: 'A success.',
-                                    schema: {
-                                        type: 'object',
-                                        properties: {
-                                            a: {
-                                                type: 'number',
-                                            },
-                                        },
-                                        example: {
-                                            a: 1,
-                                        },
-                                    },
-                                },
-                            },
-                            'x-deprecated-at': null,
-                            'x-public': false,
-                        },
-                    },
-                    '/b': {
-                        post: {
-                            tags: ['y'],
-                            summary: 'B',
-                            description: 'B.',
-                            parameters: [
-                                {
-                                    in: 'body',
-                                    name: 'body',
-                                    schema: {
-                                        type: 'object',
-                                        required: [
-                                            'value',
-                                        ],
-                                        properties: {
-                                            value: {
-                                                type: 'string',
-                                                description: 'The value.',
-                                            },
-                                        },
-                                    },
-                                },
-                            ],
-                            responses: {
-                                200: {
-                                    description: 'B success.',
-                                    schema: {
-                                        type: 'object',
-                                        properties: {
-                                            b: {
-                                                type: 'number',
-                                            },
-                                        },
-                                        example: {
-                                            b: 1,
-                                        },
-                                    },
-                                },
-                            },
-                            'x-deprecated-at': null,
-                            'x-public': false,
-                        },
-                    },
-                    '/c/{id}': {
-                        parameters: [
-                            {
-                                in: 'path',
-                                name: 'id',
-                                required: true,
-                                type: 'string',
-                                description: 'The id.',
-                            },
-                        ],
-                        put: {
-                            tags: ['z'],
-                            summary: 'C',
-                            description: 'C.',
-                            parameters: [
-                                {
-                                    in: 'body',
-                                    name: 'body',
-                                    schema: {
-                                        type: 'object',
-                                        required: [
-                                            'value',
-                                        ],
-                                        properties: {
-                                            value: {
-                                                type: 'string',
-                                                description: 'The value.',
-                                            },
-                                        },
-                                    },
-                                },
-                            ],
-                            responses: {
-                                200: {
-                                    description: 'C success.',
-                                    schema: {
-                                        type: 'object',
-                                        properties: {
-                                            c: {
-                                                type: 'number',
-                                            },
-                                        },
-                                        example: {
-                                            c: 1,
-                                        },
-                                    },
-                                },
-                            },
-                            'x-deprecated-at': null,
-                            'x-public': false,
-                        },
-                    },
-                },
-                tags: [
-                    {
-                        name: 'y',
-                        description: 'Y',
-                    },
-                    {
-                        name: 'z',
-                        description: 'Z',
-                    },
-                ],
-            },
+            source: path.resolve(__dirname, './fixtures/valid/index.raml'),
         }
         expand(options)
-            .then(function (schema) {
-                _.extend(options, { schema: schema })
-                expect(transform(options).groups).to.deep.equal([
-                    {
-                        name: 'y',
-                        description: 'Y',
-                        operations: [
-                            {
-                                slug: 'A',
-                                verb: 'get',
-                                path: '/a',
-                                tags: ['y'],
-                                summary: 'A',
-                                description: 'A.',
-                                parameters: [
-                                    {
-                                        in: 'query',
-                                        name: 'ids',
-                                        required: true,
-                                        type: 'array',
-                                        collectionFormat: 'csv',
-                                        items: {
+            .then(function (res) {
+                var data = transform(_.extend(options, { schema: res }))
+                expect(data).to.deep.equal({
+                    baseUri: 'foo',
+                    groups: [
+                        {
+                            displayName: 'foo',
+                            methods: [
+                                {
+                                    body: {
+                                        'application/json': {
+                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                        },
+                                    },
+                                    displayName: 'Definition',
+                                    slug: 'foo.definition',
+                                },
+                                {
+                                    absoluteUri: '/foo/{foo_id}',
+                                    displayName: 'foo',
+                                    method: 'post',
+                                    responses: {
+                                        201: {
+                                            body: {
+                                                'application/json': {
+                                                    schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                                },
+                                            },
+                                        },
+                                    },
+                                    slug: 'foo.{foo_id}.post',
+                                    uriParameters: {
+                                        foo_id: {
+                                            displayName: 'foo_id',
+                                            required: true,
                                             type: 'string',
                                         },
-                                        description: 'The ids.',
-                                    },
-                                ],
-                                responses: {
-                                    200: {
-                                        description: 'A success.',
-                                        schema: {
-                                            type: 'object',
-                                            properties: {
-                                                a: {
-                                                    type: 'number',
-                                                },
-                                            },
-                                            example: {
-                                                a: 1,
-                                            },
-                                        },
                                     },
                                 },
-                                'x-deprecated-at': null,
-                                'x-public': false,
-                            },
-                            {
-                                slug: 'B',
-                                verb: 'post',
-                                path: '/b',
-                                tags: ['y'],
-                                summary: 'B',
-                                description: 'B.',
-                                parameters: [
-                                    {
-                                        in: 'body',
-                                        name: 'body',
-                                        schema: {
-                                            type: 'object',
-                                            required: [
-                                                'value',
-                                            ],
-                                            properties: {
-                                                value: {
-                                                    type: 'string',
-                                                    description: 'The value.',
+                                {
+                                    absoluteUri: '/foo/{foo_id}/bar',
+                                    displayName: 'foo',
+                                    method: 'get',
+                                    responses: {
+                                        201: {
+                                            body: {
+                                                'application/json': {
+                                                    example: '{\n  \"a\": \"hello\"\n}',
+                                                    schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
                                                 },
                                             },
                                         },
                                     },
-                                ],
-                                responses: {
-                                    200: {
-                                        description: 'B success.',
-                                        schema: {
-                                            type: 'object',
-                                            properties: {
-                                                b: {
-                                                    type: 'number',
-                                                },
-                                            },
-                                            example: {
-                                                b: 1,
-                                            },
-                                        },
-                                    },
+                                    slug: 'foo.{foo_id}.bar.get',
                                 },
-                                'x-deprecated-at': null,
-                                'x-public': false,
-                            },
-                        ],
-                    },
-                    {
-                        name: 'z',
-                        description: 'Z',
-                        operations: [
-                            {
-                                slug: 'C',
-                                verb: 'put',
-                                path: '/c/{id}',
-                                tags: ['z'],
-                                summary: 'C',
-                                description: 'C.',
-                                parameters: [
-                                    {
-                                        in: 'body',
-                                        name: 'body',
-                                        schema: {
-                                            type: 'object',
-                                            required: [
-                                                'value',
-                                            ],
-                                            properties: {
-                                                value: {
-                                                    type: 'string',
-                                                    description: 'The value.',
-                                                },
-                                            },
-                                        },
-                                    },
-                                    {
-                                        in: 'path',
-                                        name: 'id',
-                                        required: true,
-                                        type: 'string',
-                                        description: 'The id.',
-                                    },
-                                ],
-                                responses: {
-                                    200: {
-                                        description: 'C success.',
-                                        schema: {
-                                            type: 'object',
-                                            properties: {
-                                                c: {
-                                                    type: 'number',
-                                                },
-                                            },
-                                            example: {
-                                                c: 1,
-                                            },
-                                        },
-                                    },
-                                },
-                                'x-deprecated-at': null,
-                                'x-public': false,
-                            },
-                        ],
-                    },
-                ])
+                            ],
+                            slug: 'method.foo',
+                        },
+                    ],
+                    title: 'foo',
+                    topics: [
+                        {
+                            content: '## Hello\n\nWorld\n',
+                            displayName: 'foo',
+                            slug: 'topic.foo',
+                        },
+                    ],
+                    version: 'foo',
+                })
                 return done()
             })
             .caught(done)

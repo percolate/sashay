@@ -1,10 +1,23 @@
 var build = require('../lib/')
 var expect = require('chai').expect
+var fs = require('fs-extra')
 var path = require('path')
 
+var SOURCE = path.resolve(__dirname, './fixtures/valid/index.raml')
+var DESTINATION = path.resolve(__dirname, './fixtures/temp/build/')
+
 describe('build()', function () {
+    this.timeout(10e3)
+
+    afterEach(function () {
+        fs.removeSync(DESTINATION)
+    })
+
     it('should throw for invalid options', function (done) {
-        build({})
+        var options = {
+            output: 'invalid output!',
+        }
+        build(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
                 return done()
@@ -13,9 +26,9 @@ describe('build()', function () {
 
     it('should build json', function (done) {
         var options = {
-            output: 'json',
-            destination: path.resolve(__dirname, './fixtures/json/actual/'),
-            source: path.resolve(__dirname, './fixtures/swagger.yml'),
+            quiet: true,
+            destination: DESTINATION,
+            source: SOURCE,
         }
         build(options)
             .then(done.bind(undefined, undefined))
@@ -24,44 +37,44 @@ describe('build()', function () {
 
     it('should build json and watch', function (done) {
         var options = {
-            output: 'json',
+            quiet: true,
             watch: true,
-            destination: path.resolve(__dirname, './fixtures/json-watch/actual/'),
-            source: path.resolve(__dirname, './fixtures/swagger.yml'),
+            destination: DESTINATION,
+            source: SOURCE,
+        }
+        build(options)
+            .then(function (stopAll) {
+                return stopAll()
+            })
+            .then(done.bind(undefined, undefined))
+            .caught(done)
+    })
+
+    it('should build web', function (done) {
+        var options = {
+            quiet: true,
+            output: 'web',
+            destination: DESTINATION,
+            source: SOURCE,
         }
         build(options)
             .then(done.bind(undefined, undefined))
             .caught(done)
     })
 
-    it('should build web', function (done) {
-        this.timeout(10e3)
-        var options = {
-            output: 'web',
-            destination: path.resolve(__dirname, './fixtures/web/actual/'),
-            source: path.resolve(__dirname, './fixtures/swagger.yml'),
-        }
-        build(options)
-            .then(done.bind(undefined, undefined))
-            .caught(function (err) {
-                console.log(err.stack)
-                return done(err)
-            })
-    })
-
     it('should build web and watch', function (done) {
-        this.timeout(10e3)
         var options = {
-            output: 'web',
+            quiet: true,
             watch: true,
-            destination: path.resolve(__dirname, './fixtures/web-watch/actual/'),
-            source: path.resolve(__dirname, './fixtures/swagger.yml'),
+            output: 'web',
+            destination: DESTINATION,
+            source: SOURCE,
         }
         build(options)
-            .then(done.bind(undefined, undefined))
-            .caught(function (err) {
-                console.log(err.stack)
-                return done(err)
+            .then(function (stopAll) {
+                return stopAll()
             })
+            .then(done.bind(undefined, undefined))
+            .caught(done)
     })
 })
