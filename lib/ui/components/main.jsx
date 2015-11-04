@@ -1,8 +1,8 @@
 var _ = require('lodash')
-var helper = require('../helper')
+var helper = require('../../helper')
 var marked = require('marked')
 var Parameters = require('./parameters.jsx')
-var PureRenderMixin = require('react/addons').addons.PureRenderMixin
+var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
 module.exports = React.createClass({
@@ -12,12 +12,11 @@ module.exports = React.createClass({
         PureRenderMixin,
     ],
     propTypes: {
-        basePath: React.PropTypes.string,
-        baseUri: React.PropTypes.string,
-        host: React.PropTypes.string,
+        baseUri: React.PropTypes.string.isRequired,
         title: React.PropTypes.string.isRequired,
+        topics: React.PropTypes.array.isRequired,
         groups: React.PropTypes.array.isRequired,
-        schemes: React.PropTypes.array,
+        version: React.PropTypes.string.isRequired,
     },
 
     render: function () {
@@ -65,7 +64,10 @@ module.exports = React.createClass({
                                 <aside />
                             </section>
                             {_.map(group.methods, function (method, i) {
-                                var body = helper.getBodyFromMethod(method)
+                                var body = _.get(method, [
+                                    'body',
+                                    'application/json',
+                                ])
                                 var successResponse = helper.getSuccessResponseFromMethod(method)
                                 return (
                                     <section

@@ -1,10 +1,14 @@
 var _ = require('lodash')
 var marked = require('marked')
+var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
 module.exports = React.createClass({
 
     displayName: 'Parameters',
+    mixins: [
+        PureRenderMixin,
+    ],
     propTypes: {
         displayName: React.PropTypes.string.isRequired,
         parameters: React.PropTypes.object.isRequired,

@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var PureRenderMixin = require('react/addons').addons.PureRenderMixin
+var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
 module.exports = React.createClass({
@@ -11,6 +11,7 @@ module.exports = React.createClass({
     propTypes: {
         hash: React.PropTypes.string,
         groups: React.PropTypes.array.isRequired,
+        topics: React.PropTypes.array.isRequired,
     },
 
     render: function () {
