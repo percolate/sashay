@@ -7,6 +7,8 @@ var SOURCE = path.resolve(__dirname, './fixtures/valid/index.raml')
 var DESTINATION = path.resolve(__dirname, './fixtures/temp/build/')
 
 describe('build()', function () {
+    this.timeout(10e3)
+
     afterEach(function () {
         fs.removeSync(DESTINATION)
     })
@@ -49,7 +51,6 @@ describe('build()', function () {
     })
 
     it('should build web', function (done) {
-        this.timeout(10e3)
         var options = {
             quiet: true,
             output: 'web',
@@ -62,7 +63,6 @@ describe('build()', function () {
     })
 
     it('should build web and watch', function (done) {
-        this.timeout(10e3)
         var options = {
             quiet: true,
             watch: true,
