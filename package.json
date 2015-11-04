@@ -37,21 +37,19 @@
     "lodash": "^3.9.3",
     "marked": "^0.3.5",
     "raml-parser": "^0.8.12",
-    "react": "^0.13.3",
+    "react": "^0.14.2",
+    "react-addons-pure-render-mixin": "^0.14.2",
+    "react-dom": "^0.14.2",
     "style-loader": "^0.12.3",
-    "swagger-parser": "^3.1.0",
     "watchpack": "^0.2.8",
     "webpack": "^1.11.0",
-    "webpack-dev-server": "^1.10.1",
-    "yamljs": "^0.2.4"
+    "webpack-dev-server": "^1.10.1"
   },
   "devDependencies": {
-    "assert-dir-equal": "^1.0.1",
     "chai": "^3.0.0",
     "codecov.io": "^0.1.6",
     "eslint-config-percolate": "git+https://git@github.com/percolate/eslint-config-percolate.git#v1.2.1",
     "istanbul": "^0.3.17",
-    "js-yaml": "^3.3.1",
     "mocha": "^2.2.5"
   }
 }
