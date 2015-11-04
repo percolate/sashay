@@ -33,6 +33,21 @@ describe('build()', function () {
             .caught(done)
     })
 
+    it('should build json and watch', function (done) {
+        var options = {
+            quiet: true,
+            watch: true,
+            destination: DESTINATION,
+            source: SOURCE,
+        }
+        build(options)
+            .then(function (stopAll) {
+                return stopAll()
+            })
+            .then(done.bind(undefined, undefined))
+            .caught(done)
+    })
+
     it('should build web', function (done) {
         this.timeout(10e3)
         var options = {
@@ -42,6 +57,23 @@ describe('build()', function () {
             source: SOURCE,
         }
         build(options)
+            .then(done.bind(undefined, undefined))
+            .caught(done)
+    })
+
+    it('should build web and watch', function (done) {
+        this.timeout(10e3)
+        var options = {
+            quiet: true,
+            watch: true,
+            output: 'web',
+            destination: DESTINATION,
+            source: SOURCE,
+        }
+        build(options)
+            .then(function (stopAll) {
+                return stopAll()
+            })
             .then(done.bind(undefined, undefined))
             .caught(done)
     })
