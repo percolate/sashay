@@ -97,9 +97,12 @@ main {
     }
     article {
         border-top: solid 1px @SEPARATOR_PRIMARY;
+        box-sizing: border-box;
         color: @FOREGROUND_PRIMARY;
         flex: 1;
+        overflow: hidden;
         padding: 30px 40px;
+        width: 45%;
         a {
             color: @FOREGROUND_PRIMARY;
         }
@@ -122,8 +125,10 @@ main {
         border-top: solid 1px @SEPARATOR_TERTIARY;
         box-sizing: border-box;
         color: @FOREGROUND_TERTIARY;
-        flex: 0 0 55%;
+        flex: 1;
+        overflow: hidden;
         padding: 30px 40px;
+        width: 55%;
         pre {
             font-size: 13px;
             line-height: 1.5em;
