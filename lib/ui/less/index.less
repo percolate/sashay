@@ -75,33 +75,54 @@ nav {
 main {
     flex: 1;
     overflow-y: scroll;
-    h1,
-    h2,
-    h3,
-    h4 {
-        font-size: 24px;
-        font-weight: 400;
-        line-height: 32px;
-        margin: 1.00em 0;
-    }
-    h6 {
-        color: @FOREGROUND_SECONDARY;
-        font-size: 12px;
-        font-weight: 400;
-        margin: 40px 0 0;
-        text-transform: uppercase;
-    }
-    p {
-        line-height: 26px;
-        margin: 20px 0 0;
-    }
     article {
         border-top: solid 1px @SEPARATOR_PRIMARY;
+        box-sizing: border-box;
         color: @FOREGROUND_PRIMARY;
         flex: 1;
+        overflow: hidden;
         padding: 30px 40px;
+        width: 45%;
         a {
             color: @FOREGROUND_PRIMARY;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 32px;
+            margin: 1.00em 0;
+        }
+        h3 {
+            text-decoration: underline;
+        }
+        h4 {
+
+        }
+        h5 {
+            font-weight: 200;
+        }
+        h6 {
+            color: @FOREGROUND_SECONDARY;
+            font-size: 12px;
+            font-weight: 400;
+            margin: 40px 0 0;
+            text-transform: uppercase;
+        }
+        p {
+            line-height: 26px;
+            margin: 20px 0 0;
+        }
+        ul,
+        ol {
+            line-height: 26px;
+            margin: 20px 0 0;
+            li {
+
+            }
         }
         code {
             background-color: @BACKGROUND_SECONDARY;
@@ -111,6 +132,9 @@ main {
             display: inline-block;
             line-height: 1.25em;
             padding: 0 5px;
+        }
+        pre {
+            margin: 20px 0 0;
         }
         pre code {
             display: block;
@@ -122,8 +146,10 @@ main {
         border-top: solid 1px @SEPARATOR_TERTIARY;
         box-sizing: border-box;
         color: @FOREGROUND_TERTIARY;
-        flex: 0 0 55%;
+        flex: 1;
+        overflow: hidden;
         padding: 30px 40px;
+        width: 55%;
         pre {
             font-size: 13px;
             line-height: 1.5em;
@@ -134,6 +160,10 @@ main {
             margin: 0 -40px;
             overflow-x: auto;
             padding: 20px 40px;
+        }
+        h5 {
+            font-size: 14px;
+            font-weight: 400;
         }
     }
     section {
