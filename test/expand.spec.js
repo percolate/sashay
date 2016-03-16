@@ -1,4 +1,5 @@
 var _ = require('lodash')
+var BPromise = require('bluebird')
 var expand = require('../lib/expand')
 var expect = require('chai').expect
 var path = require('path')
@@ -91,6 +92,31 @@ describe('expand()', function () {
                 ])
                 expect(resBody.schema).to.equal('{\n  "type": "object",\n  "properties": {\n    "a": {\n      "type": "string"\n    }\n  }\n}')
                 expect(resBody.example).to.equal('{\n  "a": "hello"\n}')
+                return done()
+            })
+            .caught(done)
+    })
+
+    it('should optionally filter by description tag', function (done) {
+        var source = path.resolve(__dirname, './fixtures/valid-private/index.raml')
+        BPromise.resolve()
+            .then(expand.bind(undefined, {
+                source: source,
+            }))
+            .then(function (res) {
+                expect(_.pluck(res.resources, 'description')).to.deep.equal([
+                    '#public Just a foo description',
+                    'Just a private description',
+                ])
+            })
+            .then(expand.bind(undefined, {
+                filter: 'public',
+                source: source,
+            }))
+            .then(function (res) {
+                expect(_.pluck(res.resources, 'description')).to.deep.equal([
+                    'Just a foo description',
+                ])
                 return done()
             })
             .caught(done)
