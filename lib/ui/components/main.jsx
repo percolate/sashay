@@ -24,7 +24,7 @@ module.exports = React.createClass({
             <main ref="main">
                 <section>
                     <article>
-                        <h1>{this.props.title} {this.props.version.toUpperCase()}</h1>
+                        <h1>{this.props.title}</h1>
                     </article>
                     <aside />
                 </section>
