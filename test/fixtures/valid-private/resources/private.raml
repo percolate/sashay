@@ -1,0 +1,10 @@
+displayName: private
+description: 'Just a private description'
+/{foo_id}:
+  post:
+    displayName: private
+    responses:
+      201:
+        body:
+          application/json:
+            schema: !include ../schemas/foo/item.json
