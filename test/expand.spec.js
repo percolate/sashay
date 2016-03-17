@@ -64,7 +64,20 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
-                expect(err.message).to.match(/^Example does not validate against schema at ".a.get": .*/)
+                expect(err.message).to.match(/^Example response does not validate against schema at ".a.get": .*/)
+                return done()
+            })
+            .caught(done)
+    })
+
+    it('should throw invalid method request example error', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/invalid-method-request-example.raml'),
+        }
+        expand(options)
+            .caught(function (err) {
+                expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.match(/^Example request does not validate against schema at ".a.post": .*/)
                 return done()
             })
             .caught(done)

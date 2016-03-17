@@ -1,0 +1,42 @@
+#%RAML 0.8
+---
+baseUri: a
+title: a
+version: a
+
+/a:
+  displayName: a
+  post:
+    displayName: a
+    body:
+      application/json:
+        schema: |
+          {
+            "type": "object",
+            "properties": {
+              "a": {
+                "type": "string"
+              }
+            }
+          }
+        example: |
+          {
+            "a": 1
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+                "type": "object",
+                "properties": {
+                  "a": {
+                    "type": "string"
+                  }
+                }
+              }
+            example: |
+              {
+                "a": "Hello"
+              }
