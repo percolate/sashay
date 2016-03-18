@@ -24,7 +24,7 @@ module.exports = React.createClass({
             <main ref="main">
                 <section>
                     <article>
-                        <h1>{this.props.title} {this.props.version.toUpperCase()}</h1>
+                        <h1>{this.props.title}</h1>
                     </article>
                     <aside />
                 </section>
@@ -69,6 +69,7 @@ module.exports = React.createClass({
                                     'application/json',
                                 ])
                                 var successResponse = helper.getSuccessResponseFromMethod(method)
+                                var absoluteUri = this.props.baseUri + method.absoluteUri
                                 return (
                                     <section
                                         id={method.slug}
@@ -110,9 +111,17 @@ module.exports = React.createClass({
                                                     <pre>
                                                         <code>{[
                                                             method.method.toUpperCase(),
-                                                            this.props.baseUri + method.absoluteUri,
+                                                            absoluteUri,
                                                         ].join(' ')}</code>
                                                     </pre>
+                                                    {_.has(body, 'example') && (
+                                                        <div>
+                                                            <h5>Example request</h5>
+                                                            <pre>
+                                                                <code>{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</code>
+                                                            </pre>
+                                                        </div>
+                                                    )}
                                                     {_.has(successResponse, 'example') && (
                                                         <div>
                                                             <h5>Example response</h5>
