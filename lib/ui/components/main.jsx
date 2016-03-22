@@ -37,9 +37,11 @@ module.exports = React.createClass({
                             >
                                 <article>
                                     <h3>{topic.displayName}</h3>
-                                    <div dangerouslySetInnerHTML={{
-                                        __html: marked(topic.content),
-                                    }} />
+                                    <div
+                                        dangerouslySetInnerHTML={{
+                                            __html: marked(topic.content),
+                                        }}
+                                    />
                                 </article>
                                 <aside />
                             </section>
@@ -56,9 +58,11 @@ module.exports = React.createClass({
                                 <article>
                                     <h3>{group.displayName}</h3>
                                     {!_.isEmpty(group.description) && (
-                                        <div dangerouslySetInnerHTML={{
-                                            __html: marked(group.description),
-                                        }} />
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: marked(group.description),
+                                            }}
+                                        />
                                     )}
                                 </article>
                                 <aside />
@@ -79,9 +83,11 @@ module.exports = React.createClass({
                                         <article>
                                             <h4>{method.displayName}</h4>
                                             {!_.isEmpty(method.description) && (
-                                                <div dangerouslySetInnerHTML={{
-                                                    __html: marked(method.description),
-                                                }} />
+                                                <div
+                                                    dangerouslySetInnerHTML={{
+                                                        __html: marked(method.description),
+                                                    }}
+                                                />
                                             )}
                                             {(!_.isEmpty(method.uriParameters)) && (
                                                 <Parameters
