@@ -117,7 +117,7 @@ describe('expand()', function () {
                 source: source,
             }))
             .then(function (res) {
-                expect(_.pluck(res.resources, 'description')).to.deep.equal([
+                expect(_.map(res.resources, 'description')).to.deep.equal([
                     '#public Just a foo description',
                     'Just a private description',
                 ])
@@ -127,7 +127,7 @@ describe('expand()', function () {
                 source: source,
             }))
             .then(function (res) {
-                expect(_.pluck(res.resources, 'description')).to.deep.equal([
+                expect(_.map(res.resources, 'description')).to.deep.equal([
                     'Just a foo description',
                 ])
                 return done()
