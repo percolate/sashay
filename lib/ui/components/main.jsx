@@ -48,104 +48,108 @@ module.exports = React.createClass({
                         </div>
                     )
                 })}
-                {_.map(this.props.groups, function (group) {
-                    return (
-                        <div key={group.displayName}>
-                            <section
-                                id={group.slug}
-                                ref={group.slug}
-                            >
-                                <article>
-                                    <h3>{group.displayName}</h3>
-                                    {!_.isEmpty(group.description) && (
-                                        <div
-                                            dangerouslySetInnerHTML={{
-                                                __html: marked(group.description),
-                                            }}
-                                        />
-                                    )}
-                                </article>
-                                <aside />
-                            </section>
-                            {_.map(group.methods, function (method, i) {
-                                var body = _.get(method, [
-                                    'body',
-                                    'application/json',
-                                ])
-                                var successResponse = helper.getSuccessResponseFromMethod(method)
-                                var absoluteUri = this.props.baseUri + method.absoluteUri
-                                return (
-                                    <section
-                                        id={method.slug}
-                                        key={i}
-                                        ref={method.slug}
-                                    >
-                                        <article>
-                                            <h4>{method.displayName}</h4>
-                                            {!_.isEmpty(method.description) && (
-                                                <div
-                                                    dangerouslySetInnerHTML={{
-                                                        __html: marked(method.description),
-                                                    }}
-                                                />
-                                            )}
-                                            {(!_.isEmpty(method.uriParameters)) && (
-                                                <Parameters
-                                                    displayName="URI Parameters"
-                                                    parameters={method.uriParameters}
-                                                />
-                                            )}
-                                            {(!_.isEmpty(method.queryParameters)) && (
-                                                <Parameters
-                                                    displayName="Query Parameters"
-                                                    parameters={method.queryParameters}
-                                                />
-                                            )}
-                                            {_.has(body, 'schema') && (
-                                                <div>
-                                                    <h6>Body</h6>
-                                                    <pre>
-                                                        <code>{_.get(body, 'schema')}</code>
-                                                    </pre>
-                                                </div>
-                                            )}
-                                        </article>
-                                        <aside>
-                                            {_.has(method, 'method') && (
-                                                <div>
-                                                    <h5>Definition</h5>
-                                                    <pre>
-                                                        <code>{[
-                                                            method.method.toUpperCase(),
-                                                            absoluteUri,
-                                                        ].join(' ')}</code>
-                                                    </pre>
-                                                    {_.has(body, 'example') && (
-                                                        <div>
-                                                            <h5>Example request</h5>
-                                                            <pre>
-                                                                <code>{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</code>
-                                                            </pre>
-                                                        </div>
-                                                    )}
-                                                    {_.has(successResponse, 'example') && (
-                                                        <div>
-                                                            <h5>Example response</h5>
-                                                            <pre>
-                                                                <code>{_.get(successResponse, 'example')}</code>
-                                                            </pre>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </aside>
-                                    </section>
-                                )
-                            }, this)}
-                        </div>
-                    )
-                }, this)}
+                {_.map(this.props.groups, this.renderGroup)}
             </main>
+        )
+    },
+
+    renderGroup: function (group) {
+        return (
+            <div key={group.displayName}>
+                <section
+                    id={group.slug}
+                    ref={group.slug}
+                >
+                    <article>
+                        <h3>{group.displayName}</h3>
+                        {!_.isEmpty(group.description) && (
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: marked(group.description),
+                                }}
+                            />
+                        )}
+                    </article>
+                    <aside />
+                </section>
+                {_.map(group.methods, this.renderMethod)}
+            </div>
+        )
+    },
+
+    renderMethod: function (method, i) {
+        var body = _.get(method, [
+            'body',
+            'application/json',
+        ])
+        var successResponse = helper.getSuccessResponseFromMethod(method)
+        var absoluteUri = this.props.baseUri + method.absoluteUri
+        return (
+            <section
+                id={method.slug}
+                key={i}
+                ref={method.slug}
+            >
+                <article>
+                    <h4>{method.displayName}</h4>
+                    {!_.isEmpty(method.description) && (
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: marked(method.description),
+                            }}
+                        />
+                    )}
+                    {(!_.isEmpty(method.uriParameters)) && (
+                        <Parameters
+                            displayName="URI Parameters"
+                            parameters={method.uriParameters}
+                        />
+                    )}
+                    {(!_.isEmpty(method.queryParameters)) && (
+                        <Parameters
+                            displayName="Query Parameters"
+                            parameters={method.queryParameters}
+                        />
+                    )}
+                    {_.has(body, 'schema') && (
+                        <div>
+                            <h6>Body</h6>
+                            <pre>
+                                <code>{_.get(body, 'schema')}</code>
+                            </pre>
+                        </div>
+                    )}
+                </article>
+                <aside>
+                    {_.has(method, 'method') && (
+                        <div>
+                            <h5>Definition</h5>
+                            <pre>
+                                <code>{[
+                                    method.method.toUpperCase(),
+                                    absoluteUri,
+                                ].join(' ')}</code>
+                            </pre>
+                            {_.has(body, 'example') && (
+                                <div>
+                                    <h5>Example request</h5>
+                                    <pre>
+                                        <code>{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</code>
+                                    </pre>
+                                </div>
+                            )}
+                            {_.has(successResponse, 'example') && (
+                                <div>
+                                    <h5>Example response</h5>
+                                    <pre>
+                                        <code>{_.get(successResponse, 'example')}</code>
+                                    </pre>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </aside>
+            </section>
         )
     },
 
