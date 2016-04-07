@@ -4,3 +4,9 @@
 /data/*.json
 /node_modules/
 /test/fixtures/*/build/
+
+.npmignore
+
+/* Eclipse specific */
+.settings/
+.project
