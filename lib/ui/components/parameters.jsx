@@ -38,7 +38,7 @@ module.exports = React.createClass({
                                     <div>{parameter.displayName}</div>
                                     <div className="parameter-info">
                                         <span>{parameter.type}</span>
-                                        {(_.toString(parameter.default) != '') && (
+                                        {(_.toString(parameter.default) !== '') && (
                                             <span>, default is <strong>{JSON.stringify(parameter.default)}</strong></span>
                                         )}
                                     </div>
