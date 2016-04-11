@@ -127,22 +127,35 @@ main {
             }
         }
         code {
-            background-color: @BACKGROUND_SECONDARY;
+            background-color: @BACKGROUND_PRIMARY !important;
             border: 1px solid @SEPARATOR_PRIMARY;
             border-radius: 4px;
-            color: @HIGHLIGHT_TERTIARY;
             display: inline-block;
             line-height: 1.25em;
-            padding: 0 5px;
+            padding: 0 5px;            
         }
         pre {
             margin: 20px 0 0;
+            background-color: @BACKGROUND_PRIMARY !important;            
         }
         pre code {
             display: block;
             overflow-x: auto;
         }
         
+        pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+		code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+			background: #000;
+			
+		}
+		
+		pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+		code[class*="language-"]::selection, code[class*="language-"] ::selection {
+			text-shadow: none;
+			background: #000;
+			;
+		}
+
         table {
             border:1px solid @TABLE_BORDER_COLOR;
             padding: 3% 3%;

@@ -4,6 +4,9 @@ var marked = require('marked')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
+require('prismjs')
+require('prismjs/components/prism-bash')
+require('prismjs/components/prism-json')
 
 module.exports = React.createClass({
 
@@ -17,8 +20,8 @@ module.exports = React.createClass({
         topics: React.PropTypes.array.isRequired,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
-    },
-
+    },	  	
+	  	    		  
     render: function () {
         return (
             <main ref="main">
@@ -115,7 +118,7 @@ module.exports = React.createClass({
                         <div>
                             <h6>Body</h6>
                             <pre>
-                                <code>{_.get(body, 'schema')}</code>
+                                <code className="language-json">{_.get(body, 'schema')}</code>
                             </pre>
                         </div>
                     )}
@@ -124,8 +127,9 @@ module.exports = React.createClass({
                     {_.has(method, 'method') && (
                         <div>
                             <h5>Definition</h5>
+                                                       
                             <pre>
-                                <code>{[
+                                <code className="language-http">{[
                                     method.method.toUpperCase(),
                                     absoluteUri,
                                 ].join(' ')}</code>
@@ -134,16 +138,16 @@ module.exports = React.createClass({
                                 <div>
                                     <h5>Example request</h5>
                                     <pre>
-                                        <code>{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</code>
-                                    </pre>
+                                        <code className="language-sh">{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</code>
+                                    </pre>                                                                                                           
                                 </div>
                             )}
                             {_.has(successResponse, 'example') && (
                                 <div>
                                     <h5>Example response</h5>
                                     <pre>
-                                        <code>{_.get(successResponse, 'example')}</code>
-                                    </pre>
+                                        <code className="language-json">{_.get(successResponse, 'example')}</code>
+                                    </pre>                                    
                                 </div>
                             )}
                         </div>
