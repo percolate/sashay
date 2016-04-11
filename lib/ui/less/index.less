@@ -15,6 +15,8 @@
 @HIGHLIGHT_SECONDARY: #ffae54;
 @HIGHLIGHT_TERTIARY: #b93d6a;
 
+@TABLE_BORDER_COLOR: #c0c0c0;
+
 html,
 body {
     margin: 0;
@@ -140,6 +142,31 @@ main {
             display: block;
             overflow-x: auto;
         }
+        
+        table {
+            border:1px solid @TABLE_BORDER_COLOR;
+            padding: 3% 3%;
+            border-radius: 3px;
+            margin-top: 20px;
+            border-collapse:separate; 
+		    border-spacing: 0 15px;		
+		    text-align: right;    			
+				    				
+			thead tr th {
+			    border-bottom: 2px solid @TABLE_BORDER_COLOR;
+			    padding: 2% 0;
+			    text-transform: capitalize;			    
+			    font-weight: normal;
+			    color: @FOREGROUND_SECONDARY;			    		 
+		  	}
+		  	
+		  	td {
+		  		padding: 2%;
+		  		padding-right: 0;									
+				word-break: break-all; 	
+		  	} 
+		  			  	
+	  	}
     }
     aside {
         background-color: @BACKGROUND_TERTIARY;
