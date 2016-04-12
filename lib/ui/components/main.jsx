@@ -4,9 +4,7 @@ var marked = require('marked')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-require('prismjs')
-require('prismjs/components/prism-bash')
-require('prismjs/components/prism-json')
+var Highlights = require('atom-highlightsjs')
 
 module.exports = React.createClass({
 
@@ -21,7 +19,18 @@ module.exports = React.createClass({
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
     },	  	
-	  	    		  
+	  	
+	getInitialState: function() {
+		return {			
+		};
+	},
+	
+	componentWillMount: function () {
+    	this.setState({
+			h : new Highlights()
+		});
+    },
+      		  
     render: function () {
         return (
             <main ref="main">
@@ -146,7 +155,11 @@ module.exports = React.createClass({
                                 <div>
                                     <h5>Example response</h5>
                                     <pre>
-                                        <code className="language-json">{_.get(successResponse, 'example')}</code>
+                                        <code className="language-json">{
+                                        	this.state.h.highlightSync({
+                                        	    fileContents: _.get(successResponse, 'example')
+                                        	})
+                                        	}</code>
                                     </pre>                                    
                                 </div>
                             )}

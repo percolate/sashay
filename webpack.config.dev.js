@@ -22,14 +22,25 @@ module.exports = {
                 loader: 'jsx-loader',
             },
             {
+                test: /\.node$/,
+                loader: 'node-loader',
+            },
+            {
                 test: /\.less$/,
                 loader: 'style!css!less',
             },
-        ],
-    },
+            {
+                test: /coffee$/,
+                loader: 'script-loader',
+            }
+        ]
+    },    
     node: {
         dns: 'empty',
         net: 'empty',
+        child_process: 'empty',
+        module: 'empty',
+        fs: 'empty'
     },
     output: {
         filename: '[name].js',
