@@ -10,6 +10,7 @@
 @SEPARATOR_PRIMARY: #f0f4f7;
 @SEPARATOR_SECONDARY: #e1e8ed;
 @SEPARATOR_TERTIARY: #33383a;
+@SEPARATOR_QUATERNARY: #c0c0c0;
 
 @HIGHLIGHT_PRIMARY: #0099e5;
 @HIGHLIGHT_SECONDARY: #ffae54;
@@ -139,6 +140,29 @@ main {
         pre code {
             display: block;
             overflow-x: auto;
+        }
+        table {
+            border: 1px solid @SEPARATOR_QUATERNARY;
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: left;
+            thead tr th {
+                background-color: @BACKGROUND_PRIMARY;
+                border-right: 1px solid @SEPARATOR_QUATERNARY;
+                border-bottom: 1px solid @SEPARATOR_QUATERNARY;
+                color: @FOREGROUND_SECONDARY;
+                padding: 1% 50px 1% 3%;                
+                text-transform: capitalize;                
+            }		  	
+            td {
+                border-right: 1px solid @SEPARATOR_QUATERNARY;
+                padding: 2%;
+                text-align: right;                
+                word-break: break-all;
+            } 
+            tr:nth-child(odd) {
+                background-color: @BACKGROUND_SECONDARY; 
+            }
         }
     }
     aside {
