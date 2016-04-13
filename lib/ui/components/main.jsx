@@ -4,6 +4,7 @@ var marked = require('marked')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
+var PrismCode = require('react-prism').PrismCode
 
 module.exports = React.createClass({
 
@@ -18,12 +19,7 @@ module.exports = React.createClass({
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
     },	  	
-	  	    		
-	componentDidMount: function () {
-		require('prismjs');		
-		require('prismjs/components/prism-json');		
-	},
-		  	    		  
+	  	    		  
     render: function () {
         return (
             <main ref="main">
@@ -120,7 +116,7 @@ module.exports = React.createClass({
                         <div>
                             <h6>Body</h6>
                             <pre>
-                                <code className="language-json">{_.get(body, 'schema')}</code>
+                                <PrismCode className="language-json">{_.get(body, 'schema')}</PrismCode>
                             </pre>
                         </div>
                     )}
@@ -131,16 +127,16 @@ module.exports = React.createClass({
                             <h5>Definition</h5>
                                                        
                             <pre>
-                                <code className="language-http">{[
+                                <PrismCode className="language-http">{[
                                     method.method.toUpperCase(),
                                     absoluteUri,
-                                ].join(' ')}</code>
+                                ].join(' ')}</PrismCode>
                             </pre>
                             {_.has(body, 'example') && (
                                 <div>
                                     <h5>Example request</h5>
                                     <pre>
-                                        <code className="language-sh">{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</code>
+                                        <PrismCode className="language-sh">{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</PrismCode>
                                     </pre>                                                                                                           
                                 </div>
                             )}
@@ -148,7 +144,7 @@ module.exports = React.createClass({
                                 <div>
                                     <h5>Example response</h5>
                                     <pre>
-                                        <code className="language-json">{_.get(successResponse, 'example')}</code>
+                                        <PrismCode className="language-json">{_.get(successResponse, 'example')}</PrismCode>
                                     </pre>                                    
                                 </div>
                             )}
