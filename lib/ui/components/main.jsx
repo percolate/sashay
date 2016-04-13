@@ -4,9 +4,6 @@ var marked = require('marked')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-require('prismjs')
-require('prismjs/components/prism-bash')
-require('prismjs/components/prism-json')
 
 module.exports = React.createClass({
 
@@ -21,7 +18,12 @@ module.exports = React.createClass({
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
     },	  	
-	  	    		  
+	  	    		
+	componentDidMount: function () {
+		require('prismjs');		
+		require('prismjs/components/prism-json');		
+	},
+		  	    		  
     render: function () {
         return (
             <main ref="main">
