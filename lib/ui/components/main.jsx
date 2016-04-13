@@ -136,7 +136,7 @@ module.exports = React.createClass({
                                     <h5>Example request</h5>
                                     <pre>
                                         <PrismCode className="language-sh">{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</PrismCode>
-                                    </pre>                                                                                                           
+                                    </pre>
                                 </div>
                             )}
                             {_.has(successResponse, 'example') && (
@@ -144,7 +144,7 @@ module.exports = React.createClass({
                                     <h5>Example response</h5>
                                     <pre>
                                         <PrismCode className="language-json">{_.get(successResponse, 'example')}</PrismCode>
-                                    </pre>                                    
+                                    </pre>
                                 </div>
                             )}
                         </div>
