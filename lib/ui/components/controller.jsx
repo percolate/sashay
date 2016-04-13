@@ -7,9 +7,9 @@ var ReactDom = require('react-dom')
 
 var IS_BROWSER = process.env.PLATFORM === 'browser'
 
-if (IS_BROWSER){
- 	require('../less/index.less')
- 	require('../less/prism.less')
+if (IS_BROWSER) {
+    require('../less/index.less')
+    require('../less/prism.less')
 }
 
 module.exports = React.createClass({

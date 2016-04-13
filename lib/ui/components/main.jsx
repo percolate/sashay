@@ -18,7 +18,7 @@ module.exports = React.createClass({
         topics: React.PropTypes.array.isRequired,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
-    },	  	
+    },
 
     render: function () {
         return (
@@ -125,7 +125,6 @@ module.exports = React.createClass({
                     {_.has(method, 'method') && (
                         <div>
                             <h5>Definition</h5>
-                                                       
                             <pre>
                                 <PrismCode className="language-http">{[
                                     method.method.toUpperCase(),
