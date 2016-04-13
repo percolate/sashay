@@ -19,7 +19,7 @@ module.exports = React.createClass({
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
     },	  	
-	  	    		  
+
     render: function () {
         return (
             <main ref="main">
