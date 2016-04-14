@@ -74,6 +74,7 @@ describe('transform()', function () {
                         {
                             content: '## Hello\n\nWorld\n',
                             displayName: 'foo',
+                            examples: [],
                             slug: 'topic.foo',
                         },
                     ],
