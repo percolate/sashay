@@ -53,8 +53,7 @@ module.exports = React.createClass({
                                     			<code className={"lang-" + example.substr(0, example.indexOf('\n') - 1) + "\""}>{example.substr(example.indexOf('\n'))}</code>
                                     		</pre>
                                     	</div>
-                                      })    
-                                    }                                                                    
+                                    })}
                                 </aside>    	
                             </section>
                         </div>
