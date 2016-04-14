@@ -1,4 +1,3 @@
-
 @TEXT_SELECTION: white;
 @HIGHTLIGHT_PRIMARY: #272b2d;
 @HIGHTLIGHT_SECONDARY: #999;
@@ -11,35 +10,35 @@
 
 code[class*="language-"],
 pre[class*="language-"] {
+	-o-tab-size: 4;
+	-moz-hyphens: none;
+	-moz-tab-size: 4;
+	-ms-hyphens: none;
+	-webkit-hyphens: none;
 	background: none;
 	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	font-size: 15px;
-	text-align: left;
-	white-space: pre-wrap;
-	word-spacing: normal;
-	word-break: break-all;
-	word-wrap: break-word;	
+	hyphens: none;
 	line-height: 1.5;
 	overflow: hidden;
-	-moz-tab-size: 4;
-	-o-tab-size: 4;
 	tab-size: 4;
-	-webkit-hyphens: none;
-	-moz-hyphens: none;
-	-ms-hyphens: none;
-	hyphens: none;
+	text-align: left;
+	white-space: pre-wrap;
+	word-break: break-all;
+	word-spacing: normal;
+	word-wrap: break-word;		
 }
 pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
 code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-	text-shadow: none;	
 	background: @TEXT_SELECTION;
 	color: @HIGHTLIGHT_TERNARY;
+	text-shadow: none;		
 }
 pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
 code[class*="language-"]::selection, code[class*="language-"] ::selection {
-	text-shadow: none;
 	background: @TEXT_SELECTION;
 	color: @HIGHTLIGHT_TERNARY;
+	text-shadow: none;	
 }
 @media print {
 	code[class*="language-"],
@@ -49,16 +48,16 @@ code[class*="language-"]::selection, code[class*="language-"] ::selection {
 }
 /* Code blocks */
 pre[class*="language-"] {
-	padding: 1em;
 	margin: .5em 0;	
+	padding: 1em;
 }
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
 	background: @HIGHTLIGHT_PRIMARY none repeat scroll 0 0;
 }
 :not(pre) > code[class*="language-"] {
-	padding: .1em;
 	border-radius: .3em;
+	padding: .1em;
 	white-space: normal;
 }
 .token.comment,
