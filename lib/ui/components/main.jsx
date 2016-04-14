@@ -45,16 +45,16 @@ module.exports = React.createClass({
                                 </article>
                                 <aside>
                                     {_.map(topic.examples, function (example) {
-                                    	return (
-                                    	    <div>
+                                        return (
+                                            <div>
                                                 <h5>Example</h5>
                                                 <pre>
                                                     <code className={'lang-' + example.substr(0, example.indexOf('\n') - 1)}>{example.substr(example.indexOf('\n'))}</code>
                                                 </pre>
                                             </div>
-                                    	)
+                                        )
                                     })}
-                                </aside>    	
+                                </aside>
                             </section>
                         </div>
                     )
