@@ -4,6 +4,9 @@ var marked = require('marked')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
+var util = require('util')
+
+var LANG_CLASSNAME_TEMPLATE = 'lang-%'
 
 module.exports = React.createClass({
 
@@ -44,12 +47,12 @@ module.exports = React.createClass({
                                     />
                                 </article>
                                 <aside>
-                                    {_.map(topic.examples, function (example) {
+                                    {_.map(topic.examples, function (example, i) {
                                         return (
-                                            <div>
+                                            <div key={i}>
                                                 <h5>Example</h5>
                                                 <pre>
-                                                    <code className={'lang-' + example.substr(0, example.indexOf('\n') - 1)}>{example.substr(example.indexOf('\n') + 1)}</code>
+                                                    <code className={util.format(LANG_CLASSNAME_TEMPLATE, _.get(example, 'lang'))}>{_.get(example, 'code')}</code>
                                                 </pre>
                                             </div>
                                         )
