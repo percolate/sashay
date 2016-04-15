@@ -6,6 +6,7 @@
 @BACKGROUND_SECONDARY: #fafcfc;
 @BACKGROUND_TERTIARY: #2d3132;
 @BACKGROUND_QUATERNARY: #272b2d;
+@BACKGROUND_QUINARY: #000;
 
 @SEPARATOR_PRIMARY: #f0f4f7;
 @SEPARATOR_SECONDARY: #e1e8ed;
@@ -141,16 +142,16 @@ main {
         pre code {
             display: block;
             overflow-x: auto;
-        }        
+        }
         pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-		code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-			background: #000;
-		}		
-		pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-		code[class*="language-"]::selection, code[class*="language-"] ::selection {
-			text-shadow: none;
-			background: #000;
-		}
+        code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+            background: @BACKGROUND_QUINARY;
+        }
+        pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+        code[class*="language-"]::selection, code[class*="language-"] ::selection {
+            background: @BACKGROUND_QUINARY;
+            text-shadow: none;
+        }
     }
     aside {
         background-color: @BACKGROUND_TERTIARY;
