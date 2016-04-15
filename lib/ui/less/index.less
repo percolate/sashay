@@ -127,30 +127,40 @@ main {
 
             }
         }
-        code {
-            background-color: @BACKGROUND_PRIMARY !important;
-            border: 1px solid @SEPARATOR_PRIMARY;
-            border-radius: 4px;
-            display: inline-block;
-            line-height: 1.25em;
-            padding: 0 5px;
-        }
         pre {
             margin: 20px 0 0;
-            background-color: @BACKGROUND_PRIMARY !important;
+        }
+        code {
+            background-color: @BACKGROUND_SECONDARY;
+            border: 1px solid @SEPARATOR_PRIMARY;
+            border-radius: 4px;
+        }
+        pre,
+        code {
+            -o-tab-size: 4;
+            -moz-hyphens: none;
+            -moz-tab-size: 4;
+            -ms-hyphens: none;
+            -webkit-hyphens: none;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            hyphens: none;
+            overflow: hidden;
+            tab-size: 4;
+            text-align: left;
+            white-space: pre-wrap;
+            word-break: break-all;
+            word-spacing: normal;
+            word-wrap: break-word;
+        }
+        :not(pre) > code {
+            color: @HIGHLIGHT_TERTIARY;
+            padding: 0 5px;
         }
         pre code {
             display: block;
+            line-height: 1.25em;
             overflow-x: auto;
-        }
-        pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-        code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-            background: @BACKGROUND_QUINARY;
-        }
-        pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-        code[class*="language-"]::selection, code[class*="language-"] ::selection {
-            background: @BACKGROUND_QUINARY;
-            text-shadow: none;
+            padding: 5px;
         }
     }
     aside {

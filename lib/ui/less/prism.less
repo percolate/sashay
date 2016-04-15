@@ -1,65 +1,19 @@
-@TEXT_SELECTION: white;
-@HIGHTLIGHT_PRIMARY: #272b2d;
-@HIGHTLIGHT_SECONDARY: #999;
-@HIGHTLIGHT_TERNARY: #77bcd7;
-@HIGHTLIGHT_QUATERNARY: #ffae54;
-@HIGHTLIGHT_KEYWORD: #07a;
-@HIGHTLIGHT_IMPORTANT: #e90;
-@HIGHTLIGHT_URL: #a67f59;
-@HIGHTLIGHT_SELECTOR: #ffae54;
+@SYNTAX_COMMENT: slategray;
+@SYNTAX_IMPORTANT: #e90;
+@SYNTAX_KEYWORD: #07a;
+@SYNTAX_PROPERTY: #77bcd7;
+@SYNTAX_PUNCTUATION: #999;
+@SYNTAX_SELECTOR: #ffae54;
+@SYNTAX_URL: #a67f59;
 
-code[class*="language-"],
-pre[class*="language-"] {
-    -o-tab-size: 4;
-    -moz-hyphens: none;
-    -moz-tab-size: 4;
-    -ms-hyphens: none;
-    -webkit-hyphens: none;
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    font-size: 15px;
-    hyphens: none;
-    line-height: 1.5;
-    overflow: hidden;
-    tab-size: 4;
-    text-align: left;
-    white-space: pre-wrap;
-    word-break: break-all;
-    word-spacing: normal;
-    word-wrap: break-word;
-}
-pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-    background: @TEXT_SELECTION;
-    color: @HIGHTLIGHT_TERNARY;
-    text-shadow: none;
-}
-pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-code[class*="language-"]::selection, code[class*="language-"] ::selection {
-    background: @TEXT_SELECTION;
-    color: @HIGHTLIGHT_TERNARY;
-    text-shadow: none;
-}
-pre[class*="language-"] {
-    margin: .5em 0;
-    padding: 1em;
-}
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-    background: @HIGHTLIGHT_PRIMARY none repeat scroll 0 0;
-}
-:not(pre) > code[class*="language-"] {
-    border-radius: .3em;
-    padding: .1em;
-    white-space: normal;
-}
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-    color: slategray;
+    color: @SYNTAX_COMMENT;
 }
 .token.punctuation {
-    color: @HIGHTLIGHT_SECONDARY;
+    color: @SYNTAX_PUNCTUATION;
 }
 .namespace {
     opacity: .7;
@@ -71,7 +25,7 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-    color: @HIGHTLIGHT_TERNARY;
+    color: @SYNTAX_PROPERTY;
 }
 .token.selector,
 .token.attr-name,
@@ -79,27 +33,27 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-    color: @HIGHTLIGHT_SELECTOR;
+    color: @SYNTAX_SELECTOR;
     font-weight: 500;
 }
 .token.entity,
 .token.url,
 .language-css .token.string,
 .style .token.string {
-    color: @HIGHTLIGHT_URL;
+    color: @SYNTAX_URL;
 }
 .token.function {
-    color: @HIGHTLIGHT_KEYWORD;
+    color: @SYNTAX_KEYWORD;
 }
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-    color: @HIGHTLIGHT_KEYWORD;
+    color: @SYNTAX_KEYWORD;
 }
 .token.regex,
 .token.important,
 .token.variable {
-    color: @HIGHTLIGHT_IMPORTANT;
+    color: @SYNTAX_IMPORTANT;
 }
 .token.important,
 .token.bold {
