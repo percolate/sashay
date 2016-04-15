@@ -72,9 +72,12 @@ describe('transform()', function () {
                     title: 'foo',
                     topics: [
                         {
-                            content: '## Hello\n\nWorld\n',
+                            content: '## Hello\n\nWorld\n\n\n!!!\n\n',
                             displayName: 'foo',
-                            examples: [],
+                            examples: [
+                                'sh\ncurl -X GET -H \"someurl\"\n',
+                                'json\n{\n  \"key\": \"value\"\n}\n'
+                            ],
                             slug: 'topic.foo',
                         },
                     ],
