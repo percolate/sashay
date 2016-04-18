@@ -5,6 +5,9 @@ var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 var PrismCode = require('react-prism').PrismCode
+var util = require('util')
+
+var LANG_CLASSNAME_TEMPLATE = 'lang-%'
 
 module.exports = React.createClass({
 
@@ -44,7 +47,18 @@ module.exports = React.createClass({
                                         }}
                                     />
                                 </article>
-                                <aside />
+                                <aside>
+                                    {_.map(topic.examples, function (example, i) {
+                                        return (
+                                            <div key={i}>
+                                                <h5>Example</h5>
+                                                <pre>
+                                                    <code className={util.format(LANG_CLASSNAME_TEMPLATE, _.get(example, 'lang'))}>{_.get(example, 'code')}</code>
+                                                </pre>
+                                            </div>
+                                        )
+                                    })}
+                                </aside>
                             </section>
                         </div>
                     )
@@ -133,7 +147,15 @@ module.exports = React.createClass({
                             </pre>
                             {_.has(body, 'example') && (
                                 <div>
-                                    <h5>Example request</h5>
+                                    <h5>Example request body</h5>
+                                    <pre>
+                                        <code>{_.get(body, 'example')}</code>
+                                    </pre>
+                                </div>
+                            )}
+                            {_.has(body, 'example') && (
+                                <div>
+                                    <h5>Example curl request</h5>
                                     <pre>
                                         <PrismCode className="language-sh">{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</PrismCode>
                                     </pre>
