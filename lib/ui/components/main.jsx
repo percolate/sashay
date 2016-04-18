@@ -146,7 +146,15 @@ module.exports = React.createClass({
                             </pre>
                             {_.has(body, 'example') && (
                                 <div>
-                                    <h5>Example request</h5>
+                                    <h5>Example request body</h5>
+                                    <pre>
+                                        <code>{_.get(body, 'example')}</code>
+                                    </pre>
+                                </div>
+                            )}
+                            {_.has(body, 'example') && (
+                                <div>
+                                    <h5>Example curl request</h5>
                                     <pre>
                                         <code>{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</code>
                                     </pre>
