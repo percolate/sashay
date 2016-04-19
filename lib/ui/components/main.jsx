@@ -98,7 +98,7 @@ module.exports = React.createClass({
             'application/json',
         ])
         var successResponse = helper.getSuccessResponseFromMethod(method)
-        var absoluteUri = uri = this.props.baseUri + method.absoluteUri
+        var absoluteUri = this.props.baseUri + method.absoluteUri
         var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
         return (
             <section
@@ -158,7 +158,7 @@ module.exports = React.createClass({
                                 <h5>Example curl request</h5>
                                 <pre>
                                     <PrismCode className="language-sh">{helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY',
-                                      _.has(body, 'example') ? JSON.parse(_.get(body, 'example')) : null )}</PrismCode>
+                                      _.has(body, 'example') ? JSON.parse(_.get(body, 'example')) : null)}</PrismCode>
                                 </pre>
                             </div>
 
