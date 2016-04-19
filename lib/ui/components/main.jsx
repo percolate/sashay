@@ -7,7 +7,7 @@ var React = require('react')
 var PrismCode = require('react-prism').PrismCode
 var util = require('util')
 
-var LANG_CLASSNAME_TEMPLATE = 'lang-%'
+var LANG_CLASSNAME_TEMPLATE = 'language-%s'
 
 module.exports = React.createClass({
 
@@ -53,7 +53,7 @@ module.exports = React.createClass({
                                             <div key={i}>
                                                 <h5>Example</h5>
                                                 <pre>
-                                                    <code className={util.format(LANG_CLASSNAME_TEMPLATE, _.get(example, 'lang'))}>{_.get(example, 'code')}</code>
+                                                    <PrismCode className={util.format(LANG_CLASSNAME_TEMPLATE, _.get(example, 'lang'))}>{_.get(example, 'code')}</PrismCode>
                                                 </pre>
                                             </div>
                                         )
