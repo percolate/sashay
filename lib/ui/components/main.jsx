@@ -5,9 +5,6 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var util = require('util')
-
-var LANG_CLASSNAME_TEMPLATE = 'lang-%s'
 
 module.exports = React.createClass({
 
@@ -146,7 +143,8 @@ module.exports = React.createClass({
                             <Code lang="http" code={[
                                 method.method.toUpperCase(),
                                 absoluteUri,
-                            ].join(' ')} />
+                            ].join(' ')}
+                            />
                         </section>
                     )}
 
@@ -161,7 +159,8 @@ module.exports = React.createClass({
                         <section>
                             <h1>Example curl request</h1>
                                 <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY',
-                                  _.has(body, 'example') ? JSON.parse(_.get(body, 'example')) : null)} />
+                                  _.has(body, 'example') ? JSON.parse(_.get(body, 'example')) : null)}
+                                />
                         </section>
                     )}
 

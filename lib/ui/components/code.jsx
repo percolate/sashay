@@ -17,7 +17,7 @@ module.exports = React.createClass({
             'javascript',
             'json',
             'sh',
-            ]).isRequired,
+        ]).isRequired,
         code: React.PropTypes.string.isRequired,
     },
 

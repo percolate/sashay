@@ -17,16 +17,16 @@ describe('helper', function () {
             expect(helper.addRequiredQueryParameters('http://foo.com/', {
                 absoluteUri: 'bar/',
                 is: [
-                    'licenseScopeIds'
+                    'licenseScopeIds',
                 ],
                 queryParameters: [{
                     required: true,
-                    displayName: 'type'
+                    displayName: 'type',
                 },
                 {
                     required: false,
-                    displayName: 'fields'
-                }
+                    displayName: 'fields',
+                },
                 ],
             })).to.equal('http://foo.com/bar/?scope_ids=license:1&type=TYPE')
         })

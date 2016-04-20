@@ -100,7 +100,7 @@ describe('transform()', function () {
                                     lang: 'sh',
                                     text: '# no type',
                                     type: 'code',
-                                }
+                                },
                             ],
                             slug: 'topic.foo',
                         },
