@@ -1,6 +1,7 @@
 var _ = require('lodash')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
+var logo = require('../img/api-logo-white.png')
 
 module.exports = React.createClass({
 
@@ -17,18 +18,24 @@ module.exports = React.createClass({
     render: function () {
         return (
             <nav>
+                <div className="logo">
+                    <img src={logo} alt="Percolate" />
+                </div>
+
                 {!_.isEmpty(this.props.topics) && (
-                    <div>
+                    <section>
                         <h2>Topics</h2>
                         <ul>
                             {_.map(this.props.topics, this.renderTopic)}
                         </ul>
-                    </div>
+                    </section>
                 )}
-                <h2>Methods</h2>
-                <ul>
-                    {_.map(this.props.groups, this.renderGroup)}
-                </ul>
+                <section>
+                    <h2>Methods</h2>
+                    <ul>
+                        {_.map(this.props.groups, this.renderGroup)}
+                    </ul>
+                </section>
             </nav>
         )
     },

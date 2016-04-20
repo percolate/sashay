@@ -25,6 +25,10 @@ module.exports = {
                 test: /\.less$/,
                 loader: 'style!css!less',
             },
+            {
+                test: /\.png$/,
+                loader: 'url',
+            },
         ],
     },
     node: {
