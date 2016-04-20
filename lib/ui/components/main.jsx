@@ -7,7 +7,7 @@ var React = require('react')
 var PrismCode = require('react-prism').PrismCode
 var util = require('util')
 
-var LANG_CLASSNAME_TEMPLATE = 'lang-%'
+var LANG_CLASSNAME_TEMPLATE = 'language-%s'
 
 module.exports = React.createClass({
 
@@ -53,7 +53,7 @@ module.exports = React.createClass({
                                             <div key={i}>
                                                 <h5>Example</h5>
                                                 <pre>
-                                                    <code className={util.format(LANG_CLASSNAME_TEMPLATE, _.get(example, 'lang'))}>{_.get(example, 'code')}</code>
+                                                    <PrismCode className={util.format(LANG_CLASSNAME_TEMPLATE, _.get(example, 'lang'))}>{_.get(example, 'code')}</PrismCode>
                                                 </pre>
                                             </div>
                                         )
@@ -99,6 +99,7 @@ module.exports = React.createClass({
         ])
         var successResponse = helper.getSuccessResponseFromMethod(method)
         var absoluteUri = this.props.baseUri + method.absoluteUri
+        var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
         return (
             <section
                 id={method.slug}
@@ -149,18 +150,18 @@ module.exports = React.createClass({
                                 <div>
                                     <h5>Example request body</h5>
                                     <pre>
-                                        <code>{_.get(body, 'example')}</code>
+                                        <PrismCode className="language-json">{_.get(body, 'example')}</PrismCode>
                                     </pre>
                                 </div>
                             )}
-                            {_.has(body, 'example') && (
-                                <div>
-                                    <h5>Example curl request</h5>
-                                    <pre>
-                                        <PrismCode className="language-sh">{helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))}</PrismCode>
-                                    </pre>
-                                </div>
-                            )}
+                            <div>
+                                <h5>Example curl request</h5>
+                                <pre>
+                                    <PrismCode className="language-sh">{helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY',
+                                      _.has(body, 'example') ? JSON.parse(_.get(body, 'example')) : null)}</PrismCode>
+                                </pre>
+                            </div>
+
                             {_.has(successResponse, 'example') && (
                                 <div>
                                     <h5>Example response</h5>
