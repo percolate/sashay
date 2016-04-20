@@ -54,7 +54,7 @@ module.exports = React.createClass({
                                         <div
                                             className="parameter-desc"
                                             dangerouslySetInnerHTML={{
-                                                __html: marked(parameter.description),
+                                                __html: marked(parameter.description + (!_.isNil(parameter.enum) ? '<br>Allowed values: [' + parameter.enum.join(', ') + ']' : '') + (!_.isNil(parameter.pattern) ? '<br>Pattern: ' + parameter.pattern : '')),
                                             }}
                                         />
                                     :
