@@ -1,0 +1,29 @@
+.table {
+    @border-color: #d2d2d2;
+    table {
+        border: 1px solid @border-color;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin-bottom: 20px;
+        text-align: left;
+
+        th, td {
+            border-right: 1px solid @border-color;
+            padding: 15px;
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+        thead tr th {
+            border-bottom: 1px solid @border-color;
+            color: #999999;
+            font-weight: normal;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #fafafa;
+        }
+    }
+}

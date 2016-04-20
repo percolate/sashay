@@ -10,7 +10,6 @@ module.exports = React.createClass({
         PureRenderMixin,
     ],
     propTypes: {
-        displayName: React.PropTypes.string.isRequired,
         parameters: React.PropTypes.object.isRequired,
     },
 
@@ -26,7 +25,6 @@ module.exports = React.createClass({
             .value()
         return (
             <div>
-                <h6>{this.props.displayName}</h6>
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
                         return (

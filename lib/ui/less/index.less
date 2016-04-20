@@ -1,35 +1,15 @@
-@FOREGROUND_PRIMARY: #4c555a;
-@FOREGROUND_SECONDARY: #939da3;
-@FOREGROUND_TERTIARY: #d0d4d7;
-
-@BACKGROUND_PRIMARY: #fff;
-@BACKGROUND_SECONDARY: #fafcfc;
-@BACKGROUND_TERTIARY: #2d3132;
-@BACKGROUND_QUATERNARY: #272b2d;
-@BACKGROUND_QUINARY: #000;
-
-@SEPARATOR_PRIMARY: #f0f4f7;
-@SEPARATOR_SECONDARY: #e1e8ed;
-@SEPARATOR_TERTIARY: #33383a;
-@SEPARATOR_QUATERNARY: #c0c0c0;
-
-@HIGHLIGHT_PRIMARY: #0099e5;
-@HIGHLIGHT_SECONDARY: #ffae54;
-@HIGHLIGHT_TERTIARY: #b93d6a;
-
 @import "reset.less";
+@import "code.less";
+@import "markdown.less";
+@import "nav.less";
 @import "prism.less";
-@import "nav.less";
-
-html,
-body {
-    margin: 0;
-}
-@import "nav.less";
 
 .container {
+    color: #555555;
     display: flex;
-    font-family: sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.38461541;
     height: 100vh;
 }
 
@@ -40,174 +20,100 @@ body {
 main {
     flex: 1;
     overflow-y: scroll;
+
     article {
-        border-top: solid 1px @SEPARATOR_PRIMARY;
-        box-sizing: border-box;
-        color: @FOREGROUND_PRIMARY;
-        flex: 1;
-        overflow: hidden;
-        padding: 30px 40px;
-        width: 45%;
-        a {
-            color: @FOREGROUND_PRIMARY;
-        }
-        h1,
-        h2,
-        h3,
-        h4,
-        h5 {
-            font-size: 24px;
-            font-weight: 400;
-            line-height: 32px;
-            margin: 1.00em 0;
-        }
-        h3 {
-            text-decoration: underline;
-        }
-        h4 {
+        @header-offset: 5px;
+        row {
+            display: flex;
 
-        }
-        h5 {
-            font-weight: 200;
-        }
-        h6 {
-            color: @FOREGROUND_SECONDARY;
-            font-size: 12px;
-            font-weight: 400;
-            margin: 40px 0 0;
-            text-transform: uppercase;
-        }
-        p {
-            line-height: 26px;
-            margin: 20px 0 0;
-        }
-        ul,
-        ol {
-            line-height: 26px;
-            margin: 20px 0 0;
-            li {
+            content, aside {
+                box-sizing: border-box;
+                flex: 1;
+                padding: 0px 40px;
+                width: 50%;
 
+                section {
+                    margin-top: 20px;
+
+                    > h1 {
+                        color: #999;
+                        font-size: 13px;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                        font-size: 13px;
+                    }
+                }
             }
-        }
-        pre {
-            margin: 20px 0 0;
-        }
-        code {
-            background-color: @BACKGROUND_SECONDARY;
-            border: 1px solid @SEPARATOR_PRIMARY;
-            border-radius: 4px;
-        }
-        pre,
-        code {
-            -o-tab-size: 4;
-            -moz-hyphens: none;
-            -moz-tab-size: 4;
-            -ms-hyphens: none;
-            -webkit-hyphens: none;
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-            hyphens: none;
-            overflow: hidden;
-            tab-size: 4;
-            text-align: left;
-            white-space: pre-wrap;
-            word-break: break-all;
-            word-spacing: normal;
-            word-wrap: break-word;
-        }
-        :not(pre) > code {
-            color: @HIGHLIGHT_TERTIARY;
-            padding: 0 5px;
-        }
-        pre code {
-            display: block;
-            line-height: 1.25em;
-            overflow-x: auto;
-            padding: 5px;
-        }
-        table {
-            border: 1px solid @SEPARATOR_QUATERNARY;
-            border-collapse: collapse;
-            margin-top: 20px;
-            text-align: left;
-            thead tr th {
-                background-color: @BACKGROUND_PRIMARY;
-                border-right: 1px solid @SEPARATOR_QUATERNARY;
-                border-bottom: 1px solid @SEPARATOR_QUATERNARY;
-                color: @FOREGROUND_SECONDARY;
-                padding: 1% 50px 1% 3%;
-                text-transform: capitalize;
+
+            content {
+                > h2 {
+                    color: #2b2c2f;
+                    font-family: "Sentinel A", "Sentinel B", georgia;
+                    font-size: 22px;
+                    font-weight: normal;
+                    margin-bottom: 30px;
+                }
+                > h3 {
+                    color: #555555;
+                    font-family: "Futura W01 Bold", Arial, sans-serif;
+                    font-size: 13px;
+                    font-weight: bold;
+                    padding-top: @header-offset;
+                    text-transform: uppercase;
+                }
             }
-            td {
-                border-right: 1px solid @SEPARATOR_QUATERNARY;
-                padding: 2%;
-                text-align: right;
-                word-break: break-all;
+
+            aside {
+                background-color: #2b2c30;
+                color: #d0d4d7;
+
+                section {
+                    > h1 {
+                        color: #d0d4d7;
+                    }
+
+                    &:first-child {
+                        margin-top: @header-offset;
+                    }
+                }
+
+                .code pre {
+                    background-color: #33383a;
+                }
             }
-            tr:nth-child(odd) {
-                background-color: @BACKGROUND_SECONDARY;
+
+            &:first-child {
+                content, aside {
+                    padding-top: 40px;
+                }
+            }
+
+            &:last-child {
+                content, aside {
+                    padding-bottom: 40px;
+                }
+                content {
+                    border-bottom: 1px solid #e0e2e2;
+                }
+                aside {
+                    border-bottom: 1px solid #33383a;
+                }
             }
         }
     }
-    aside {
-        background-color: @BACKGROUND_TERTIARY;
-        border-top: solid 1px @SEPARATOR_TERTIARY;
-        box-sizing: border-box;
-        color: @FOREGROUND_TERTIARY;
-        flex: 1;
-        overflow: hidden;
-        padding: 30px 40px;
-        width: 55%;
-        pre {
-            font-size: 13px;
-            line-height: 1.5em;
-        }
-        code {
-            background-color: @BACKGROUND_QUATERNARY;
-            display: block;
-            margin: 0 -40px;
-            overflow-x: auto;
-            padding: 20px 40px;
-        }
-        h5 {
-            font-size: 14px;
-            font-weight: 400;
-        }
-    }
-    section {
-        display: flex;
-    }
+
     .parameters {
-        border-top: solid 1px @SEPARATOR_SECONDARY;
+        border-top: solid 1px #e0e2e2;
         margin: 8px 0 40px;
         padding: 0;
         .parameter {
-            border-bottom: solid 1px @SEPARATOR_PRIMARY;
+            border-bottom: solid 1px #e0e2e2;
             display: flex;
             font-size: 13px;
             line-height: 21px;
             padding: 20px 0;
             &:last-child {
-                border-color: @SEPARATOR_SECONDARY;
-            }
-            h1,
-            h2,
-            h3,
-            h4,
-            p,
-            ul,
-            pre {
-                font-size: 13px;
-                line-height: 21px;
-                margin-bottom: 1em;
-                &:last-child {
-                    margin-bottom: 0;
-                }
-            }
-            h1,
-            h2,
-            h3,
-            h4 {
-                font-weight: bold;
+                border-color: #e0e2e2;
             }
         }
         .parameter-spec {
@@ -218,18 +124,14 @@ main {
         }
         .parameter-desc {
             flex: 1;
-            p {
-                margin-top: 0;
-            }
         }
         .parameter-info {
-            color: @FOREGROUND_SECONDARY;
+            color: #999999;
             font-weight: normal;
         }
         .parameter-required {
-            color: @HIGHLIGHT_SECONDARY;
-            font-size: 10px;
-            text-transform: uppercase;
+            color: #ff7800;
+            font-weight: bold;
         }
     }
 }
