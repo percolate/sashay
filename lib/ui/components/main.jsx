@@ -105,6 +105,7 @@ module.exports = React.createClass({
         ])
         var successResponse = helper.getSuccessResponseFromMethod(method)
         var absoluteUri = this.props.baseUri + method.absoluteUri
+        var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
 
         return (
             <row
@@ -159,7 +160,8 @@ module.exports = React.createClass({
                     {_.has(body, 'example') && (
                         <section>
                             <h1>Example curl request</h1>
-                            <Code lang="sh" code={helper.getCurl(absoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY', JSON.parse(_.get(body, 'example')))} />
+                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY',
+                                  _.has(body, 'example') ? JSON.parse(_.get(body, 'example')) : null)} />
                         </section>
                     )}
 
