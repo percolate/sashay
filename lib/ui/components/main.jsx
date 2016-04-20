@@ -1,6 +1,6 @@
 var _ = require('lodash')
 var helper = require('../../helper')
-var marked = require('marked')
+var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
@@ -41,11 +41,7 @@ module.exports = React.createClass({
                             >
                                 <article>
                                     <h3>{topic.displayName}</h3>
-                                    <div
-                                        dangerouslySetInnerHTML={{
-                                            __html: marked(topic.content),
-                                        }}
-                                    />
+                                    <Markdown content={topic.content} />
                                 </article>
                                 <aside>
                                     {_.map(topic.examples, function (example, i) {
@@ -78,11 +74,7 @@ module.exports = React.createClass({
                     <article>
                         <h3>{group.displayName}</h3>
                         {!_.isEmpty(group.description) && (
-                            <div
-                                dangerouslySetInnerHTML={{
-                                    __html: marked(group.description),
-                                }}
-                            />
+                            <Markdown content={group.description} />
                         )}
                     </article>
                     <aside />
@@ -108,11 +100,7 @@ module.exports = React.createClass({
                 <article>
                     <h4>{method.displayName}</h4>
                     {!_.isEmpty(method.description) && (
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: marked(method.description),
-                            }}
-                        />
+                        <Markdown content={method.description} />
                     )}
                     {(!_.isEmpty(method.uriParameters)) && (
                         <Parameters
