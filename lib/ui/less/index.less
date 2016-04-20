@@ -18,6 +18,7 @@
 @HIGHLIGHT_TERTIARY: #b93d6a;
 
 @import "prism.less";
+@import "nav.less";
 
 html,
 body {
@@ -33,48 +34,6 @@ body {
 
 .hide {
     display: none;
-}
-
-nav {
-    background-color: @BACKGROUND_SECONDARY;
-    border-right: solid 1px @SEPARATOR_PRIMARY;
-    color: @FOREGROUND_SECONDARY;
-    flex: 0 0 221px;
-    overflow-y: scroll;
-    h2 {
-        color: @FOREGROUND_SECONDARY;
-        font-size: 12px;
-        font-weight: 500;
-        line-height: 18px;
-        padding: 20px 20px 0;
-        text-transform: uppercase;
-    }
-    a {
-        color: @FOREGROUND_PRIMARY;
-        display: block;
-        font-size: 14px;
-        line-height: 20px;
-        overflow: hidden;
-        padding: 6px 20px;
-        text-decoration: none;
-        text-overflow: ellipsis;
-        &.selected {
-            color: @HIGHLIGHT_PRIMARY;
-        }
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        ul a {
-            font-size: 13px;
-            padding-left: 36px;
-            white-space: nowrap;
-        }
-    }
 }
 
 main {
