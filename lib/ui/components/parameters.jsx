@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var marked = require('marked')
+var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
@@ -37,9 +37,11 @@ module.exports = React.createClass({
                                 <div className="parameter-spec">
                                     <div>{parameter.displayName}</div>
                                     <div className="parameter-info">
-                                        <span>{parameter.type}</span>
+                                        <div>{parameter.type}</div>
                                         {(_.toString(parameter.default) !== '') && (
-                                            <span>, default is <strong>{JSON.stringify(parameter.default)}</strong></span>
+                                            <div className="parameter-info parameter-default">
+                                                default is <strong>{JSON.stringify(parameter.default)}</strong>
+                                            </div>
                                         )}
                                     </div>
                                     {(parameter.required)
@@ -51,12 +53,9 @@ module.exports = React.createClass({
                                 </div>
                                 {(!_.isEmpty(parameter.description))
                                     ?
-                                        <div
-                                            className="parameter-desc"
-                                            dangerouslySetInnerHTML={{
-                                                __html: marked(parameter.description),
-                                            }}
-                                        />
+                                        <div className="parameter-desc">
+                                            <Markdown content={parameter.description} />
+                                        </div>
                                     :
                                         undefined
                                 }
