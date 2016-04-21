@@ -49,18 +49,28 @@ module.exports = React.createClass({
                                             undefined
                                     }
                                 </div>
-                                {(!_.isEmpty(parameter.description))
-                                    ?
-                                        <div
-                                            className="parameter-desc"
-                                            dangerouslySetInnerHTML={{
-                                                __html: marked(parameter.description),
-                                            }}
-                                        />
-                                    :
-                                        undefined
-                                }
-
+                                <div className="parameter-desc">
+                                    {(!_.isEmpty(parameter.description))
+                                        ?
+                                            <div
+                                                dangerouslySetInnerHTML={{
+                                                    __html: marked(parameter.description)
+                                                }}
+                                            />
+                                        :
+                                            undefined
+                                    }
+                                    {!_.isNil(parameter.enum) && (
+                                        <span>
+                                            Allowed values: [{parameter.enum.join(', ')}]
+                                        </span>
+                                    )}
+                                    {!_.isNil(parameter.pattern) && (
+                                        <span>
+                                            Pattern: {parameter.pattern}
+                                        </span>
+                                    )}
+                                </div>
                             </li>
                         )
                     }, this)}
