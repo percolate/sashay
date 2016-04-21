@@ -49,15 +49,24 @@ module.exports = React.createClass({
                                             undefined
                                     }
                                 </div>
-                                {(!_.isEmpty(parameter.description))
-                                    ?
-                                        <div className="parameter-desc">
+                                <div className="parameter-desc">
+                                    {(!_.isEmpty(parameter.description))
+                                        ?
                                             <Markdown content={parameter.description} />
-                                        </div>
-                                    :
-                                        undefined
-                                }
-
+                                        :
+                                            undefined
+                                    }
+                                    {!_.isNil(parameter.enum) && (
+                                        <span>
+                                            Allowed values: [{parameter.enum.join(', ')}]
+                                        </span>
+                                    )}
+                                    {!_.isNil(parameter.pattern) && (
+                                        <span>
+                                            Pattern: {parameter.pattern}
+                                        </span>
+                                    )}
+                                </div>
                             </li>
                         )
                     }, this)}
