@@ -72,16 +72,34 @@ describe('transform()', function () {
                     title: 'foo',
                     topics: [
                         {
-                            content: '## Hello\n\nWorld\n\n!!!',
                             displayName: 'foo',
-                            examples: [
+                            contents: [
+                                {
+                                    text: '## Hello\n\nWorld',
+                                    type: 'text',
+                                },
                                 {
                                     lang: 'sh',
-                                    code: 'curl -X GET -H \"someurl\"',
+                                    text: 'curl -X GET -H \"someurl\"',
+                                    type: 'code',
+                                },
+                                {
+                                    text: '!!!',
+                                    type: 'text',
                                 },
                                 {
                                     lang: 'json',
-                                    code: '{\n  \"key\": \"value\"\n}',
+                                    text: '{\n  \"key\": \"value\"\n}',
+                                    type: 'code',
+                                },
+                                {
+                                    text: '`\nThe extra "`" is intentional',
+                                    type: 'text',
+                                },
+                                {
+                                    lang: 'sh',
+                                    text: '# no type',
+                                    type: 'code',
                                 },
                             ],
                             slug: 'topic.foo',

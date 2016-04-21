@@ -10,4 +10,9 @@ curl -X GET -H "someurl"
 {
   "key": "value"
 }
+````
+The extra "`" is intentional
+
+```
+# no type
 ```

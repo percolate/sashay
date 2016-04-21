@@ -1,13 +1,10 @@
 var _ = require('lodash')
+var Code = require('./code.jsx')
 var helper = require('../../helper')
-var marked = require('marked')
+var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var PrismCode = require('react-prism').PrismCode
-var util = require('util')
-
-var LANG_CLASSNAME_TEMPLATE = 'language-%s'
 
 module.exports = React.createClass({
 
@@ -17,8 +14,19 @@ module.exports = React.createClass({
     ],
     propTypes: {
         baseUri: React.PropTypes.string.isRequired,
-        title: React.PropTypes.string.isRequired,
-        topics: React.PropTypes.array.isRequired,
+        topics: React.PropTypes.arrayOf(
+            React.PropTypes.shape({
+                displayName: React.PropTypes.string.isRequired,
+                contents: React.PropTypes.arrayOf(
+                    React.PropTypes.shape({
+                        lang: React.PropTypes.string,
+                        text: React.PropTypes.string.isRequired,
+                        type: React.PropTypes.oneOf(['text', 'code']).isRequired,
+                    })
+                ),
+                slug: React.PropTypes.string.isRequired,
+            })
+        ).isRequired,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
     },
@@ -26,69 +34,64 @@ module.exports = React.createClass({
     render: function () {
         return (
             <main ref="main">
-                <section>
-                    <article>
-                        <h1>{this.props.title}</h1>
-                    </article>
-                    <aside />
-                </section>
                 {_.map(this.props.topics, function (topic) {
                     return (
-                        <div key={topic.slug}>
-                            <section
-                                id={topic.slug}
-                                ref={topic.slug}
-                            >
-                                <article>
-                                    <h3>{topic.displayName}</h3>
-                                    <div
-                                        dangerouslySetInnerHTML={{
-                                            __html: marked(topic.content),
-                                        }}
-                                    />
-                                </article>
-                                <aside>
-                                    {_.map(topic.examples, function (example, i) {
-                                        return (
-                                            <div key={i}>
-                                                <h5>Example</h5>
-                                                <pre>
-                                                    <PrismCode className={util.format(LANG_CLASSNAME_TEMPLATE, _.get(example, 'lang'))}>{_.get(example, 'code')}</PrismCode>
-                                                </pre>
-                                            </div>
-                                        )
-                                    })}
-                                </aside>
-                            </section>
-                        </div>
+                        <article
+                            id={topic.slug}
+                            ref={topic.slug}
+                            key={topic.slug}
+                        >
+                            <row>
+                                <content>
+                                    <h2>{topic.displayName}</h2>
+                                </content>
+                                <aside />
+                            </row>
+                            {_.map(topic.contents, this.renderContent)}
+                        </article>
                     )
-                })}
+                }.bind(this))}
                 {_.map(this.props.groups, this.renderGroup)}
             </main>
         )
     },
 
+    renderContent: function (content, index) {
+        var text
+        var aside
+
+        if (content.type === 'code') {
+            aside = <Code lang={content.lang} code={content.text} />
+        } else {
+            text = <Markdown content={content.text} />
+        }
+
+        return (
+            <row key={'topic-content-' + index}>
+                <content>{text}</content>
+                <aside>{aside}</aside>
+            </row>
+        )
+    },
+
     renderGroup: function (group) {
         return (
-            <div key={group.displayName}>
-                <section
-                    id={group.slug}
-                    ref={group.slug}
-                >
-                    <article>
-                        <h3>{group.displayName}</h3>
+            <article
+                id={group.slug}
+                key={group.displayName}
+                ref={group.slug}
+            >
+                <row>
+                    <content>
+                        <h2>{group.displayName}</h2>
                         {!_.isEmpty(group.description) && (
-                            <div
-                                dangerouslySetInnerHTML={{
-                                    __html: marked(group.description),
-                                }}
-                            />
+                            <Markdown content={group.description} />
                         )}
-                    </article>
+                    </content>
                     <aside />
-                </section>
-                {_.map(group.methods, this.renderMethod)}
-            </div>
+                </row>
+                {_.chain(group.methods).map(this.renderMethod).flatten().value()}
+            </article>
         )
     },
 
@@ -100,80 +103,75 @@ module.exports = React.createClass({
         var successResponse = helper.getSuccessResponseFromMethod(method)
         var absoluteUri = this.props.baseUri + method.absoluteUri
         var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
+
         return (
-            <section
+            <row
                 id={method.slug}
                 key={i}
                 ref={method.slug}
             >
-                <article>
-                    <h4>{method.displayName}</h4>
+                <content>
+                    <h3>{method.displayName}</h3>
                     {!_.isEmpty(method.description) && (
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: marked(method.description),
-                            }}
-                        />
+                        <section>
+                            <Markdown content={method.description} />
+                        </section>
                     )}
                     {(!_.isEmpty(method.uriParameters)) && (
-                        <Parameters
-                            displayName="URI Parameters"
-                            parameters={method.uriParameters}
-                        />
+                        <section>
+                            <h1>URI Parameters</h1>
+                            <Parameters parameters={method.uriParameters} />
+                        </section>
                     )}
                     {(!_.isEmpty(method.queryParameters)) && (
-                        <Parameters
-                            displayName="Query Parameters"
-                            parameters={method.queryParameters}
-                        />
+                        <section>
+                            <h1>Query Parameters</h1>
+                            <Parameters parameters={method.queryParameters} />
+                        </section>
                     )}
                     {_.has(body, 'schema') && (
-                        <div>
-                            <h6>Body</h6>
-                            <pre>
-                                <PrismCode className="language-json">{_.get(body, 'schema')}</PrismCode>
-                            </pre>
-                        </div>
+                        <section>
+                            <h1>Body</h1>
+                            <Code lang="json" code={_.get(body, 'schema')} />
+                        </section>
                     )}
-                </article>
+                </content>
                 <aside>
                     {_.has(method, 'method') && (
-                        <div>
-                            <h5>Definition</h5>
-                            <pre>
-                                <PrismCode className="language-http">{[
-                                    method.method.toUpperCase(),
-                                    absoluteUri,
-                                ].join(' ')}</PrismCode>
-                            </pre>
-                            {_.has(body, 'example') && (
-                                <div>
-                                    <h5>Example request body</h5>
-                                    <pre>
-                                        <PrismCode className="language-json">{_.get(body, 'example')}</PrismCode>
-                                    </pre>
-                                </div>
-                            )}
-                            <div>
-                                <h5>Example curl request</h5>
-                                <pre>
-                                    <PrismCode className="language-sh">{helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY',
-                                      _.has(body, 'example') ? JSON.parse(_.get(body, 'example')) : null)}</PrismCode>
-                                </pre>
-                            </div>
+                        <section>
+                            <h1>Definition</h1>
+                            <Code lang="http" code={[
+                                method.method.toUpperCase(),
+                                absoluteUri,
+                            ].join(' ')}
+                            />
+                        </section>
+                    )}
 
-                            {_.has(successResponse, 'example') && (
-                                <div>
-                                    <h5>Example response</h5>
-                                    <pre>
-                                        <PrismCode className="language-json">{_.get(successResponse, 'example')}</PrismCode>
-                                    </pre>
-                                </div>
-                            )}
-                        </div>
+                    {_.has(body, 'example') && (
+                        <section>
+                            <h1>Example request body</h1>
+                            <Code lang="json" code={_.get(body, 'example')} />
+                        </section>
+                    )}
+
+                    {_.has(body, 'example') && (
+                        <section>
+                            <h1>Example curl request</h1>
+                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY',
+                                  _.has(body, 'example') ? JSON.parse(_.get(body, 'example')) : null)}
+                                />
+                        </section>
+                    )}
+
+                    {_.has(successResponse, 'example') && (
+                        <section>
+                            <h1>Example response</h1>
+                            <Code lang="json" code={_.get(successResponse, 'example')} />
+                        </section>
                     )}
                 </aside>
-            </section>
+            </row>
         )
     },
 
