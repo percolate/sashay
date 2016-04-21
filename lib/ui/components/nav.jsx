@@ -1,7 +1,10 @@
 var _ = require('lodash')
+var IS_BROWSER = require('../../env').IS_BROWSER
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var logo = require('../img/api-logo-white.png')
+
+// url loader doesn't work for server rendering
+var logo = IS_BROWSER && require('../img/api-logo-white.png')
 
 module.exports = React.createClass({
 
@@ -18,9 +21,11 @@ module.exports = React.createClass({
     render: function () {
         return (
             <nav>
-                <div className="logo">
-                    <img src={logo} alt="Percolate" />
-                </div>
+                {logo && (
+                    <div className="logo">
+                        <img src={logo} alt="Percolate" />
+                    </div>
+                )}
 
                 {!_.isEmpty(this.props.topics) && (
                     <section>
