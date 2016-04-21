@@ -1,4 +1,3 @@
-/* eslint no-process-env:0 */
 var _ = require('lodash')
 var IS_BROWSER = require('../../env').IS_BROWSER
 var Main = require('./main.jsx')
