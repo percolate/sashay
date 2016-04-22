@@ -1,11 +1,9 @@
-/* eslint no-process-env:0 */
 var _ = require('lodash')
+var IS_BROWSER = require('../../env').IS_BROWSER
 var Main = require('./main.jsx')
 var Nav = require('./nav.jsx')
 var React = require('react')
 var ReactDom = require('react-dom')
-
-var IS_BROWSER = process.env.PLATFORM === 'browser'
 
 if (IS_BROWSER) require('../less/index.less')
 
