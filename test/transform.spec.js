@@ -16,6 +16,7 @@ describe('transform()', function () {
                     baseUri: 'foo',
                     groups: [
                         {
+                            description: 'My description [here](#foo.{foo_id}.post)',
                             displayName: 'foo',
                             methods: [
                                 {
@@ -107,6 +108,22 @@ describe('transform()', function () {
                     ],
                     version: 'foo',
                 })
+                return done()
+            })
+            .caught(done)
+    })
+
+    it('should not transform', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/invalid-anchor.raml'),
+        }
+        expand(options)
+            .then(function (res) {
+                transform(_.extend(options, { schema: res }))
+            })
+            .caught(function (err) {
+                expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.match(/^A link in foo section points to the invalid anchor foo123.*/)
                 return done()
             })
             .caught(done)
