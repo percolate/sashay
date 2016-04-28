@@ -1,14 +1,17 @@
+@nav-width: 220px;
+
 nav {
     @logo-height: 32px;
-    @width: 220px;
     @right-border-width: 1px;
 
     background-color: #fafcfc;
     border-right: solid @right-border-width #e0e2e2;
     box-sizing: border-box;
-    flex: 0 0 220px;
+    height: 100vh;
     overflow-y: scroll;
+    position: fixed;
     padding-top: @logo-height + 20px;
+    width: @nav-width;
 
     .logo {
         background-color: #f16421;
@@ -18,7 +21,7 @@ nav {
         padding-left: 20px;
         position: fixed;
         top: 0;
-        width: @width;
+        width: @nav-width;
 
         img {
             height: @logo-height / 2;
