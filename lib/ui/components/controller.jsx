@@ -3,7 +3,6 @@ var IS_BROWSER = require('../../env').IS_BROWSER
 var Main = require('./main.jsx')
 var Nav = require('./nav.jsx')
 var React = require('react')
-var ReactDom = require('react-dom')
 
 if (IS_BROWSER) require('../less/index.less')
 
