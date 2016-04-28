@@ -8,7 +8,7 @@ describe('helper', function () {
                 a: 1,
                 b: true,
                 c: 'Hello world',
-            })).to.equal('curl http://foo.com\\BAR_ID \\\n  -X POST \\\n  -H "Authorization: foo" \\\n  -d a=1 \\\n  -d b=true \\\n  -d c="Hello world"')
+            })).to.equal('curl http://foo.com\\BAR_ID \\\n  -X POST \\\n  -H "Authorization: foo" \\\n  -H "Content-type: application/json" \\\n  -d \'EXAMPLE_REQUEST_BODY\'')
         })
     })
 
