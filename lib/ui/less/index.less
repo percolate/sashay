@@ -6,11 +6,9 @@
 
 .container {
     color: #555555;
-    display: flex;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
     line-height: 1.38461541;
-    height: 100vh;
 }
 
 .hide {
@@ -18,8 +16,7 @@
 }
 
 main {
-    flex: 1;
-    overflow-y: scroll;
+    padding-left: @nav-width;
 
     article {
         @header-offset: 5px;
