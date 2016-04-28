@@ -17,14 +17,12 @@ module.exports = React.createClass({
             .map(function (ref, slug) {
                 if (slug === 'main') return undefined
                 return {
-                    top: ref.getBoundingClientRect().top + main.scrollTop,
+                    top: ref.getBoundingClientRect().top,
                     slug: slug,
                 }
             })
             .compact()
-            .sortBy(function (n) {
-                return n.offset
-            })
+            .sortBy('top')
             .value()
     },
 
@@ -46,6 +44,7 @@ module.exports = React.createClass({
         this._updateOffsets()
         this._updateHash()
         ReactDom.findDOMNode(this.refs.main).addEventListener('scroll', _.debounce(_.bind(this._updateHash, this), 20))
+        window.addEventListener('resize', _.debounce(_.bind(this._updateHash, this), 20))
     },
 
     componentWillUnmount: function () {
