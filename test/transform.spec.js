@@ -76,12 +76,12 @@ describe('transform()', function () {
                                                 'application/json': {
                                                     example: '{\n  \"a\": \"hello\"\n}',
                                                     schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
-                                                }
-                                            }
-                                        }
+                                                },
+                                            },
+                                        },
                                     },
                                     slug: 'foo.{foo_id}.baz.get',
-                                }
+                                },
                             ],
                             slug: 'method.foo',
                         },
