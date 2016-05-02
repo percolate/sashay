@@ -16,7 +16,7 @@ describe('transform()', function () {
                     baseUri: 'foo',
                     groups: [
                         {
-                            description: 'My description [here](#foo.{foo_id}.post)\n1. my item in the list\n  section 1\n2. my item in the list\n  \n',
+                            description: 'My description [here](#foo.{foo_id}.post)\n1. my item in the list\n  section 1\n2. my item in the list\n  section 2\n\n3. my item in the list\n\nprivate section goes\nhere\n',
                             displayName: 'foo',
                             methods: [
                                 {
@@ -66,6 +66,22 @@ describe('transform()', function () {
                                     },
                                     slug: 'foo.{foo_id}.bar.get',
                                 },
+                                {
+                                    absoluteUri: '/foo/{foo_id}/baz',
+                                    displayName: 'foo',
+                                    method: 'get',
+                                    responses: {
+                                        201: {
+                                            body: {
+                                                'application/json': {
+                                                    example: '{\n  \"a\": \"hello\"\n}',
+                                                    schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                                }
+                                            }
+                                        }
+                                    },
+                                    slug: 'foo.{foo_id}.baz.get',
+                                }
                             ],
                             slug: 'method.foo',
                         },
