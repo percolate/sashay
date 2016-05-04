@@ -4,13 +4,13 @@ description: |
   1. my item in the list
     section 1
   2. my item in the list
-    <private>section 2</private>
-<private>
+    # start-privatesection 2# end-private
+# start-private
   3. my item in the list
-</private>
-  <private>
+# end-private
+  # start-private
   private section goes
-  here</private>
+  here# end-private
 /{foo_id}:
   post:
     displayName: foo
@@ -29,7 +29,7 @@ description: |
             application/json:
               schema: !include ../schemas/foo/item.json
               example: !include ../schemas/foo/item.example.json
-<private>
+# start-private
   /baz:
     get:
       displayName: foo
@@ -39,4 +39,4 @@ description: |
             application/json:
               schema: !include ../schemas/foo/item.json
               example: !include ../schemas/foo/item.example.json
-</private>
+# end-private
