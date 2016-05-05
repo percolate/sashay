@@ -18,7 +18,7 @@ describe('transform()', function () {
                     baseUri: 'foo',
                     groups: [
                         {
-                            description: 'My description [here](#foo.{foo_id}.post)\n1. my item in the list\n  section 1\n2. my item in the list\n  section 2\n\n\n3. my item in the list\n\n\nprivate section goes\nhere\n',
+                            description: 'My description [here](#foo.{foo_id}.post)\n1. my item in the list\n  section 1\n2. my item in the list\n  section 2\n\n3. my item in the list\n\n\nprivate section goes\nhere\n',
                             displayName: 'foo',
                             methods: [
                                 {
