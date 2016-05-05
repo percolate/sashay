@@ -42,8 +42,7 @@ module.exports = React.createClass({
         this._updateOffsets()
         this._updateHash(true)
         window.addEventListener('scroll', _.debounce(this._updateHash, 20))
-        window.addEventListener('resize', _.debounce(this._updateHash, 20))
-        window.addEventListener('resize', _.debounce(this._updateOffsets, 20))
+        window.addEventListener('resize', this.resizeHandler)
     },
 
     componentWillUnmount: function () {
@@ -73,5 +72,10 @@ module.exports = React.createClass({
             </div>
         )
     },
+
+    resizeHandler: function () {
+        this._updateOffsets()
+        this._updateHash()
+    }
 
 })
