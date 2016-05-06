@@ -1,6 +1,7 @@
 var _ = require('lodash')
 var expand = require('../lib/expand')
 var expect = require('chai').expect
+var copySourcesToTemp = require('../').copySourcesToTemp
 var transform = require('../lib/transform')
 var path = require('path')
 
@@ -9,6 +10,7 @@ describe('transform()', function () {
         var options = {
             source: path.resolve(__dirname, './fixtures/valid/index.raml'),
         }
+        copySourcesToTemp(options, 'test')
         expand(options)
             .then(function (res) {
                 var data = transform(_.extend(options, { schema: res }))
@@ -16,7 +18,7 @@ describe('transform()', function () {
                     baseUri: 'foo',
                     groups: [
                         {
-                            description: 'My description [here](#foo.{foo_id}.post)',
+                            description: 'My description [here](#foo.{foo_id}.post)\n1. my item in the list\n  section 1\n2. my item in the list\n  section 2\n\n3. my item in the list\n\n\nprivate section goes\nhere\n',
                             displayName: 'foo',
                             methods: [
                                 {
@@ -65,6 +67,22 @@ describe('transform()', function () {
                                         },
                                     },
                                     slug: 'foo.{foo_id}.bar.get',
+                                },
+                                {
+                                    absoluteUri: '/foo/{foo_id}/baz',
+                                    displayName: 'foo',
+                                    method: 'get',
+                                    responses: {
+                                        201: {
+                                            body: {
+                                                'application/json': {
+                                                    example: '{\n  \"a\": \"hello\"\n}',
+                                                    schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                                },
+                                            },
+                                        },
+                                    },
+                                    slug: 'foo.{foo_id}.baz.get',
                                 },
                             ],
                             slug: 'method.foo',
@@ -117,6 +135,7 @@ describe('transform()', function () {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid-anchor.raml'),
         }
+        copySourcesToTemp(options, 'test')
         expand(options)
             .then(function (res) {
                 transform(_.extend(options, { schema: res }))
