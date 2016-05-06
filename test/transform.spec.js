@@ -22,7 +22,9 @@ describe('transform()', function () {
                                 {
                                     body: {
                                         'application/json': {
-                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                            schema: [
+                                                '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                            ]
                                         },
                                     },
                                     displayName: 'Definition',
@@ -36,7 +38,9 @@ describe('transform()', function () {
                                         201: {
                                             body: {
                                                 'application/json': {
-                                                    schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                                    schema: [
+                                                        '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                                    ]
                                                 },
                                             },
                                         },
@@ -46,7 +50,9 @@ describe('transform()', function () {
                                         foo_id: {
                                             displayName: 'foo_id',
                                             required: true,
-                                            type: 'string',
+                                            type: [
+                                                'string',
+                                            ]
                                         },
                                     },
                                 },
@@ -59,7 +65,9 @@ describe('transform()', function () {
                                             body: {
                                                 'application/json': {
                                                     example: '{\n  \"a\": \"hello\"\n}',
-                                                    schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                                    schema: [
+                                                        '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                                    ]
                                                 },
                                             },
                                         },

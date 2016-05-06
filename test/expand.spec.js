@@ -103,7 +103,8 @@ describe('expand()', function () {
                     'body',
                     'application/json',
                 ])
-                expect(resBody.schema).to.equal('{\n  "type": "object",\n  "properties": {\n    "a": {\n      "type": "string"\n    }\n  }\n}')
+                expect(resBody.schema.length).to.equal(1)
+                expect(resBody.schema[0]).to.equal('{\n  "type": "object",\n  "properties": {\n    "a": {\n      "type": "string"\n    }\n  }\n}')
                 expect(resBody.example).to.equal('{\n  "a": "hello"\n}')
                 return done()
             })
