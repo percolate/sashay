@@ -12,7 +12,7 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
-                expect(err.name).to.equal('YAMLError')
+                expect(err.name).to.equal('Error')
                 return done()
             })
             .caught(done)
@@ -31,14 +31,14 @@ describe('expand()', function () {
             .caught(done)
     })
 
-    it('should throw invalid root resource error', function (done) {
+    it('should have root resource', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid-root-resource.raml'),
         }
         expand(options)
-            .caught(function (err) {
-                expect(err).to.be.an.instanceof(Error)
-                expect(err.message).to.match(/^Invalid RAML at ".a": .*/)
+            .then(function (res) {
+                expect(res.resources().length).to.equal(1)
+                expect(res.resources()[0].displayName()).to.equal('/a')
                 return done()
             })
             .caught(done)
@@ -89,7 +89,7 @@ describe('expand()', function () {
         }
         expand(options)
             .then(function (res) {
-                var resBody = _.get(res, [
+                var resBody = _.get(res.toJSON(), [
                     'resources',
                     0,
                     'resources',
@@ -117,7 +117,9 @@ describe('expand()', function () {
                 source: source,
             }))
             .then(function (res) {
-                expect(_.map(res.resources, 'description')).to.deep.equal([
+                expect(_.map(res.resources(), function (resource) {
+                    return resource.description().value()
+                })).to.deep.equal([
                     '#public Just a foo description',
                     'Just a private description',
                 ])
@@ -127,7 +129,9 @@ describe('expand()', function () {
                 source: source,
             }))
             .then(function (res) {
-                expect(_.map(res.resources, 'description')).to.deep.equal([
+                expect(_.map(res.resources(), function (resource) {
+                    return resource.description().value()
+                })).to.deep.equal([
                     'Just a foo description',
                 ])
                 return done()
