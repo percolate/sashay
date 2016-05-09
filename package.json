@@ -14,7 +14,7 @@
   "scripts": {
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
     "style": "./node_modules/.bin/eslint --config ./node_modules/eslint-config-percolate/.eslintrc --ext '.js,.jsx' ./lib/ ./test/*.spec.js",
-    "test": "./node_modules/.bin/mocha --reporter spec --grep ''"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "dependencies": {
     "ajv": "3.8.6",

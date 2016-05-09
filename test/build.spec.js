@@ -1,4 +1,4 @@
-var build = require('../lib/')
+var build = require('../lib/').build
 var expect = require('chai').expect
 var fs = require('fs-extra')
 var path = require('path')
@@ -7,7 +7,7 @@ var SOURCE = path.resolve(__dirname, './fixtures/valid/index.raml')
 var DESTINATION = path.resolve(__dirname, './fixtures/temp/build/')
 
 describe('build()', function () {
-    this.timeout(10e3)
+    this.timeout(1.2 * 10e3)
 
     afterEach(function () {
         fs.removeSync(DESTINATION)
