@@ -133,7 +133,7 @@ describe('expand()', function () {
                 expect(_.map(res.resources(), function (resource) {
                     return resource.description().value()
                 })).to.deep.equal([
-                    '#public Just a foo description',
+                    'Just a foo description',
                     'Just a private description',
                 ])
                 return done()
@@ -154,6 +154,7 @@ describe('expand()', function () {
                     return resource.description().value()
                 })).to.deep.equal([
                     'Just a foo description',
+                    null,
                 ])
                 return done()
             })
