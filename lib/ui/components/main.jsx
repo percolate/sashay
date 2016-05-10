@@ -138,6 +138,13 @@ module.exports = React.createClass({
                             {_.isObject(_.get(body, 'schema')) && (
                                 <Parameters parameters={_.get(body, 'schema')} />
                             )}
+
+                        </section>
+                    )}
+                    {!_.isEmpty(body, 'rawSchema') && (
+                        <section>
+                            <h1>Raw Body Schema</h1>
+                              <Code lang="json" code={_.get(body, 'rawSchema')}/>
                         </section>
                     )}
                 </content>
