@@ -76,6 +76,6 @@ module.exports = React.createClass({
     resizeHandler: function () {
         this._updateOffsets()
         this._updateHash()
-    }
+    },
 
 })
