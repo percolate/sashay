@@ -22,6 +22,9 @@ module.exports = React.createClass({
                 })
             })
             .flatten()
+            .sortBy(function (parameter) {
+                return parameter.displayName
+            })
             .value()
         return (
             <div>
