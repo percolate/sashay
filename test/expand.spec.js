@@ -3,12 +3,16 @@ var BPromise = require('bluebird')
 var expand = require('../lib/expand')
 var expect = require('chai').expect
 var path = require('path')
+var copySourcesToTemp = require('../').copySourcesToTemp
 
 describe('expand()', function () {
+    this.timeout(10e3)
+
     it('should throw invalid RAML error', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid.raml'),
         }
+        copySourcesToTemp(options, 'test')
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
@@ -22,6 +26,7 @@ describe('expand()', function () {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid-root.raml'),
         }
+        copySourcesToTemp(options, 'test')
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
@@ -35,6 +40,7 @@ describe('expand()', function () {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid-root-resource.raml'),
         }
+        copySourcesToTemp(options, 'test')
         expand(options)
             .then(function (res) {
                 expect(res.resources().length).to.equal(1)
@@ -48,6 +54,7 @@ describe('expand()', function () {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid-method.raml'),
         }
+        copySourcesToTemp(options, 'test')
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
@@ -61,6 +68,7 @@ describe('expand()', function () {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid-method-response-example.raml'),
         }
+        copySourcesToTemp(options, 'test')
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
@@ -74,6 +82,7 @@ describe('expand()', function () {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid-method-request-example.raml'),
         }
+        copySourcesToTemp(options, 'test')
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
@@ -87,6 +96,7 @@ describe('expand()', function () {
         var options = {
             source: path.resolve(__dirname, './fixtures/valid/index.raml'),
         }
+        copySourcesToTemp(options, 'test')
         expand(options)
             .then(function (res) {
                 var resBody = _.get(res.toJSON(), [
@@ -111,29 +121,40 @@ describe('expand()', function () {
             .caught(done)
     })
 
-    it('should optionally filter by description tag', function (done) {
-        var source = path.resolve(__dirname, './fixtures/valid-private/index.raml')
+    it('should filter public by description tag', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/valid-private/index.raml'),
+            publicOnly: false,
+        }
+        copySourcesToTemp(options, 'test')
         BPromise.resolve()
-            .then(expand.bind(undefined, {
-                source: source,
-            }))
-            .then(function (res) {
-                expect(_.map(res.resources(), function (resource) {
-                    return resource.description().value()
-                })).to.deep.equal([
-                    '#public Just a foo description',
-                    'Just a private description',
-                ])
-            })
-            .then(expand.bind(undefined, {
-                filter: 'public',
-                source: source,
-            }))
+            .then(expand.bind(undefined, options))
             .then(function (res) {
                 expect(_.map(res.resources(), function (resource) {
                     return resource.description().value()
                 })).to.deep.equal([
                     'Just a foo description',
+                    'Just a private description',
+                ])
+                return done()
+            })
+            .caught(done)
+    })
+
+    it('should filter private by description tag', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/valid-private/index.raml'),
+            publicOnly: true,
+        }
+        copySourcesToTemp(options, 'test')
+        BPromise.resolve()
+            .then(expand.bind(undefined, options))
+            .then(function (res) {
+                expect(_.map(res.resources(), function (resource) {
+                    return resource.description().value()
+                })).to.deep.equal([
+                    'Just a foo description',
+                    null,
                 ])
                 return done()
             })
