@@ -132,7 +132,12 @@ module.exports = React.createClass({
                     {_.has(body, 'schema') && (
                         <section>
                             <h1>Body</h1>
-                            <Code lang="json" code={_.get(body, 'schema')} />
+                            {typeof _.get(body, 'schema') === 'string' && (
+                                <Code lang="json" code={_.get(body, 'schema')}/>
+                            )}
+                            {_.isObject(_.get(body, 'schema')) && (
+                                <Parameters parameters={_.get(body, 'schema')} />
+                            )}
                         </section>
                     )}
                 </content>
