@@ -1,9 +1,0 @@
----
-get:
-  summary: 'TODO get'
-  description: n/a
-  tags:
-    - user
-  responses:
-    '200':
-      description: n/a

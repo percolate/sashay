@@ -1,9 +1,0 @@
----
-post:
-  summary: 'TODO post'
-  description: n/a
-  tags:
-    - canned_response
-  responses:
-    '200':
-      description: n/a
