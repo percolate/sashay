@@ -14,7 +14,7 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
-                expect(err.name).to.equal('YAMLError')
+                expect(err.name).to.equal('Error')
                 return done()
             })
             .caught(done)
@@ -33,14 +33,14 @@ describe('expand()', function () {
             .caught(done)
     })
 
-    it('should throw invalid root resource error', function (done) {
+    it('should have root resource', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid-root-resource.raml'),
         }
         expand(options)
-            .caught(function (err) {
-                expect(err).to.be.an.instanceof(Error)
-                expect(err.message).to.match(/^Invalid RAML at ".a": .*/)
+            .then(function (res) {
+                expect(res.resources().length).to.equal(1)
+                expect(res.resources()[0].displayName()).to.equal('/a')
                 return done()
             })
             .caught(done)
@@ -91,7 +91,7 @@ describe('expand()', function () {
         }
         expand(options)
             .then(function (res) {
-                var resBody = _.get(res, [
+                var resBody = _.get(res.toJSON(), [
                     'resources',
                     0,
                     'resources',
@@ -105,7 +105,8 @@ describe('expand()', function () {
                     'body',
                     'application/json',
                 ])
-                expect(resBody.schema).to.equal('{\n  "type": "object",\n  "properties": {\n    "a": {\n      "type": "string"\n    }\n  }\n}')
+                expect(resBody.schema.length).to.equal(1)
+                expect(resBody.schema[0]).to.equal('{\n  "type": "object",\n  "properties": {\n    "a": {\n      "type": "string"\n    }\n  }\n}')
                 expect(resBody.example).to.equal('{\n  "a": "hello"\n}')
                 return done()
             })
@@ -119,8 +120,10 @@ describe('expand()', function () {
         BPromise.resolve()
             .then(expand.bind(undefined, options))
             .then(function (res) {
-                expect(_.map(res.resources, 'description')).to.deep.equal([
-                    '\nprivate content\n\nJust a foo description\n\nprivate content\n',
+                expect(_.map(res.resources(), function (resource) {
+                    return resource.description().value()
+                })).to.deep.equal([
+                    'private content\n\nJust a foo description\n\nprivate content\n',
                     'Just a private description',
                 ])
                 return done()
@@ -136,7 +139,9 @@ describe('expand()', function () {
         BPromise.resolve()
             .then(expand.bind(undefined, options))
             .then(function (res) {
-                expect(_.map(res.resources, 'description')).to.deep.equal([
+                expect(_.map(res.resources(), function (resource) {
+                    return resource.description().value()
+                })).to.deep.equal([
                     'Just a foo description\n',
                 ])
                 return done()
