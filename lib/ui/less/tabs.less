@@ -1,0 +1,46 @@
+@BORDER: #C4C4C4;
+@TEXT: #555555;
+
+.tabs {
+
+    .tabs-navigation {
+        background-color: transparent;
+        border-bottom: 1px solid @BORDER;
+        border-right: 0;
+        box-sizing: inherit;
+        height: 100%;
+        overflow: hidden;
+        padding-top: 0px;
+        position: relative;
+        width: 100%;
+    }
+
+    .tabs-menu {
+        display: table;
+        list-style: none;
+        padding: 0;
+        margin: 0 0 -1px;
+    }
+
+    .tabs-menu-item {
+        border: 1px solid transparent;
+        border-top-width: 2px;
+        color: @TEXT;
+        float: left;
+        font-size: 13px;
+        font-weight: bold;
+        padding: 5px 20px;
+    }
+
+    .tabs-menu-item a {
+        cursor: pointer;
+    }
+
+    .tabs-menu-item.is-active {
+        border-bottom: 1px solid white;
+        border-left: 1px solid @BORDER;
+        border-right: 1px solid @BORDER;
+        border-top: 1px solid @BORDER;
+    }
+
+}
