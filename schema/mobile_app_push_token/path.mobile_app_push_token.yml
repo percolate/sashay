@@ -1,9 +1,0 @@
----
-post:
-  summary: 'TODO post'
-  description: n/a
-  tags:
-    - mobile_app_push_token
-  responses:
-    '200':
-      description: n/a
