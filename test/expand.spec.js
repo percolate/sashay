@@ -148,4 +148,20 @@ describe('expand()', function () {
             })
             .caught(done)
     })
+
+    it('should extend', function (done) {
+        var options = {
+            extensions: ['index.raml'],
+            source: path.resolve(__dirname, './fixtures/valid/extend.raml'),
+        }
+        expand(options)
+            .then(function (res) {
+                var resources = _.get(res.toJSON(), 'resources')
+                expect(resources.length).to.equal(2)
+                expect(resources[0].displayName).to.equal('foo')
+                expect(resources[1].displayName).to.equal('zoo')
+                return done()
+            })
+            .caught(done)
+    })
 })
