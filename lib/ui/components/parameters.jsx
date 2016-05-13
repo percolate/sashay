@@ -59,12 +59,12 @@ module.exports = React.createClass({
                                         :
                                             undefined
                                     }
-                                    {!_.isNil(parameter.enum) && (
+                                    {(parameter.enum) && (
                                         <span>
                                             Allowed values: [{parameter.enum.join(', ')}]
                                         </span>
                                     )}
-                                    {!_.isNil(parameter.pattern) && (
+                                    {(parameter.pattern) && (
                                         <span>
                                             Pattern: {parameter.pattern}
                                         </span>
