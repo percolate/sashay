@@ -1,0 +1,11 @@
+displayName: zoo
+description: |
+  My description
+/{zoo_id}:
+  post:
+    displayName: zoo
+    responses:
+      201:
+        body:
+          application/json:
+            schema: !include ../schemas/foo/item.json
