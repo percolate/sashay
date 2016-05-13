@@ -23,6 +23,7 @@ describe('transform()', function () {
                                     body: {
                                         'application/json': {
                                             schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
+                                            rawSchema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
                                         },
                                     },
                                     displayName: 'Definition',

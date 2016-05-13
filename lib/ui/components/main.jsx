@@ -5,6 +5,7 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
+var Tabs = require('react-simpletabs');
 
 module.exports = React.createClass({
 
@@ -129,10 +130,25 @@ module.exports = React.createClass({
                             <Parameters parameters={method.queryParameters} />
                         </section>
                     )}
-                    {_.has(body, 'schema') && (
+                    {_.has(body, 'schema') && _.isObject(_.get(body, 'schema')) && (
                         <section>
                             <h1>Body</h1>
-                            <Code lang="json" code={_.get(body, 'schema')} />
+                            <Tabs>
+                                <Tabs.Panel title="Properties">
+                                    <Parameters parameters={_.get(body, 'schema')} />
+                                </Tabs.Panel>
+                                {!_.isEmpty(_.get(body, 'rawSchema')) && (
+                                    <Tabs.Panel title="Raw Schema">
+                                        <Code lang="json" code={_.get(body, 'rawSchema')}/>
+                                    </Tabs.Panel>
+                                )}
+                            </Tabs>
+                        </section>
+                    )}
+                    {(_.has(body, 'schema') && typeof _.get(body, 'schema') === 'string') && (
+                        <section>
+                            <h1>Body</h1>
+                              <Code lang="json" code={_.get(body, 'schema')}/>
                         </section>
                     )}
                 </content>
