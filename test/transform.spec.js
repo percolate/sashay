@@ -22,6 +22,13 @@ describe('transform()', function () {
                                 {
                                     body: {
                                         'application/json': {
+                                            properties: {
+                                                a: {
+                                                    displayName: 'a',
+                                                    required: false,
+                                                    type: 'string',
+                                                  }
+                                            },
                                             schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"a\": {\n      \"type\": \"string\"\n    }\n  }\n}',
                                         },
                                     },
