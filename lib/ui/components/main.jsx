@@ -129,10 +129,10 @@ module.exports = React.createClass({
                             <Parameters parameters={method.queryParameters} />
                         </section>
                     )}
-                    {_.has(body, 'schema') && (
+                    {(!_.isEmpty(method.schema)) && (
                         <section>
                             <h1>Body</h1>
-                            <Code lang="json" code={_.get(body, 'schema')} />
+                            <Parameters parameters={method.schema} />
                         </section>
                     )}
                 </content>
