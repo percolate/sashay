@@ -45,6 +45,7 @@ describe('transform()', function () {
                                                 d: {
                                                     description: 'a unique ID',
                                                     displayName: 'd',
+                                                    required: true,
                                                     type: 'integer',
                                                 },
                                             },
