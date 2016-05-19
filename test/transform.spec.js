@@ -71,8 +71,8 @@ describe('transform()', function () {
                                                     type: 'object',
                                                 },
                                             },
-                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prop\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    }\n  }\n}'
-                                          },
+                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prop\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    }\n  }\n}',
+                                        },
                                     },
                                     displayName: 'foo',
                                     method: 'post',
