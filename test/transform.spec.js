@@ -57,6 +57,23 @@ describe('transform()', function () {
                                 },
                                 {
                                     absoluteUri: '/foo/{foo_id}',
+                                    body: {
+                                        'application/json': {
+                                            properties: {
+                                                a: {
+                                                    displayName: 'a',
+                                                    required: false,
+                                                    type: 'string',
+                                                },
+                                                prop: {
+                                                    displayName: 'prop',
+                                                    required: false,
+                                                    type: 'object',
+                                                },
+                                            },
+                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prop\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    }\n  }\n}'
+                                          },
+                                    },
                                     displayName: 'foo',
                                     method: 'post',
                                     responses: {

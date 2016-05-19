@@ -10,6 +10,9 @@ description: |
 /{foo_id}:
   post:
     displayName: foo
+    body:
+      application/json:
+        schema: !include ../schemas/foo/post.json
     responses:
       201:
         body:
