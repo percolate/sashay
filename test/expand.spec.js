@@ -1,7 +1,9 @@
 var _ = require('lodash')
 var BPromise = require('bluebird')
+var buildRAML = require('../lib/expand').buildRAML
 var expand = require('../lib/expand')
 var expect = require('chai').expect
+var fs = require('fs-extra')
 var path = require('path')
 
 describe('expand()', function () {
@@ -153,6 +155,24 @@ describe('expand()', function () {
                     'Just a foo description\n',
                 ])
                 return done()
+            })
+            .caught(done)
+    })
+
+    it('should expand to raml', function (done) {
+        var result = fs.readFileSync(path.resolve(__dirname, 'fixtures/dereference/result.raml'), 'utf8')
+        var options = {
+            destination: path.resolve(__dirname, 'tmp'),
+            quiet: true,
+            source: path.resolve(__dirname, 'fixtures/dereference/index.raml'),
+        }
+        BPromise.resolve()
+            .then(buildRAML.bind(undefined, options))
+            .then(function () {
+                var raml = fs.readFileSync(path.resolve(options.destination, 'index.raml'), 'utf8')
+                expect(raml).to.equal(result, 'RAML format does not match fixture')
+                fs.removeSync(options.destination)
+                done()
             })
             .caught(done)
     })
