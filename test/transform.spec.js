@@ -23,11 +23,6 @@ describe('transform()', function () {
                                     body: {
                                         'application/json': {
                                             properties: {
-                                                a: {
-                                                    displayName: 'a',
-                                                    required: false,
-                                                    type: 'string',
-                                                },
                                                 b: {
                                                     displayName: 'b',
                                                     items: {
@@ -49,7 +44,7 @@ describe('transform()', function () {
                                                     type: 'integer',
                                                 },
                                             },
-                                            schema: '{\n  \"allOf\": [\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    },\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"b\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"required\": [\n       \       "d\"\n            ],\n            \"properties\": {\n              \"c\": {\n                \"description\": \"my object description\",\n                \"type\": \"string\"\n              },\n              \"d\": {\n                \"description\": \"a unique ID\",\n                \"type\": \"integer\"\n              }\n            }\n          }\n        }\n      }\n    }\n  ]\n}',
+                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"d\"\n        ],\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": \"string\"\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\"\n          }\n        }\n      }\n    }\n  }\n}',
                                         },
                                     },
                                     displayName: 'Definition',
@@ -59,6 +54,7 @@ describe('transform()', function () {
                                     absoluteUri: '/foo/{foo_id}',
                                     body: {
                                         'application/json': {
+                                            example: undefined,
                                             properties: {
                                                 a: {
                                                     displayName: 'a',
@@ -80,6 +76,7 @@ describe('transform()', function () {
                                         201: {
                                             body: {
                                                 'application/json': {
+                                                    example: '{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}',
                                                     schema: '{\n  \"allOf\": [\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    },\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"b\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"required\": [\n       \       "d\"\n            ],\n            \"properties\": {\n              \"c\": {\n                \"description\": \"my object description\",\n                \"type\": \"string\"\n              },\n              \"d\": {\n                \"description\": \"a unique ID\",\n                \"type\": \"integer\"\n              }\n            }\n          }\n        }\n      }\n    }\n  ]\n}',
                                                 },
                                             },
@@ -175,7 +172,7 @@ describe('transform()', function () {
 
     it('should not transform', function (done) {
         var options = {
-            source: path.resolve(__dirname, './fixtures/invalid-anchor.raml'),
+            source: path.resolve(__dirname, './fixtures/invalid/invalid-anchor.raml'),
         }
         expand(options)
             .then(function (res) {
