@@ -1,47 +1,57 @@
 @BORDER: #C4C4C4;
-@TEXT: #555555;
+@TEXT: #f16421;
+@SHADED: #c1c3c6;
 
 .react-tab-panel {
 
     .react-tab-panel__tab-strip {
         background-color: transparent;
-        border-bottom: 1px solid @BORDER;
-        border-right: 0;
         box-sizing: inherit;
         height: 100%;
         overflow: hidden;
-        padding-top: 0px;
         position: relative;
         width: 100%;
-    }
-
-    .react-tab-panel__tab-strip {
         display: table;
         list-style: none;
-        padding: 0;
-        margin: 0 0 -1px;
+        margin: 0 0 -9px 0;
     }
 
     .react-tab-panel__tab-title {
-        border: 1px solid transparent;
-        border-top-width: 2px;
-        color: @TEXT;
+        color: @SHADED;
         cursor: pointer;
         float: left;
         font-size: 13px;
         font-weight: bold;
+        text-align: center;
+        width: 20%;
+        padding-left: 20%;
     }
 
     .react-tab-panel__tab-title-inner {
-        padding: 5px 20px;
+       border-bottom: 1px solid transparent;
+       border-left: 1px solid transparent;
+       border-right: 1px solid transparent;
+       border-top: 1px solid transparent;
+       font-family: "Futura W01 Bold", Helvetica, Arial, sans-serif;
+       font-size: 13px;
+       padding: 0 2px 12px;
+       text-transform: uppercase;
+       width: 60%;
+       &:hover {
+          color: @TEXT;
+       }
     }
 
     .react-tab-panel__tab-title-inner--active {
-        border-bottom: 1px solid white;
-        border-left: 1px solid @BORDER;
-        border-right: 1px solid @BORDER;
-        border-top: 1px solid @BORDER;
-        padding: 5px 20px;
+        color: @TEXT;
+        border-bottom: 1px solid @TEXT;
+        border-left: 1px solid transparent;
+        border-right: 1px solid transparent;
+        border-top: 1px solid transparent;
+        padding: 0 2px 12px;
+        text-align: center;
+        width: 60%;
+        min-width: 100%;
     }
 
     .react-tab-panel__tab-strip-scroll-tool {
