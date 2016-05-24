@@ -54,7 +54,6 @@ describe('transform()', function () {
                                     absoluteUri: '/foo/{foo_id}',
                                     body: {
                                         'application/json': {
-                                            example: undefined,
                                             properties: {
                                                 a: {
                                                     displayName: 'a',
