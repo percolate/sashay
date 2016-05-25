@@ -5,7 +5,11 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var Tabs = require('react-tab-panel').default
+var ReactTabs = require('react-tabs');
+var Tab = ReactTabs.Tab;
+var Tabs = ReactTabs.Tabs;
+var TabList = ReactTabs.TabList;
+var TabPanel = ReactTabs.TabPanel;
 
 module.exports = React.createClass({
 
@@ -133,16 +137,18 @@ module.exports = React.createClass({
                     {_.has(body, 'properties') && _.has(body, 'schema') && (
                         <section>
                             <h1>Body</h1>
-                            <Tabs>
-                                <div tabTitle="Properties">
-                                    <Parameters parameters={_.get(body, 'properties')} />
-                                </div>
-                                {!_.isEmpty(_.get(body, 'schema')) && (
-                                    <div tabTitle="Schema">
+                                <Tabs>
+                                    <TabList>
+                                        <Tab>Properties</Tab>
+                                        <Tab>Schema</Tab>
+                                    </TabList>
+                                    <TabPanel>
+                                        <Parameters parameters={_.get(body, 'properties')} />
+                                    </TabPanel>
+                                    <TabPanel>
                                         <Code lang="json" code={_.get(body, 'schema')}/>
-                                    </div>
-                                )}
-                            </Tabs>
+                                    </TabPanel>
+                                </Tabs>
                         </section>
                     )}
                 </content>
