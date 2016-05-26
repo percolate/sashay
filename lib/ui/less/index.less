@@ -100,6 +100,20 @@ main {
         }
     }
 
+    .breadcrumbs {
+        padding: 4px 0 2px;
+        a {
+            cursor: pointer;
+        }
+        a.selected {
+            color: #f16421;
+            font-weight: bold;
+        }
+        .separator {
+            padding: 0 2px;
+        }
+    }
+
     .parameters {
         border-top: solid 1px #e0e2e2;
         margin: 8px 0 40px;
@@ -119,6 +133,10 @@ main {
             font-weight: bold;
             padding-right: 20px;
             text-align: right;
+            a {
+                cursor: pointer;
+                text-decoration: underline;
+            }
         }
         .parameter-desc {
             flex: 1;
