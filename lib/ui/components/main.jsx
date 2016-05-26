@@ -5,11 +5,12 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var ReactTabs = require('react-tabs');
-var Tab = ReactTabs.Tab;
-var Tabs = ReactTabs.Tabs;
-var TabList = ReactTabs.TabList;
-var TabPanel = ReactTabs.TabPanel;
+var EasyTabs = require('easy-tabs');
+var Tabs = EasyTabs.Tabs;
+var TabList = EasyTabs.TabList;
+var Tab = EasyTabs.Tab;
+var PanelContainer = EasyTabs.PanelContainer;
+var Panel = EasyTabs.Panel;
 
 module.exports = React.createClass({
 
@@ -137,18 +138,20 @@ module.exports = React.createClass({
                     {_.has(body, 'properties') && _.has(body, 'schema') && (
                         <section>
                             <h1>Body</h1>
-                                <Tabs>
-                                    <TabList>
-                                        <Tab>Properties</Tab>
-                                        <Tab>Schema</Tab>
-                                    </TabList>
-                                    <TabPanel>
-                                        <Parameters parameters={_.get(body, 'properties')} />
-                                    </TabPanel>
-                                    <TabPanel>
-                                        <Code lang="json" code={_.get(body, 'schema')}/>
-                                    </TabPanel>
-                                </Tabs>
+                              <Tabs className="tabs" defaultTab={1} activeClassName="is-active">
+                                  <TabList className="tabs__list">
+                                      <Tab className="tabs__item">Properties</Tab>
+                                      <Tab className="tabs__item">Schema</Tab>
+                                  </TabList>
+                                  <PanelContainer className="tabs__container">
+                                      <Panel className="tabs__content">
+                                          <Parameters parameters={_.get(body, 'properties')} />
+                                      </Panel>
+                                      <Panel className="tabs__content">
+                                          <Code lang="json" code={_.get(body, 'schema')}/>
+                                      </Panel>
+                                  </PanelContainer>
+                              </Tabs>
                         </section>
                     )}
                 </content>

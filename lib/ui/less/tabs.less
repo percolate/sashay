@@ -2,52 +2,49 @@
 @SHADED: #c1c3c6;
 @GREY: rgb(224, 226, 226);
 
-section .react-tabs [role=tablist] {
-    background-color: transparent;
+.tabs__list {
     border-bottom: 1px solid @GREY;
-    box-sizing: inherit;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
     width: 100%;
-    display: table;
-    list-style: none;
-    margin: 0 0 0px 0;
-};
+}
 
-section .react-tabs [role=tab] {
+.tabs__item {
     border-bottom: 1px solid @GREY;
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
     border-top: 1px solid transparent;
+    display: inline-block;
     font-family: "Futura W01 Bold", Helvetica, Arial, sans-serif;
     font-size: 13px;
-    height: 100%;
     position: relative;
     padding: 0 2px 12px;
     text-align: center;
     text-transform: uppercase;
-    width: 45%;
+    width: 49%;
     &:hover {
        color: @TEXT;
+       cursor: pointer;
     }
-};
+}
 
-section .react-tabs [role=tab][aria-selected=true] {
+.tabs__item.is-active {
     color: @TEXT;
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
-    border-top: 1px solid transparent;
-    width: 45%;
-    position: relative;
+    width: 49%;
     &:after {
         background: @TEXT;
-        content: '';
-        position: absolute;
         bottom: 0;
-        left: 35%;
-        width: 30%;
-        height: 2px;
+        content: '';
+        height: 1px;
+        left: 37%;
+        margin-bottom: -1px;
+        position: absolute;
+        width: 25%;
     }
+}
 
-};
+.tabs__content {
+    display: none;
+}
+
+.tabs__content.is-active {
+    display: block;
+}
