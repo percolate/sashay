@@ -22,6 +22,9 @@ module.exports = React.createClass({
                 })
             })
             .flatten()
+            .sortBy(function (parameter) {
+                return parameter.displayName
+            })
             .value()
         return (
             <div>
@@ -90,5 +93,8 @@ function getParametersFromSchema (schema) {
 }
 
 function getType (property) {
-    return (property.type === 'array') ? ['[', ']'].join(property.items.type) : property.type
+    if (_.isArray(property.type)) {
+        return property.type.join(' | ')
+    }
+    return (property.type === 'array') ? ['[', ']'].join(_.get(property, ['items', 'type'], 'string')) : property.type
 }

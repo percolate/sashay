@@ -3,7 +3,8 @@
 baseUri: foo
 title: foo
 version: foo
-
+schemas:
+  - foo: !include schemas/foo/object.json
 documentation:
   -
     title: foo
@@ -19,4 +20,4 @@ documentation:
         201:
           body:
             application/json:
-              schema: !include valid/schemas/foo/item.json
+              schema: !include schemas/foo/item.json

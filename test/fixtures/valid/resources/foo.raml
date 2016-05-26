@@ -10,11 +10,15 @@ description: |
 /{foo_id}:
   post:
     displayName: foo
+    body:
+      application/json:
+        schema: !include ../schemas/foo/post.json
     responses:
       201:
         body:
           application/json:
             schema: !include ../schemas/foo/item.json
+            example: !include ../schemas/foo/item.example.json
 
   /bar:
     get:
