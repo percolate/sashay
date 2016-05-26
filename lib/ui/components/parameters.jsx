@@ -11,6 +11,7 @@ module.exports = React.createClass({
     ],
     propTypes: {
         parameters: React.PropTypes.object.isRequired,
+        root: React.PropTypes.string.isRequired,
     },
 
     componentWillMount: function () {
@@ -43,7 +44,7 @@ module.exports = React.createClass({
     },
 
     componentDidUpdate: function () {
-        this.refs.breadcrumbs.scrollIntoView();
+        this.refs.breadcrumbs.scrollIntoView()
     },
 
     createBreadCrumbs: function (parameters) {
