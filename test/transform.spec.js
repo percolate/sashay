@@ -44,7 +44,7 @@ describe('transform()', function () {
                                                             required: true,
                                                             type: 'integer',
                                                         },
-                                                    }
+                                                    },
                                                 },
                                             },
                                             schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"d\"\n        ],\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": \"string\"\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\"\n          }\n        }\n      }\n    }\n  }\n}',
@@ -74,7 +74,7 @@ describe('transform()', function () {
                                                                     required: false,
                                                                     type: 'integer',
                                                                 },
-                                                            }
+                                                            },
                                                         },
                                                     },
                                                 },

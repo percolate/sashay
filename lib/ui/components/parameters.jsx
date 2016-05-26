@@ -48,7 +48,7 @@ module.exports = React.createClass({
 
     createBreadCrumbs: function (parameters) {
         return _.map(this.state.breadcrumbs, function (breadcrumb, i) {
-            var separator = i < this.state.breadcrumbs.length - 1 ? (<span className="separator">></span>) : (<span/>)
+            var separator = i < this.state.breadcrumbs.length - 1 ? (<span className="separator">{'>'}</span>) : (<span/>)
             var parameterObject = breadcrumb === this.props.root ? {
                 displayName: this.props.root,
                 properties: parameters,
