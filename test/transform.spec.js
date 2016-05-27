@@ -83,6 +83,7 @@ describe('transform()', function () {
                                                         },
                                                     },
                                                 },
+                                                isExpandable: true,
                                             },
                                             schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prop\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"b\": {\n              \"type\": \"integer\"\n            }\n          }\n        }\n      }\n    }\n  }\n}',
                                         },
