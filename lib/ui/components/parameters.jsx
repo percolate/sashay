@@ -2,7 +2,7 @@ var _ = require('lodash')
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var VisibilitySensor = require('react-visibility-sensor');
+var VisibilitySensor = require('react-visibility-sensor')
 
 var ROOT = 'root'
 
@@ -19,6 +19,7 @@ module.exports = React.createClass({
             default: React.PropTypes.string,
             displayName: React.PropTypes.string,
             enum: React.PropTypes.array,
+            isExpandable: React.PropTypes.bool,
             pattern: React.PropTypes.string,
             properties: React.PropTypes.object,
             required: React.PropTypes.bool,
