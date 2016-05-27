@@ -145,7 +145,7 @@ module.exports = React.createClass({
                                   </TabList>
                                   <PanelContainer className="tabs__container">
                                       <Panel className="tabs__content">
-                                          <Parameters parameters={_.get(body, 'properties')} root={_.chain(body).get('displayName').capitalize().value()}/>
+                                          <Parameters parameters={_.get(body, 'properties')}/>
                                       </Panel>
                                       <Panel className="tabs__content">
                                           <Code lang="json" code={_.get(body, 'schema')}/>

@@ -2,26 +2,38 @@ var _ = require('lodash')
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
+var VisibilitySensor = require('react-visibility-sensor');
+
+var ROOT = 'root'
 
 module.exports = React.createClass({
 
+    isBreadCrumbsVisible: false,
     displayName: 'Parameters',
     mixins: [
         PureRenderMixin,
     ],
     propTypes: {
-        parameters: React.PropTypes.object.isRequired,
-        root: React.PropTypes.string.isRequired,
+        parameters: React.PropTypes.shape({
+            description: React.PropTypes.string,
+            default: React.PropTypes.string,
+            displayName: React.PropTypes.string,
+            enum: React.PropTypes.array,
+            pattern: React.PropTypes.string,
+            properties: React.PropTypes.object,
+            required: React.PropTypes.bool,
+            type: React.PropTypes.any,
+        }),
     },
 
-    componentWillMount: function () {
+    getInitialState: function () {
         var objects = {}
-        objects[this.props.root] = this.props.parameters
-        this.setState({
-            breadcrumbs: [this.props.root],
-            selected: this.props.root,
+        objects[ROOT] = this.props.parameters
+        return {
+            breadcrumbs: [ROOT],
             objects: objects,
-        })
+            selected: ROOT,
+        }
     },
 
     displayNestedObject: function (object) {
@@ -44,14 +56,20 @@ module.exports = React.createClass({
     },
 
     componentDidUpdate: function () {
-        this.refs.breadcrumbs.scrollIntoView()
+        if (!this.isBreadCrumbsVisible) {
+            this.refs.breadcrumbs.scrollIntoView()
+        }
+    },
+
+    onBreadCrumbsVisibilityChange: function (isVisible) {
+        this.isBreadCrumbsVisible = isVisible
     },
 
     createBreadCrumbs: function (parameters) {
         return _.map(this.state.breadcrumbs, function (breadcrumb, i) {
-            var separator = i < this.state.breadcrumbs.length - 1 ? (<span className="separator">{'>'}</span>) : (<span/>)
-            var parameterObject = breadcrumb === this.props.root ? {
-                displayName: this.props.root,
+            var separator = i < this.state.breadcrumbs.length - 1 ? (<span className="separator">{'.'}</span>) : (<span/>)
+            var parameterObject = breadcrumb === ROOT ? {
+                displayName: ROOT,
                 properties: parameters,
             } : parameters[breadcrumb]
             var el = breadcrumb !== this.state.selected ? <a onClick={this.displayNestedObject.bind(undefined, parameterObject)}>
@@ -62,7 +80,7 @@ module.exports = React.createClass({
     },
 
     render: function () {
-        var parameters = _.chain(this.state.selected !== this.props.root ? this.state.objects[this.state.selected].properties : this.props.parameters)
+        var parameters = _.chain(this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters)
             .map(function (parameter) {
                 if (_.has(parameter, 'schema')) return getParametersFromSchema(parameter.schema)
                 return _.extend(parameter, {
@@ -77,7 +95,9 @@ module.exports = React.createClass({
         var breadcrumbs = this.createBreadCrumbs(parameters)
         return (
             <div>
-                <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
+                {this.props.parameters.isExpandable && (<VisibilitySensor onChange={this.onBreadCrumbsVisibilityChange}>
+                      <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
+                </VisibilitySensor>)}
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
                         return (
