@@ -1,11 +1,11 @@
 var _ = require('lodash')
+var Select = require('react-select');
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 var VisibilitySensor = require('react-visibility-sensor')
 
 var ROOT = 'root'
-
 module.exports = React.createClass({
 
     isBreadCrumbsVisible: false,
@@ -20,6 +20,7 @@ module.exports = React.createClass({
             displayName: React.PropTypes.string,
             enum: React.PropTypes.array,
             isExpandable: React.PropTypes.bool,
+            oneOf: React.PropTypes.array,
             pattern: React.PropTypes.string,
             properties: React.PropTypes.object,
             required: React.PropTypes.bool,
@@ -80,8 +81,31 @@ module.exports = React.createClass({
         }.bind(this))
     },
 
+    mapOneOfs: function (oneOf) {
+        return _.map(oneOf, function (object, i) {
+            return {
+                label: 'Variant ' + (i + 1),
+                value: i,
+            }
+        })
+    },
+
+    showOneOf: function () {
+
+    },
+
     render: function () {
-        var parameters = _.chain(this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters)
+        var parametersObject = this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters
+        var oneOfs = _.chain(parametersObject)
+            .filter(function (parameter, key) {
+                return key === 'oneOf'
+            })
+            .flatten()
+            .value()
+        var parameters = _.chain(parametersObject)
+            .filter(function (parameter, key) {
+                return key !== 'oneOf'
+            })
             .map(function (parameter) {
                 if (_.has(parameter, 'schema')) return getParametersFromSchema(parameter.schema)
                 return _.extend(parameter, {
@@ -93,12 +117,14 @@ module.exports = React.createClass({
                 return parameter.displayName
             })
             .value()
+        console.log(JSON.stringify(oneOfs));
         var breadcrumbs = this.createBreadCrumbs(parameters)
         return (
             <div>
                 {this.props.parameters.isExpandable && (<VisibilitySensor onChange={this.onBreadCrumbsVisibilityChange}>
                       <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
                 </VisibilitySensor>)}
+                {oneOfs && (<Select options={this.mapOneOfs(oneOfs)} onChange={this.showOneOf}/>)}
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
                         return (
