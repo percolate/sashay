@@ -31,7 +31,7 @@ module.exports = React.createClass({
         var objects = {}
         objects[ROOT] = this.props.parameters
         return {
-            breadcrumbs: [ROOT],
+            breadcrumbs: this.props.parameters.isExpandable ? [ROOT] : null,
             objects: objects,
             selected: ROOT,
         }
@@ -54,9 +54,6 @@ module.exports = React.createClass({
                 selected: object.displayName,
             })
         }
-    },
-
-    componentDidUpdate: function () {
         if (!this.isBreadCrumbsVisible) {
             this.refs.breadcrumbs.scrollIntoView()
         }
