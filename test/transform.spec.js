@@ -65,6 +65,7 @@ describe('transform()', function () {
                                                     },
                                                 },
                                                 isExpandable: true,
+                                                description: '',
                                             },
                                             schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": [\n        \"array\",\n        null\n      ],\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": [\n          \"object\",\n          null\n        ],\n        \"required\": [\n          \"d\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": [\n              \"string\",\n              null\n            ],\n            \"example\": \"firstname.lastname@percolate.com\",\n            \"format\": \"email\",\n            \"maxLength\": 100\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\",\n            \"minimum\": 10,\n            \"maximum\": 20\n          },\n          \"g\": {\n            \"enum\": [\n              \"val1\",\n              \"val2\"\n            ]\n          },\n          \"h\": {\n            \"type\": \"array\"\n          },\n          \"oneOf\": [\n            {\n              \"type\": \"object\",\n              \"properties\": {\n                \"e\": {\n                  \"type\": \"boolean\",\n                  \"default\": true\n                }\n              }\n            },\n            {\n              \"type\": \"object\",\n              \"properties\": {\n                \"f\": {\n                  \"type\": \"string\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    }\n  }\n}',
                                         },
@@ -77,6 +78,7 @@ describe('transform()', function () {
                                     body: {
                                         'application/json': {
                                             properties: {
+                                                description: '',
                                                 prop: {
                                                     displayName: 'prop',
                                                     required: false,
