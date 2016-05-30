@@ -34,6 +34,7 @@ module.exports = React.createClass({
         return {
             breadcrumbs: [ROOT],
             objects: objects,
+            oneOf: 0,
             selected: ROOT,
         }
     },
@@ -90,12 +91,15 @@ module.exports = React.createClass({
         })
     },
 
-    showOneOf: function () {
-
+    showOneOf: function (option) {
+        this.setState({
+            oneOf: option.value,
+        })
     },
 
     render: function () {
-        var parametersObject = this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters
+        var parametersObject = {}
+        _.extend(parametersObject, this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters)
         var oneOfs = _.chain(parametersObject)
             .filter(function (parameter, key) {
                 return key === 'oneOf'
@@ -103,6 +107,7 @@ module.exports = React.createClass({
             .flatten()
             .value()
         var parameters = _.chain(parametersObject)
+            .extend(_.get(parametersObject, ['oneOf', this.state.oneOf]))
             .filter(function (parameter, key) {
                 return key !== 'oneOf'
             })
@@ -117,14 +122,13 @@ module.exports = React.createClass({
                 return parameter.displayName
             })
             .value()
-        console.log(JSON.stringify(oneOfs));
         var breadcrumbs = this.createBreadCrumbs(parameters)
         return (
             <div>
-                {this.props.parameters.isExpandable && (<VisibilitySensor onChange={this.onBreadCrumbsVisibilityChange}>
+                {(this.props.parameters.isExpandable || _.has(this.props.parameters, 'oneOf')) && (<VisibilitySensor onChange={this.onBreadCrumbsVisibilityChange}>
                       <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
                 </VisibilitySensor>)}
-                {oneOfs && (<Select options={this.mapOneOfs(oneOfs)} onChange={this.showOneOf}/>)}
+                {!_.isEmpty(oneOfs) && (<Select value={this.state.oneOf} options={this.mapOneOfs(oneOfs)} onChange={this.showOneOf}/>)}
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
                         return (
