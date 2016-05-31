@@ -2,13 +2,12 @@ var _ = require('lodash')
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var VisibilitySensor = require('react-visibility-sensor')
+var ReactDOM = require('react-dom')
 
 var ROOT = 'root'
 
 module.exports = React.createClass({
 
-    isBreadCrumbsVisible: false,
     displayName: 'Parameters',
     mixins: [
         PureRenderMixin,
@@ -54,13 +53,34 @@ module.exports = React.createClass({
                 selected: object.displayName,
             })
         }
-        if (!this.isBreadCrumbsVisible) {
+        if (!this.isBreadCrumbsVisible()) {
             this.refs.breadcrumbs.scrollIntoView()
         }
     },
 
-    onBreadCrumbsVisibilityChange: function (isVisible) {
-        this.isBreadCrumbsVisible = isVisible
+    isBreadCrumbsVisible: function () {
+        var el = ReactDOM.findDOMNode(this.refs.breadcrumbs);
+        var rect = el.getBoundingClientRect();
+        var containmentRect = {
+            top: 0,
+            left: 0,
+            bottom: window.innerHeight || document.documentElement.clientHeight,
+            right: window.innerWidth || document.documentElement.clientWidth,
+        }
+
+        var visibilityRect = {
+            top: rect.top >= containmentRect.top,
+            left: rect.left >= containmentRect.left,
+            bottom: rect.bottom <= containmentRect.bottom,
+            right: rect.right <= containmentRect.right
+        }
+
+        return (
+            visibilityRect.top &&
+            visibilityRect.left &&
+            visibilityRect.bottom &&
+            visibilityRect.right
+        )
     },
 
     createBreadCrumbs: function (parameters) {
@@ -79,6 +99,7 @@ module.exports = React.createClass({
 
     render: function () {
         var parameters = _.chain(this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters)
+            .omit(['isExpandable', 'description'])
             .map(function (parameter) {
                 if (_.has(parameter, 'schema')) return getParametersFromSchema(parameter.schema)
                 return _.extend(parameter, {
@@ -93,9 +114,7 @@ module.exports = React.createClass({
         var breadcrumbs = this.createBreadCrumbs(parameters)
         return (
             <div>
-                {this.props.parameters.isExpandable && (<VisibilitySensor onChange={this.onBreadCrumbsVisibilityChange}>
-                      <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
-                </VisibilitySensor>)}
+                <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
                         return (
