@@ -49,11 +49,27 @@ describe('transform()', function () {
                                                             required: false,
                                                             type: 'string',
                                                         },
+                                                        oneOf: [
+                                                            {
+                                                              e: {
+                                                                displayName: 'e',
+                                                                required: false,
+                                                                type: 'boolean',
+                                                              },
+                                                            },
+                                                            {
+                                                              f: {
+                                                                displayName: 'f',
+                                                                required: false,
+                                                                type: 'string',
+                                                              }
+                                                            }
+                                                          ]
                                                     },
                                                 },
                                                 isExpandable: true,
                                             },
-                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": \"array\",\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"d\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": \"string\",\n            \"example\": \"firstname.lastname@percolate.com\",\n            \"format\": \"email\",\n            \"maxLength\": 100\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\",\n            \"minimum\": 10,\n            \"maximum\": 20\n          },\n          \"g\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"val1\",\n              \"val2\"\n            ]\n          },\n          \"oneOf\": [\n            {\n              \"type\": \"object\",\n              \"properties\": {\n                \"e\": {\n                  \"type\": \"boolean\",\n                  \"default\": true\n                }\n              }\n            },\n            {\n              \"type\": \"object\",\n              \"properties\": {\n                \"f\": {\n                  \"type\": \"string\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    }\n  }\n}',
+                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": \"array\",\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": \"object\",\n\        "required\": [\n          \"d\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": \"string\",\n            \"example\": \"firstname.lastname@percolate.com\",\n            \"format\": \"email\",\n            \"maxLength\": 100\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\",\n            \"minimum\": 10,\n            \"maximum\": 20\n          },\n          \"g\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"val1\",\n              \"val2\"\n            ]\n          }\n        },\n        \"oneOf\": [\n          {\n            \"type\": \"object\",\n            \"properties\": {\n              \"e\": {\n                \"type\": \"boolean\",\n                \"default\": true\n              }\n            }\n          },\n          {\n            \"type\": \"object\",\n            \"properties\": {\n              \"f\": {\n                \"type\": \"string\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}',
                                         },
                                     },
                                     displayName: 'Definition',

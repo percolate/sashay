@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var Select = require('react-select');
+var Select = require('./dropdown.jsx');
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
@@ -31,10 +31,12 @@ module.exports = React.createClass({
     getInitialState: function () {
         var objects = {}
         objects[ROOT] = this.props.parameters
+        var oneOfs = {}
+        oneOfs[ROOT] = 0
         return {
             breadcrumbs: [ROOT],
             objects: objects,
-            oneOf: 0,
+            oneOfs: oneOfs,
             selected: ROOT,
         }
     },
@@ -45,17 +47,21 @@ module.exports = React.createClass({
             var objects = this.state.objects
             objects[object.displayName] = object
             this.state.breadcrumbs.push(object.displayName)
+            var oneOfs = this.state.oneOfs
+            oneOfs[object.displayName] = 0
             this.setState({
                 breadcrumbs: this.state.breadcrumbs,
                 objects: objects,
-                selected: object.displayName,
+                oneOfs: oneOfs,
             })
         } else {
             this.setState({
                 breadcrumbs: _.dropRight(this.state.breadcrumbs, this.state.breadcrumbs.length - index - 1),
-                selected: object.displayName,
             })
         }
+        this.setState({
+            selected: object.displayName,
+        })
     },
 
     componentDidUpdate: function () {
@@ -74,7 +80,7 @@ module.exports = React.createClass({
             var parameterObject = breadcrumb === ROOT ? {
                 displayName: ROOT,
                 properties: parameters,
-            } : parameters[breadcrumb]
+            } : this.state.objects[breadcrumb]
             var el = breadcrumb !== this.state.selected ? <a onClick={this.displayNestedObject.bind(undefined, parameterObject)}>
                 {breadcrumb}
                 </a> : <a className="selected">{breadcrumb}</a>
@@ -92,8 +98,10 @@ module.exports = React.createClass({
     },
 
     showOneOf: function (option) {
+        var oneOfs = this.state.oneOfs
+        oneOfs[this.state.selected] = option
         this.setState({
-            oneOf: option.value,
+            oneOfs: _.clone(oneOfs),
         })
     },
 
@@ -107,7 +115,7 @@ module.exports = React.createClass({
             .flatten()
             .value()
         var parameters = _.chain(parametersObject)
-            .extend(_.get(parametersObject, ['oneOf', this.state.oneOf]))
+            .extend(_.get(parametersObject, ['oneOf', this.state.oneOfs[this.state.selected]]))
             .filter(function (parameter, key) {
                 return key !== 'oneOf'
             })
@@ -125,10 +133,14 @@ module.exports = React.createClass({
         var breadcrumbs = this.createBreadCrumbs(parameters)
         return (
             <div>
-                {(this.props.parameters.isExpandable || _.has(this.props.parameters, 'oneOf')) && (<VisibilitySensor onChange={this.onBreadCrumbsVisibilityChange}>
-                      <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
-                </VisibilitySensor>)}
-                {!_.isEmpty(oneOfs) && (<Select value={this.state.oneOf} options={this.mapOneOfs(oneOfs)} onChange={this.showOneOf}/>)}
+                <div className="sub-menu">
+                    {(this.props.parameters.isExpandable || _.has(this.props.parameters, 'oneOf')) && (<VisibilitySensor onChange={this.onBreadCrumbsVisibilityChange}>
+                          <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
+                    </VisibilitySensor>)}
+                    {!_.isEmpty(oneOfs) && (<div className="reactDropdown-wrapper">
+                          <Select options={this.mapOneOfs(oneOfs)} label={this.mapOneOfs(oneOfs)[this.state.oneOfs[this.state.selected]].label} onClick={this.showOneOf}/>
+                    </div>)}
+                </div>
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
                         return (

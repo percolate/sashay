@@ -25,14 +25,14 @@ properties:
           enum:
             - val1
             - val2
-        oneOf:
-            -
-              type: object
-              properties:
-                e:
-                  type: boolean
-                  default: true
-            - type: object
-              properties:
-                f:
-                  type: string
+      oneOf:
+          -
+            type: object
+            properties:
+              e:
+                type: boolean
+                default: true
+          - type: object
+            properties:
+              f:
+                type: string
