@@ -51,20 +51,20 @@ describe('transform()', function () {
                                                         },
                                                         oneOf: [
                                                             {
-                                                              e: {
-                                                                displayName: 'e',
-                                                                required: false,
-                                                                type: 'boolean',
-                                                              },
+                                                                e: {
+                                                                    displayName: 'e',
+                                                                    required: false,
+                                                                    type: 'boolean',
+                                                                },
                                                             },
                                                             {
-                                                              f: {
-                                                                displayName: 'f',
-                                                                required: false,
-                                                                type: 'string',
-                                                              }
-                                                            }
-                                                          ]
+                                                                f: {
+                                                                  displayName: 'f',
+                                                                  required: false,
+                                                                  type: 'string',
+                                                                },
+                                                            },
+                                                        ],
                                                     },
                                                 },
                                                 isExpandable: true,

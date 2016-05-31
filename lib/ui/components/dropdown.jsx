@@ -20,7 +20,7 @@ module.exports = React.createClass({
                 React.PropTypes.shape({
                     element: React.PropTypes.element.isRequired,
                     value: React.PropTypes.node,
-                })
+                }),
             ])
         ),
         open: React.PropTypes.bool,

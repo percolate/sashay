@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var Select = require('./dropdown.jsx');
+var Select = require('./dropdown.jsx')
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
