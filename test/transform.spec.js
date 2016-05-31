@@ -59,9 +59,9 @@ describe('transform()', function () {
                                                             },
                                                             {
                                                                 f: {
-                                                                  displayName: 'f',
-                                                                  required: false,
-                                                                  type: 'string',
+                                                                    displayName: 'f',
+                                                                    required: false,
+                                                                    type: 'string',
                                                                 },
                                                             },
                                                         ],
