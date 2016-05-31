@@ -26,25 +26,48 @@ describe('transform()', function () {
                                                 b: {
                                                     displayName: 'b',
                                                     items: {
-                                                        type: 'object',
+                                                        type: ['object', null],
                                                     },
                                                     required: false,
                                                     type: 'array',
+                                                    properties: {
+                                                        c: {
+                                                            description: 'my object description',
+                                                            displayName: 'c',
+                                                            required: false,
+                                                            type: ['string', null],
+                                                        },
+                                                        d: {
+                                                            description: 'a unique ID',
+                                                            displayName: 'd',
+                                                            required: true,
+                                                            type: 'integer',
+                                                        },
+                                                        g: {
+                                                            displayName: 'g',
+                                                            enum: ['val1', 'val2'],
+                                                            required: false,
+                                                            type: 'string',
+                                                        },
+                                                        h: {
+                                                            displayName: 'h',
+                                                            items: {
+                                                                type: 'string',
+                                                            },
+                                                            required: false,
+                                                            type: 'array',
+                                                        },
+                                                        oneOf: {
+                                                            displayName: 'oneOf',
+                                                            required: false,
+                                                            type: 'string',
+                                                        },
+                                                    },
                                                 },
-                                                c: {
-                                                    description: 'my object description',
-                                                    displayName: 'c',
-                                                    required: false,
-                                                    type: 'string',
-                                                },
-                                                d: {
-                                                    description: 'a unique ID',
-                                                    displayName: 'd',
-                                                    required: true,
-                                                    type: 'integer',
-                                                },
+                                                isExpandable: true,
+                                                description: '',
                                             },
-                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"d\"\n        ],\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": \"string\"\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\"\n          }\n        }\n      }\n    }\n  }\n}',
+                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": [\n        \"array\",\n        null\n      ],\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": [\n          \"object\",\n          null\n        ],\n        \"required\": [\n          \"d\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": [\n              \"string\",\n              null\n            ],\n            \"example\": \"firstname.lastname@percolate.com\",\n            \"format\": \"email\",\n            \"maxLength\": 100\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\",\n            \"minimum\": 10,\n            \"maximum\": 20\n          },\n          \"g\": {\n            \"enum\": [\n              \"val1\",\n              \"val2\"\n            ]\n          },\n          \"h\": {\n            \"type\": \"array\"\n          },\n          \"oneOf\": [\n            {\n              \"type\": \"object\",\n              \"properties\": {\n                \"e\": {\n                  \"type\": \"boolean\",\n                  \"default\": true\n                }\n              }\n            },\n            {\n              \"type\": \"object\",\n              \"properties\": {\n                \"f\": {\n                  \"type\": \"string\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    }\n  }\n}',
                                         },
                                     },
                                     displayName: 'The foo object',
@@ -55,18 +78,29 @@ describe('transform()', function () {
                                     body: {
                                         'application/json': {
                                             properties: {
-                                                a: {
-                                                    displayName: 'a',
-                                                    required: false,
-                                                    type: 'string',
-                                                },
+                                                description: '',
                                                 prop: {
                                                     displayName: 'prop',
                                                     required: false,
                                                     type: 'object',
+                                                    properties: {
+                                                        a: {
+                                                            displayName: 'a',
+                                                            required: false,
+                                                            type: 'object',
+                                                            properties: {
+                                                                b: {
+                                                                    displayName: 'b',
+                                                                    required: false,
+                                                                    type: 'integer',
+                                                                },
+                                                            },
+                                                        },
+                                                    },
                                                 },
+                                                isExpandable: true,
                                             },
-                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prop\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    }\n  }\n}',
+                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prop\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"b\": {\n              \"type\": \"integer\"\n            }\n          }\n        }\n      }\n    }\n  }\n}',
                                         },
                                     },
                                     displayName: 'foo',

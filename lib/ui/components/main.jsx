@@ -5,12 +5,12 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var EasyTabs = require('easy-tabs');
-var Tabs = EasyTabs.Tabs;
-var TabList = EasyTabs.TabList;
-var Tab = EasyTabs.Tab;
-var PanelContainer = EasyTabs.PanelContainer;
-var Panel = EasyTabs.Panel;
+var EasyTabs = require('easy-tabs')
+var Tabs = EasyTabs.Tabs
+var TabList = EasyTabs.TabList
+var Tab = EasyTabs.Tab
+var PanelContainer = EasyTabs.PanelContainer
+var Panel = EasyTabs.Panel
 
 module.exports = React.createClass({
 
@@ -145,7 +145,7 @@ module.exports = React.createClass({
                                   </TabList>
                                   <PanelContainer className="tabs__container">
                                       <Panel className="tabs__content">
-                                          <Parameters parameters={_.get(body, 'properties')} />
+                                          <Parameters parameters={_.get(body, 'properties')}/>
                                       </Panel>
                                       <Panel className="tabs__content">
                                           <Code lang="json" code={_.get(body, 'schema')}/>
