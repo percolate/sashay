@@ -101,9 +101,19 @@ main {
         }
     }
 
+    .breadcrumbs {
+        a {
+            cursor: pointer;
+        }
+        a.selected {
+            color: #f16421;
+            font-weight: bold;
+        }
+    }
+
     .parameters {
         border-top: solid 1px #e0e2e2;
-        margin: 8px 0 40px;
+        margin: -1px 0 40px;
         padding: 0;
         .parameter {
             border-bottom: solid 1px #e0e2e2;
@@ -120,6 +130,10 @@ main {
             font-weight: bold;
             padding-right: 20px;
             text-align: right;
+            a {
+                cursor: pointer;
+                text-decoration: underline;
+            }
         }
         .parameter-desc {
             flex: 1;

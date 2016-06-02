@@ -4,4 +4,7 @@ properties:
     type: object
     properties:
       a:
-        type: string
+        type: object
+        properties:
+          b:
+            type: integer

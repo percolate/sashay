@@ -1,15 +1,45 @@
 type: object
 properties:
   b:
-    type: array
+    type:
+      - array
+      - null
+    minItems: 1
     items:
-      type: object
+      type:
+        - object
+        - null
       required:
         - d
+      additionalProperties: false
       properties:
         c:
           description: my object description
-          type: string
+          type:
+            - string
+            - null
+          example: firstname.lastname@percolate.com
+          format: email
+          maxLength: 100
         d:
           description: a unique ID
           type: integer
+          minimum: 10
+          maximum: 20
+        g:
+          enum:
+            - val1
+            - val2
+        h:
+          type: array
+        oneOf:
+            -
+              type: object
+              properties:
+                e:
+                  type: boolean
+                  default: true
+            - type: object
+              properties:
+                f:
+                  type: string
