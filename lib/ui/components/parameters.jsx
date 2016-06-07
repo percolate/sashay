@@ -59,8 +59,8 @@ module.exports = React.createClass({
     },
 
     isBreadCrumbsVisible: function () {
-        var el = ReactDOM.findDOMNode(this.refs.breadcrumbs);
-        var rect = el.getBoundingClientRect();
+        var el = ReactDOM.findDOMNode(this.refs.breadcrumbs)
+        var rect = el.getBoundingClientRect()
         var containmentRect = {
             top: 0,
             left: 0,
@@ -72,7 +72,7 @@ module.exports = React.createClass({
             top: rect.top >= containmentRect.top,
             left: rect.left >= containmentRect.left,
             bottom: rect.bottom <= containmentRect.bottom,
-            right: rect.right <= containmentRect.right
+            right: rect.right <= containmentRect.right,
         }
 
         return (
