@@ -8,7 +8,7 @@ describe('helper', function () {
                 a: 1,
                 b: true,
                 c: 'Hello world',
-            })).to.equal('curl http://foo.com/BAR_ID \\\n  -X POST \\\n  -H "Authorization: foo" \\\n  -H "Content-type: application/json" \\\n  -d \'EXAMPLE_REQUEST_BODY\'')
+            })).to.equal('curl http://foo.com/{bar_id} \\\n  -X POST \\\n  -H "Authorization: foo" \\\n  -H "Content-type: application/json; charset=utf-8" \\\n  -d \'EXAMPLE_REQUEST_BODY\'')
         })
     })
 
@@ -16,10 +16,11 @@ describe('helper', function () {
         it('should do', function () {
             expect(helper.addRequiredQueryParameters('http://foo.com/', {
                 absoluteUri: 'bar/',
-                is: [
-                    'licenseScopeIds',
-                ],
                 queryParameters: [{
+                    required: false,
+                    displayName: 'scope_ids',
+                },
+                {
                     required: true,
                     displayName: 'type',
                 },
@@ -28,7 +29,7 @@ describe('helper', function () {
                     displayName: 'fields',
                 },
                 ],
-            })).to.equal('http://foo.com/bar/?scope_ids=license:1&type=TYPE')
+            })).to.equal('http://foo.com/bar/?scope_ids={scope_ids}&type={type}')
         })
     })
 })

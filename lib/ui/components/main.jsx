@@ -158,7 +158,7 @@ module.exports = React.createClass({
                     {_.has(method, 'method') && (
                         <section>
                             <h1>Example curl request</h1>
-                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY')} />
+                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), '{your_api_key}')} />
                         </section>
                     )}
 
