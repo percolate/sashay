@@ -35,6 +35,7 @@ module.exports = React.createClass({
         ).isRequired,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
+        updateOffsets: React.PropTypes.func.isRequired,
     },
 
     render: function () {
@@ -145,7 +146,7 @@ module.exports = React.createClass({
                                   </TabList>
                                   <PanelContainer className="tabs__container">
                                       <Panel className="tabs__content">
-                                          <Parameters parameters={_.get(body, 'properties')}/>
+                                          <Parameters parameters={_.get(body, 'properties')} updateOffsets={this.props.updateOffsets}/>
                                       </Panel>
                                       <Panel className="tabs__content">
                                           <Code lang="json" code={_.get(body, 'schema')}/>

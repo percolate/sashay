@@ -68,6 +68,7 @@ module.exports = React.createClass({
                 <Main
                     {...this.props}
                     ref="main"
+                    updateOffsets={this._updateOffsets}
                 />
             </div>
         )

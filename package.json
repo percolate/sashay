@@ -14,7 +14,7 @@
   "scripts": {
     "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha",
     "style": "./node_modules/.bin/eslint --config ./node_modules/eslint-config-percolate/.eslintrc --ext '.js,.jsx' ./lib/ ./test/*.spec.js",
-    "test": "./node_modules/.bin/mocha --reporter spec --grep ''"
+    "test": "jest --verbose"
   },
   "dependencies": {
     "ajv": "3.8.6",
@@ -52,7 +52,21 @@
     "webpack": "1.12.14",
     "webpack-dev-server": "1.14.1"
   },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+    "unmockedModulePathPatterns": [
+        "<rootDir>/node_modules/react",
+        "<rootDir>/node_modules/fbjs",
+        "<rootDir>/node_modules/react-dom",
+        "<rootDir>/node_modules/react-addons-test-utils",
+        "<rootDir>/node_modules/lodash"
+    ]
+},
   "devDependencies": {
+    "babel-jest": "^9.0.0",
+    "babel-polyfill": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
     "chai": "3.5.0",
     "codecov.io": "0.1.6",
     "eslint": "1.10.3",
@@ -61,6 +75,8 @@
     "eslint-plugin-react": "3.11.3",
     "eslint-plugin-sinon": "0.1.0",
     "istanbul": "0.4.2",
-    "mocha": "2.4.5"
+    "jest-cli": "^12.1.1",
+    "mocha": "2.4.5",
+    "react-addons-test-utils": "0.14.0"
   }
 }

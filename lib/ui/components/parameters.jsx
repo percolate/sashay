@@ -24,6 +24,7 @@ module.exports = React.createClass({
             required: React.PropTypes.bool,
             type: React.PropTypes.any,
         }),
+        updateOffsets: React.PropTypes.func.isRequired,
     },
 
     getInitialState: function () {
@@ -56,6 +57,7 @@ module.exports = React.createClass({
         if (!this.isBreadCrumbsVisible()) {
             this.refs.breadcrumbs.scrollIntoView()
         }
+        this.props.updateOffsets()
     },
 
     isBreadCrumbsVisible: function () {
