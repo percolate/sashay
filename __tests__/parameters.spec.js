@@ -1,4 +1,3 @@
-var path = require('path')
 jest.unmock('../lib/ui/components/parameters.jsx')
 jest.unmock('../lib/ui/components/controller.jsx')
 jest.unmock('../lib/ui/components/parameters.jsx')
@@ -168,8 +167,6 @@ describe('Parameters', function () {
 
       var b = TestUtils.findRenderedDOMComponentWithClass(controller, 'breadcrumbs')
 
-      console.log(b.getDOMNode().innerHTML)
-      console.log(controller.state);
       TestUtils.Simulate.click(links[4])
       controller._updateOffsets()
       controller._updateHash()

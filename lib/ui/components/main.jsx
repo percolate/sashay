@@ -5,12 +5,6 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var EasyTabs = require('easy-tabs')
-var Tabs = EasyTabs.Tabs
-var TabList = EasyTabs.TabList
-var Tab = EasyTabs.Tab
-var PanelContainer = EasyTabs.PanelContainer
-var Panel = EasyTabs.Panel
 
 module.exports = React.createClass({
 
@@ -136,23 +130,10 @@ module.exports = React.createClass({
                             <Parameters parameters={method.queryParameters} />
                         </section>
                     )}
-                    {_.has(body, 'properties') && _.has(body, 'schema') && (
+                    {_.has(body, 'properties') && (
                         <section>
                             <h1>Body</h1>
-                              <Tabs className="tabs" defaultTab={1} activeClassName="is-active">
-                                  <TabList className="tabs__list">
-                                      <Tab className="tabs__item">Properties</Tab>
-                                      <Tab className="tabs__item">Schema</Tab>
-                                  </TabList>
-                                  <PanelContainer className="tabs__container">
-                                      <Panel className="tabs__content">
-                                          <Parameters parameters={_.get(body, 'properties')} updateOffsets={this.props.updateOffsets}/>
-                                      </Panel>
-                                      <Panel className="tabs__content">
-                                          <Code lang="json" code={_.get(body, 'schema')}/>
-                                      </Panel>
-                                  </PanelContainer>
-                              </Tabs>
+                            <Parameters parameters={_.get(body, 'properties')} />
                         </section>
                     )}
                 </content>
