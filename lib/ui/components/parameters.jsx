@@ -7,7 +7,7 @@ var ReactDOM = require('react-dom')
 var ROOT = 'root'
 
 module.exports = React.createClass({
-
+    expanded: false,
     displayName: 'Parameters',
     mixins: [
         PureRenderMixin,
@@ -57,7 +57,14 @@ module.exports = React.createClass({
         if (!this.isBreadCrumbsVisible()) {
             this.refs.breadcrumbs.scrollIntoView()
         }
-        this.props.updateOffsets()
+        this.expanded = true
+    },
+
+    componentDidUpdate: function () {
+        if (this.expanded) {
+            this.props.updateOffsets()
+            this.expanded = false
+        }
     },
 
     isBreadCrumbsVisible: function () {
