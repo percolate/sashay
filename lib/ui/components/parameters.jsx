@@ -98,8 +98,8 @@ module.exports = React.createClass({
             var parameterObject = breadcrumb === ROOT ? {
                 displayName: ROOT,
                 properties: parameters,
-            } : parameters[breadcrumb]
-            var el = breadcrumb !== this.state.selected ? <a onClick={this.displayNestedObject.bind(undefined, parameterObject)}>
+            } : this.state.objects[breadcrumb]
+            var el = breadcrumb !== this.state.selected ? <a onClick={this.displayNestedObject.bind(null, parameterObject)}>
                 {breadcrumb}
                 </a> : <a className="selected">{breadcrumb}</a>
             return (<span key={i}>{el}{separator}</span>)
