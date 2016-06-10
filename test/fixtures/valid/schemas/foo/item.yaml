@@ -1,22 +1,22 @@
-allOf:
-  -
-    type: object
-    properties:
-      a:
-        type: string
-  -
-    type: object
-    properties:
-      b:
-        type: array
-        items:
-          type: object
-          required:
-            - d
-          properties:
-            c:
-              description: my object description
-              type: string
-            d:
-              description: a unique ID
-              type: integer
+type: object
+properties:
+  a:
+    type: string
+  b:
+    type: array
+    items:
+      type: object
+      required:
+        - d
+      properties:
+        c:
+          description: my date
+          type: string
+          format: date-time
+        d:
+          description: a unique ID
+          type: integer
+        e:
+          description: my other date
+          type: string
+          format: dateTime
