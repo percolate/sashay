@@ -24,7 +24,7 @@ module.exports = React.createClass({
             required: React.PropTypes.bool,
             type: React.PropTypes.any,
         }),
-        updateOffsets: React.PropTypes.func.isRequired,
+        updateOffsets: React.PropTypes.func,
     },
 
     getInitialState: function () {

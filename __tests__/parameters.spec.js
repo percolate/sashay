@@ -155,11 +155,11 @@ describe('Parameters', function () {
       var div = document.createElement('div');
       document.body.appendChild(div);
       var controller = ReactDOM.render(<Controller {...data} />, div);
-      var node = React.findDOMNode(controller);
+      var node = ReactDOM.findDOMNode(controller);
       var links = TestUtils.scryRenderedDOMComponentsWithTag(controller, 'a')
       console.log('0 ' + JSON.stringify(node.getBoundingClientRect()))
 
-      TestUtils.Simulate.wheel(React.findDOMNode(links[4]))
+      TestUtils.Simulate.wheel(ReactDOM.findDOMNode(links[4]))
       TestUtils.Simulate.click(links[0])
       controller._updateOffsets()
       controller._updateHash()

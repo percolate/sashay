@@ -133,7 +133,7 @@ module.exports = React.createClass({
                     {_.has(body, 'properties') && (
                         <section>
                             <h1>Body</h1>
-                            <Parameters parameters={_.get(body, 'properties')} />
+                            <Parameters parameters={_.get(body, 'properties')} updateOffsets={this.props.updateOffsets} />
                         </section>
                     )}
                 </content>
