@@ -19,4 +19,4 @@ properties:
         e:
           description: my other date
           type: string
-          format: dateTime
+          format: legacy-date-time
