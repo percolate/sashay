@@ -3,12 +3,11 @@ var Select = require('./dropdown.jsx')
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var VisibilitySensor = require('react-visibility-sensor')
+var ReactDOM = require('react-dom')
 
 var ROOT = 'root'
 module.exports = React.createClass({
 
-    isBreadCrumbsVisible: false,
     displayName: 'Parameters',
     mixins: [
         PureRenderMixin,
@@ -34,7 +33,7 @@ module.exports = React.createClass({
         var oneOfs = {}
         oneOfs[ROOT] = 0
         return {
-            breadcrumbs: [ROOT],
+            breadcrumbs: this.props.parameters.isExpandable || this.props.parameters.oneOf ? [ROOT] : null,
             objects: objects,
             oneOfs: oneOfs,
             selected: ROOT,
@@ -65,13 +64,34 @@ module.exports = React.createClass({
     },
 
     componentDidUpdate: function () {
-        if (!this.isBreadCrumbsVisible) {
+        if (!this.isBreadCrumbsVisible()) {
             this.refs.breadcrumbs.scrollIntoView()
         }
     },
 
-    onBreadCrumbsVisibilityChange: function (isVisible) {
-        this.isBreadCrumbsVisible = isVisible
+    isBreadCrumbsVisible: function () {
+        var el = ReactDOM.findDOMNode(this.refs.breadcrumbs)
+        var rect = el.getBoundingClientRect()
+        var containmentRect = {
+            top: 0,
+            left: 0,
+            bottom: window.innerHeight || document.documentElement.clientHeight,
+            right: window.innerWidth || document.documentElement.clientWidth,
+        }
+
+        var visibilityRect = {
+            top: rect.top >= containmentRect.top,
+            left: rect.left >= containmentRect.left,
+            bottom: rect.bottom <= containmentRect.bottom,
+            right: rect.right <= containmentRect.right,
+        }
+
+        return (
+            visibilityRect.top &&
+            visibilityRect.left &&
+            visibilityRect.bottom &&
+            visibilityRect.right
+        )
     },
 
     createBreadCrumbs: function (parameters) {
@@ -81,7 +101,7 @@ module.exports = React.createClass({
                 displayName: ROOT,
                 properties: parameters,
             } : this.state.objects[breadcrumb]
-            var el = breadcrumb !== this.state.selected ? <a onClick={this.displayNestedObject.bind(undefined, parameterObject)}>
+            var el = breadcrumb !== this.state.selected ? <a onClick={this.displayNestedObject.bind(null, parameterObject)}>
                 {breadcrumb}
                 </a> : <a className="selected">{breadcrumb}</a>
             return (<span key={i}>{el}{separator}</span>)
@@ -106,8 +126,10 @@ module.exports = React.createClass({
     },
 
     render: function () {
-        var parametersObject = {}
-        _.extend(parametersObject, this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters)
+        var parametersObject = _.chain({})
+            .extend(this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters)
+            .omit(['isExpandable', 'description'])
+            .value()
         var oneOfs = _.chain(parametersObject)
             .filter(function (parameter, key) {
                 return key === 'oneOf'
@@ -134,9 +156,7 @@ module.exports = React.createClass({
         return (
             <div>
                 <div className="sub-menu">
-                    {(this.props.parameters.isExpandable || _.has(this.props.parameters, 'oneOf')) && (<VisibilitySensor onChange={this.onBreadCrumbsVisibilityChange}>
-                          <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
-                    </VisibilitySensor>)}
+                    <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
                     {!_.isEmpty(oneOfs) && (<div className="reactDropdown-wrapper">
                           <Select options={this.mapOneOfs(oneOfs)} label={this.mapOneOfs(oneOfs)[this.state.oneOfs[this.state.selected]].label} onClick={this.showOneOf}/>
                     </div>)}

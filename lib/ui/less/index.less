@@ -1,10 +1,10 @@
 @import "reset.less";
 @import "code.less";
 @import "dropdown.less";
+@import "fonts.less";
 @import "markdown.less";
 @import "nav.less";
 @import "prism.less";
-@import "tabs.less";
 
 .container {
     color: #555555;
@@ -19,6 +19,7 @@
 
 main {
     padding-left: @nav-width;
+    display: block;
 
     article {
         @header-offset: 5px;
@@ -47,7 +48,7 @@ main {
             content {
                 > h2 {
                     color: #2b2c2f;
-                    font-family: "Sentinel A", "Sentinel B", georgia;
+                    font-family: georgia;
                     font-size: 22px;
                     font-weight: normal;
                     margin-bottom: 30px;
@@ -119,7 +120,7 @@ main {
 
     .parameters {
         border-top: solid 1px #e0e2e2;
-        margin: 8px 0 40px;
+        margin: -1px 0 40px;
         padding: 0;
         .parameter {
             border-bottom: solid 1px #e0e2e2;

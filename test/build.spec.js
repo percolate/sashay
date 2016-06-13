@@ -58,6 +58,11 @@ describe('build()', function () {
             source: SOURCE,
         }
         build(options)
+            .then(function () {
+                fs.access(path.resolve(DESTINATION, 'index.raml'), fs.F_OK, function (err) {
+                    expect(err).to.equal(null)
+                })
+            })
             .then(done.bind(undefined, undefined))
             .caught(done)
     })

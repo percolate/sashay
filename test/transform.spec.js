@@ -26,7 +26,7 @@ describe('transform()', function () {
                                                 b: {
                                                     displayName: 'b',
                                                     items: {
-                                                        type: 'object',
+                                                        type: ['object', null],
                                                     },
                                                     required: false,
                                                     type: 'array',
@@ -35,7 +35,7 @@ describe('transform()', function () {
                                                             description: 'my object description',
                                                             displayName: 'c',
                                                             required: false,
-                                                            type: 'string',
+                                                            type: ['string', null],
                                                         },
                                                         d: {
                                                             description: 'a unique ID',
@@ -48,6 +48,14 @@ describe('transform()', function () {
                                                             enum: ['val1', 'val2'],
                                                             required: false,
                                                             type: 'string',
+                                                        },
+                                                        h: {
+                                                            displayName: 'h',
+                                                            items: {
+                                                                type: 'string',
+                                                            },
+                                                            required: false,
+                                                            type: 'array',
                                                         },
                                                         oneOf: [
                                                             {
@@ -68,11 +76,11 @@ describe('transform()', function () {
                                                     },
                                                 },
                                                 isExpandable: true,
+                                                description: '',
                                             },
-                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": \"array\",\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": \"object\",\n\        "required\": [\n          \"d\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": \"string\",\n            \"example\": \"firstname.lastname@percolate.com\",\n            \"format\": \"email\",\n            \"maxLength\": 100\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\",\n            \"minimum\": 10,\n            \"maximum\": 20\n          },\n          \"g\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"val1\",\n              \"val2\"\n            ]\n          }\n        },\n        \"oneOf\": [\n          {\n            \"type\": \"object\",\n            \"properties\": {\n              \"e\": {\n                \"type\": \"boolean\",\n                \"default\": true\n              }\n            }\n          },\n          {\n            \"type\": \"object\",\n            \"properties\": {\n              \"f\": {\n                \"type\": \"string\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}',
                                         },
                                     },
-                                    displayName: 'Definition',
+                                    displayName: 'The foo object',
                                     slug: 'foo.definition',
                                 },
                                 {
@@ -80,6 +88,7 @@ describe('transform()', function () {
                                     body: {
                                         'application/json': {
                                             properties: {
+                                                description: '',
                                                 prop: {
                                                     displayName: 'prop',
                                                     required: false,
@@ -101,7 +110,6 @@ describe('transform()', function () {
                                                 },
                                                 isExpandable: true,
                                             },
-                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prop\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"b\": {\n              \"type\": \"integer\"\n            }\n          }\n        }\n      }\n    }\n  }\n}',
                                         },
                                     },
                                     displayName: 'foo',
@@ -195,6 +203,16 @@ describe('transform()', function () {
                                 },
                             ],
                             slug: 'topic.foo',
+                        },
+                        {
+                            contents: [
+                                {
+                                    text: 'Percolate API is generated from RAML (Restful APIs Markup Language), a human and machine readable API definition enabling the creation of automated and reusable ecosystems of tools.\n        The Percolate API RAML definition will help you automate your work interacting with Percolate API, importing it into testing tools (like Postman or Paw) or monitoring tools (like SoapUI, Runscope or APIscience) and work efficiently with the large ecosystem or RAML plugins.\n        Download the Percolate RAML file [here](index.raml).',
+                                    type: 'text',
+                                }
+                            ],
+                            displayName: 'Download',
+                            slug: 'topic.download',
                         },
                     ],
                     version: 'foo',
