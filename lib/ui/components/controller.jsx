@@ -68,7 +68,7 @@ module.exports = React.createClass({
                 <Main
                     {...this.props}
                     ref="main"
-                    updateOffsets={this.resizeHandler}
+                    onChange={this.resizeHandler}
                 />
             </div>
         )

@@ -24,7 +24,7 @@ module.exports = React.createClass({
             required: React.PropTypes.bool,
             type: React.PropTypes.any,
         }),
-        updateOffsets: React.PropTypes.func,
+        onChange: React.PropTypes.func,
     },
 
     getInitialState: function () {
@@ -61,8 +61,8 @@ module.exports = React.createClass({
     },
 
     componentDidUpdate: function () {
-        if (this.expanded) {
-            this.props.updateOffsets()
+        if (this.props.onChange && this.expanded) {
+            this.props.onChange()
             this.expanded = false
         }
     },

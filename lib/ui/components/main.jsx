@@ -29,7 +29,7 @@ module.exports = React.createClass({
         ).isRequired,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
-        updateOffsets: React.PropTypes.func.isRequired,
+        onChange: React.PropTypes.func.isRequired,
     },
 
     render: function () {
@@ -133,7 +133,7 @@ module.exports = React.createClass({
                     {_.has(body, 'properties') && (
                         <section>
                             <h1>Body</h1>
-                            <Parameters parameters={_.get(body, 'properties')} updateOffsets={this.props.updateOffsets} />
+                            <Parameters parameters={_.get(body, 'properties')} onChange={this.props.onChange} />
                         </section>
                     )}
                 </content>
