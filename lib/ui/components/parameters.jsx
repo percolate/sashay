@@ -68,14 +68,12 @@ module.exports = React.createClass({
         if (!this.isBreadCrumbsVisible()) {
             this.refs.breadcrumbs.scrollIntoView()
         }
-        this.expanded = true
-    },
-
-    componentDidUpdate: function () {
         if (this.props.onChange && this.expanded) {
             this.props.onChange()
             this.expanded = false
         }
+        this.expanded = true
+
     },
 
     isBreadCrumbsVisible: function () {
