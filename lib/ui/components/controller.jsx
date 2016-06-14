@@ -68,6 +68,7 @@ module.exports = React.createClass({
                 <Main
                     {...this.props}
                     ref="main"
+                    onChange={this.resizeHandler}
                 />
             </div>
         )
