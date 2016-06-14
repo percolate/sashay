@@ -100,6 +100,19 @@ describe('expand()', function () {
             .caught(done)
     })
 
+    it('should throw invalid date time format', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/invalid/invalid-date-time-example.raml'),
+        }
+        expand(options)
+            .caught(function (err) {
+                expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.match(/should match format \\"date-time\\"/)
+                return done()
+            })
+            .caught(done)
+    })
+
     it('should run', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/valid/index.raml'),
@@ -120,8 +133,7 @@ describe('expand()', function () {
                     'body',
                     'application/json',
                 ])
-                expect(resBody.schema).to.equal('{\n  \"allOf\": [\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    },\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"b\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"required\": [\n       \       "d\"\n            ],\n            \"properties\": {\n              \"c\": {\n                \"description\": \"my object description\",\n                \"type\": \"string\"\n              },\n              \"d\": {\n                \"description\": \"a unique ID\",\n                \"type\": \"integer\"\n              }\n            }\n          }\n        }\n      }\n    }\n  ]\n}')
-                expect(resBody.example).to.equal('{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}')
+                expect(resBody.example).to.equal('{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"2016-01-01T20:00:00-05:00\",\n      \"d\": 123\n    },\n    {\n      \"d\": 456,\n      \"e\": \"2016-01-01 20:00:00\"\n    }\n  ]\n}')
                 return done()
             })
             .caught(done)
