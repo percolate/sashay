@@ -1,5 +1,6 @@
 @import "reset.less";
 @import "code.less";
+@import "dropdown.less";
 @import "fonts.less";
 @import "markdown.less";
 @import "nav.less";
@@ -101,14 +102,20 @@ main {
         }
     }
 
-    .breadcrumbs {
-        padding-top: 5px;
-        a {
-            cursor: pointer;
-        }
-        a.selected {
-            color: #f16421;
-            font-weight: bold;
+    .sub-menu {
+        padding: 10px 0;
+        .breadcrumbs {
+            display: inline;
+            font-family: monospace;
+            padding: 20px 0;
+            width: 50%;
+            a {
+                cursor: pointer;
+            }
+            a.selected {
+                color: #f16421;
+                font-weight: bold;
+            }
         }
     }
 
@@ -142,6 +149,7 @@ main {
         .parameter-info {
             color: #999999;
             font-weight: normal;
+            font-family: monospace;
         }
         .parameter-required {
             color: #ff7800;
