@@ -243,5 +243,5 @@ function getType (property) {
     if (_.isArray(property.type)) {
         return property.type.join(' | ')
     }
-    return (property.type === 'array') ? ['[', ']'].join(_.get(property, ['items', 'type'], 'string')) : property.type
+    return (property.type === 'array') ? _.get(property, ['items', 'type'], 'string').concat('[]') : property.type
 }
