@@ -59,17 +59,23 @@ describe('transform()', function () {
                                                         },
                                                         oneOf: [
                                                             {
-                                                                e: {
-                                                                    displayName: 'e',
-                                                                    required: false,
-                                                                    type: 'boolean',
+                                                                displayName: 'a',
+                                                                properties: {
+                                                                    e: {
+                                                                      displayName: 'e',
+                                                                      required: false,
+                                                                      type: 'boolean',
+                                                                    },
                                                                 },
                                                             },
                                                             {
-                                                                f: {
-                                                                    displayName: 'f',
-                                                                    required: false,
-                                                                    type: 'string',
+                                                                displayName: 'b',
+                                                                properties: {
+                                                                    f: {
+                                                                        displayName: 'f',
+                                                                        required: false,
+                                                                        type: 'string',
+                                                                    },
                                                                 },
                                                             },
                                                         ],
