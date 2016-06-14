@@ -117,7 +117,7 @@ module.exports = React.createClass({
     mapOneOfs: function (oneOf) {
         return _.map(oneOf, function (object, i) {
             return {
-                label: 'Variant ' + (i + 1),
+                label: object.displayName,
                 value: i,
             }
         })
@@ -142,8 +142,9 @@ module.exports = React.createClass({
             })
             .flatten()
             .value()
+        var oneOfProperty = _.get(parametersObject, ['oneOf', this.state.oneOfs[this.state.selected]])
         var parameters = _.chain(parametersObject)
-            .extend(_.get(parametersObject, ['oneOf', this.state.oneOfs[this.state.selected]]))
+            .extend(oneOfProperty ? oneOfProperty.properties : [])
             .filter(function (parameter, key) {
                 return key !== 'oneOf'
             })
