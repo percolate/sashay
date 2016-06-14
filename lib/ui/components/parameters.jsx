@@ -42,13 +42,14 @@ module.exports = React.createClass({
     },
 
     displayNestedObject: function (object) {
-        var index = _.indexOf(this.state.breadcrumbs, object.displayName)
+        var displayName = (object.displayName !== ROOT && object.type.match(/.*\[\]/)) ? object.displayName + '[]' : object.displayName
+        var index = _.indexOf(this.state.breadcrumbs, displayName)
         if (index === -1) {
             var objects = this.state.objects
-            objects[object.displayName] = object
-            this.state.breadcrumbs.push(object.displayName)
+            objects[displayName] = object
+            this.state.breadcrumbs.push(displayName)
             var oneOfs = this.state.oneOfs
-            oneOfs[object.displayName] = 0
+            oneOfs[displayName] = 0
             this.setState({
                 breadcrumbs: this.state.breadcrumbs,
                 objects: objects,
@@ -60,7 +61,7 @@ module.exports = React.createClass({
             })
         }
         this.setState({
-            selected: object.displayName,
+            selected: displayName,
         })
     },
 
