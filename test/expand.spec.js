@@ -48,6 +48,19 @@ describe('expand()', function () {
             .caught(done)
     })
 
+    it('should throw invalid oneof title error', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/invalid/invalid-oneof.raml'),
+        }
+        expand(options)
+            .caught(function (err) {
+                expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.match(/^.*oneOf does not contain 'title' property.*/)
+                return done()
+            })
+            .caught(done)
+    })
+
     it('should throw invalid method error', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid/invalid-method.raml'),

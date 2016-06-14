@@ -5,12 +5,6 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var EasyTabs = require('easy-tabs')
-var Tabs = EasyTabs.Tabs
-var TabList = EasyTabs.TabList
-var Tab = EasyTabs.Tab
-var PanelContainer = EasyTabs.PanelContainer
-var Panel = EasyTabs.Panel
 
 module.exports = React.createClass({
 
@@ -35,6 +29,7 @@ module.exports = React.createClass({
         ).isRequired,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
+        onChange: React.PropTypes.func.isRequired,
     },
 
     render: function () {
@@ -135,23 +130,10 @@ module.exports = React.createClass({
                             <Parameters parameters={method.queryParameters} />
                         </section>
                     )}
-                    {_.has(body, 'properties') && _.has(body, 'schema') && (
+                    {_.has(body, 'properties') && (
                         <section>
                             <h1>Body</h1>
-                              <Tabs className="tabs" defaultTab={1} activeClassName="is-active">
-                                  <TabList className="tabs__list">
-                                      <Tab className="tabs__item">Properties</Tab>
-                                      <Tab className="tabs__item">Schema</Tab>
-                                  </TabList>
-                                  <PanelContainer className="tabs__container">
-                                      <Panel className="tabs__content">
-                                          <Parameters parameters={_.get(body, 'properties')}/>
-                                      </Panel>
-                                      <Panel className="tabs__content">
-                                          <Code lang="json" code={_.get(body, 'schema')}/>
-                                      </Panel>
-                                  </PanelContainer>
-                              </Tabs>
+                            <Parameters parameters={_.get(body, 'properties')} onChange={this.props.onChange} />
                         </section>
                     )}
                 </content>
@@ -177,7 +159,7 @@ module.exports = React.createClass({
                     {_.has(method, 'method') && (
                         <section>
                             <h1>Example curl request</h1>
-                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), 'YOUR_API_KEY')} />
+                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), '{your_api_key}')} />
                         </section>
                     )}
 

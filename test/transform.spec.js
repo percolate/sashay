@@ -57,17 +57,33 @@ describe('transform()', function () {
                                                             required: false,
                                                             type: 'array',
                                                         },
-                                                        oneOf: {
-                                                            displayName: 'oneOf',
-                                                            required: false,
-                                                            type: 'string',
-                                                        },
+                                                        oneOf: [
+                                                            {
+                                                                displayName: 'a',
+                                                                properties: {
+                                                                    e: {
+                                                                        displayName: 'e',
+                                                                        required: false,
+                                                                        type: 'boolean',
+                                                                    },
+                                                                },
+                                                            },
+                                                            {
+                                                                displayName: 'b',
+                                                                properties: {
+                                                                    f: {
+                                                                        displayName: 'f',
+                                                                        required: false,
+                                                                        type: 'string',
+                                                                    },
+                                                                },
+                                                            },
+                                                        ],
                                                     },
                                                 },
                                                 isExpandable: true,
                                                 description: '',
                                             },
-                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": [\n        \"array\",\n        null\n      ],\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": [\n          \"object\",\n          null\n        ],\n        \"required\": [\n          \"d\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": [\n              \"string\",\n              null\n            ],\n            \"example\": \"firstname.lastname@percolate.com\",\n            \"format\": \"email\",\n            \"maxLength\": 100\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\",\n            \"minimum\": 10,\n            \"maximum\": 20\n          },\n          \"g\": {\n            \"enum\": [\n              \"val1\",\n              \"val2\"\n            ]\n          },\n          \"h\": {\n            \"type\": \"array\"\n          },\n          \"oneOf\": [\n            {\n              \"type\": \"object\",\n              \"properties\": {\n                \"e\": {\n                  \"type\": \"boolean\",\n                  \"default\": true\n                }\n              }\n            },\n            {\n              \"type\": \"object\",\n              \"properties\": {\n                \"f\": {\n                  \"type\": \"string\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    }\n  }\n}',
                                         },
                                     },
                                     displayName: 'The foo object',
@@ -100,7 +116,6 @@ describe('transform()', function () {
                                                 },
                                                 isExpandable: true,
                                             },
-                                            schema: '{\n  \"type\": \"object\",\n  \"properties\": {\n    \"prop\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"b\": {\n              \"type\": \"integer\"\n            }\n          }\n        }\n      }\n    }\n  }\n}',
                                         },
                                     },
                                     displayName: 'foo',
@@ -194,6 +209,16 @@ describe('transform()', function () {
                                 },
                             ],
                             slug: 'topic.foo',
+                        },
+                        {
+                            contents: [
+                                {
+                                    text: 'Percolate API is generated from RAML (Restful APIs Markup Language), a human and machine readable API definition enabling the creation of automated and reusable ecosystems of tools.\n        The Percolate API RAML definition will help you automate your work interacting with Percolate API, importing it into testing tools (like Postman or Paw) or monitoring tools (like SoapUI, Runscope or APIscience) and work efficiently with the large ecosystem or RAML plugins.\n        Download the Percolate RAML file [here](index.raml).',
+                                    type: 'text',
+                                },
+                            ],
+                            displayName: 'Download',
+                            slug: 'topic.download',
                         },
                     ],
                     version: 'foo',

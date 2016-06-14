@@ -32,14 +32,16 @@ properties:
             - val2
         h:
           type: array
-        oneOf:
-            -
-              type: object
-              properties:
-                e:
-                  type: boolean
-                  default: true
-            - type: object
-              properties:
-                f:
-                  type: string
+      oneOf:
+          -
+            type: object
+            title: a
+            properties:
+              e:
+                type: boolean
+                default: true
+          - type: object
+            title: b
+            properties:
+              f:
+                type: string

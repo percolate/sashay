@@ -1,9 +1,10 @@
 @import "reset.less";
 @import "code.less";
+@import "dropdown.less";
+@import "fonts.less";
 @import "markdown.less";
 @import "nav.less";
 @import "prism.less";
-@import "tabs.less";
 
 .container {
     color: #555555;
@@ -18,6 +19,7 @@
 
 main {
     padding-left: @nav-width;
+    display: block;
 
     article {
         @header-offset: 5px;
@@ -46,7 +48,7 @@ main {
             content {
                 > h2 {
                     color: #2b2c2f;
-                    font-family: "Sentinel A", "Sentinel B", georgia;
+                    font-family: georgia;
                     font-size: 22px;
                     font-weight: normal;
                     margin-bottom: 30px;
@@ -100,13 +102,20 @@ main {
         }
     }
 
-    .breadcrumbs {
-        a {
-            cursor: pointer;
-        }
-        a.selected {
-            color: #f16421;
-            font-weight: bold;
+    .sub-menu {
+        padding: 10px 0;
+        .breadcrumbs {
+            display: inline;
+            font-family: monospace;
+            padding: 20px 0;
+            width: 50%;
+            a {
+                cursor: pointer;
+            }
+            a.selected {
+                color: #f16421;
+                font-weight: bold;
+            }
         }
     }
 
@@ -140,6 +149,7 @@ main {
         .parameter-info {
             color: #999999;
             font-weight: normal;
+            font-family: monospace;
         }
         .parameter-required {
             color: #ff7800;
