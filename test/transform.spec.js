@@ -62,9 +62,9 @@ describe('transform()', function () {
                                                                 displayName: 'a',
                                                                 properties: {
                                                                     e: {
-                                                                      displayName: 'e',
-                                                                      required: false,
-                                                                      type: 'boolean',
+                                                                        displayName: 'e',
+                                                                        required: false,
+                                                                        type: 'boolean',
                                                                     },
                                                                 },
                                                             },
