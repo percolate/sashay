@@ -73,7 +73,6 @@ module.exports = React.createClass({
             this.expanded = false
         }
         this.expanded = true
-
     },
 
     isBreadCrumbsVisible: function () {
