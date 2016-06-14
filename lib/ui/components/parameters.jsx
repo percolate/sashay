@@ -1,11 +1,11 @@
 var _ = require('lodash')
+var Select = require('./dropdown.jsx')
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 var ReactDOM = require('react-dom')
 
 var ROOT = 'root'
-
 module.exports = React.createClass({
     expanded: false,
     displayName: 'Parameters',
@@ -19,6 +19,7 @@ module.exports = React.createClass({
             displayName: React.PropTypes.string,
             enum: React.PropTypes.array,
             isExpandable: React.PropTypes.bool,
+            oneOf: React.PropTypes.array,
             pattern: React.PropTypes.string,
             properties: React.PropTypes.object,
             required: React.PropTypes.bool,
@@ -30,9 +31,12 @@ module.exports = React.createClass({
     getInitialState: function () {
         var objects = {}
         objects[ROOT] = this.props.parameters
+        var oneOfs = {}
+        oneOfs[ROOT] = 0
         return {
-            breadcrumbs: this.props.parameters.isExpandable ? [ROOT] : null,
+            breadcrumbs: this.props.parameters.isExpandable || this.props.parameters.oneOf ? [ROOT] : null,
             objects: objects,
+            oneOfs: oneOfs,
             selected: ROOT,
         }
     },
@@ -43,28 +47,32 @@ module.exports = React.createClass({
             var objects = this.state.objects
             objects[object.displayName] = object
             this.state.breadcrumbs.push(object.displayName)
+            var oneOfs = this.state.oneOfs
+            oneOfs[object.displayName] = 0
             this.setState({
                 breadcrumbs: this.state.breadcrumbs,
                 objects: objects,
-                selected: object.displayName,
+                oneOfs: oneOfs,
             })
         } else {
             this.setState({
                 breadcrumbs: _.dropRight(this.state.breadcrumbs, this.state.breadcrumbs.length - index - 1),
-                selected: object.displayName,
             })
         }
-        if (!this.isBreadCrumbsVisible()) {
-            this.refs.breadcrumbs.scrollIntoView()
-        }
-        this.expanded = true
+        this.setState({
+            selected: object.displayName,
+        })
     },
 
     componentDidUpdate: function () {
+        if (!this.isBreadCrumbsVisible()) {
+            this.refs.breadcrumbs.scrollIntoView()
+        }
         if (this.props.onChange && this.expanded) {
             this.props.onChange()
             this.expanded = false
         }
+        this.expanded = true
     },
 
     isBreadCrumbsVisible: function () {
@@ -106,9 +114,40 @@ module.exports = React.createClass({
         }.bind(this))
     },
 
+    mapOneOfs: function (oneOf) {
+        return _.map(oneOf, function (object, i) {
+            return {
+                label: object.displayName,
+                value: i,
+            }
+        })
+    },
+
+    showOneOf: function (option) {
+        var oneOfs = this.state.oneOfs
+        oneOfs[this.state.selected] = option
+        this.setState({
+            oneOfs: _.clone(oneOfs),
+        })
+    },
+
     render: function () {
-        var parameters = _.chain(this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters)
+        var parametersObject = _.chain({})
+            .extend(this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters)
             .omit(['isExpandable', 'description'])
+            .value()
+        var oneOfs = _.chain(parametersObject)
+            .filter(function (parameter, key) {
+                return key === 'oneOf'
+            })
+            .flatten()
+            .value()
+        var oneOfProperty = _.get(parametersObject, ['oneOf', this.state.oneOfs[this.state.selected]])
+        var parameters = _.chain(parametersObject)
+            .extend(oneOfProperty ? oneOfProperty.properties : [])
+            .filter(function (parameter, key) {
+                return key !== 'oneOf'
+            })
             .map(function (parameter) {
                 if (_.has(parameter, 'schema')) return getParametersFromSchema(parameter.schema)
                 return _.extend(parameter, {
@@ -123,7 +162,12 @@ module.exports = React.createClass({
         var breadcrumbs = this.createBreadCrumbs(parameters)
         return (
             <div>
-                <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
+                <div className="sub-menu">
+                    <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
+                    {!_.isEmpty(oneOfs) && (<div className="reactDropdown-wrapper">
+                          <Select options={this.mapOneOfs(oneOfs)} label={this.mapOneOfs(oneOfs)[this.state.oneOfs[this.state.selected]].label} onClick={this.showOneOf}/>
+                    </div>)}
+                </div>
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
                         return (
