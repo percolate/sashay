@@ -2,3 +2,15 @@ type: object
 properties:
   a:
     type: string
+oneOf:
+  -
+    type: object
+    properties:
+      e:
+        type: boolean
+        default: true
+  - type: object
+    title: b
+    properties:
+      f:
+        type: string
