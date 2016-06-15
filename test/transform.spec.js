@@ -27,62 +27,64 @@ describe('transform()', function () {
                                                     displayName: 'b',
                                                     items: {
                                                         type: ['object', null],
-                                                    },
-                                                    required: false,
-                                                    type: 'array',
-                                                    properties: {
-                                                        c: {
-                                                            description: 'my object description',
-                                                            displayName: 'c',
-                                                            required: false,
-                                                            type: ['string', null],
-                                                        },
-                                                        d: {
-                                                            description: 'a unique ID',
-                                                            displayName: 'd',
-                                                            required: true,
-                                                            type: 'integer',
-                                                        },
-                                                        g: {
-                                                            displayName: 'g',
-                                                            enum: ['val1', 'val2'],
-                                                            required: false,
-                                                            type: 'string',
-                                                        },
-                                                        h: {
-                                                            displayName: 'h',
-                                                            items: {
+                                                        properties: {
+                                                            c: {
+                                                                description: 'my object description',
+                                                                displayName: 'c',
+                                                                required: false,
+                                                                type: ['string', "null"],
+                                                            },
+                                                            d: {
+                                                                description: 'a unique ID',
+                                                                displayName: 'd',
+                                                                required: true,
+                                                                type: 'integer',
+                                                            },
+                                                            g: {
+                                                                displayName: 'g',
+                                                                enum: ['val1', 'val2'],
+                                                                required: false,
                                                                 type: 'string',
                                                             },
-                                                            required: false,
-                                                            type: 'array',
+                                                            h: {
+                                                                displayName: 'h',
+                                                                items: {
+                                                                    type: 'string',
+                                                                },
+                                                                required: false,
+                                                                type: 'array',
+                                                            },
+                                                            oneOf: [
+                                                                {
+                                                                    displayName: 'a',
+                                                                    objectDescription: '',
+                                                                    properties: {
+                                                                        e: {
+                                                                            displayName: 'e',
+                                                                            required: false,
+                                                                            type: 'boolean',
+                                                                        },
+                                                                    },
+                                                                },
+                                                                {
+                                                                    displayName: 'b',
+                                                                    objectDescription: '',
+                                                                    properties: {
+                                                                        f: {
+                                                                            displayName: 'f',
+                                                                            required: false,
+                                                                            type: 'string',
+                                                                        },
+                                                                    },
+                                                                },
+                                                            ],
                                                         },
-                                                        oneOf: [
-                                                            {
-                                                                displayName: 'a',
-                                                                properties: {
-                                                                    e: {
-                                                                        displayName: 'e',
-                                                                        required: false,
-                                                                        type: 'boolean',
-                                                                    },
-                                                                },
-                                                            },
-                                                            {
-                                                                displayName: 'b',
-                                                                properties: {
-                                                                    f: {
-                                                                        displayName: 'f',
-                                                                        required: false,
-                                                                        type: 'string',
-                                                                    },
-                                                                },
-                                                            },
-                                                        ],
                                                     },
+                                                    required: false,
+                                                    type: ['array', 'null'],
                                                 },
                                                 isExpandable: true,
-                                                description: '',
+                                                objectDescription: '',
                                             },
                                         },
                                     },
@@ -93,8 +95,8 @@ describe('transform()', function () {
                                     absoluteUri: '/foo/{foo_id}',
                                     body: {
                                         'application/json': {
+                                            example: '{\n  \"prop\": {\n    \"a\": {\n      \"b\": 1\n    }\n  }\n}',
                                             properties: {
-                                                description: '',
                                                 prop: {
                                                     displayName: 'prop',
                                                     required: false,
@@ -115,6 +117,7 @@ describe('transform()', function () {
                                                     },
                                                 },
                                                 isExpandable: true,
+                                                objectDescription: '',
                                             },
                                         },
                                     },

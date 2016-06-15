@@ -103,6 +103,7 @@ main {
     }
 
     .sub-menu {
+        min-height: 30px;
         padding: 10px 0;
         .breadcrumbs {
             display: inline;
@@ -115,6 +116,19 @@ main {
             a.selected {
                 color: #f16421;
                 font-weight: bold;
+            }
+        }
+        .group {
+            margin-top: 15px;
+            padding-bottom: 10px;
+            label {
+                display: inline-block;
+                vertical-align: middle;
+                width: 85px;
+            }
+            span {
+                display: inline-block;
+                width: 85%;
             }
         }
     }
@@ -140,6 +154,7 @@ main {
             text-align: right;
             a {
                 cursor: pointer;
+                color: #77bcd7;
                 text-decoration: underline;
             }
         }
