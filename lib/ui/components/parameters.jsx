@@ -43,10 +43,6 @@ module.exports = React.createClass({
             <div>
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
-                      if (_.isObject(parameter.type))  {
-                        console.log('aaaa');
-                      }
-                        console.log(JSON.stringify(parameter.type));
                         return (
                             <li
                                 className="parameter"

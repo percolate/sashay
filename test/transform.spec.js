@@ -22,37 +22,41 @@ describe('transform()', function () {
                                 {
                                     body: {
                                         'application/json': {
-                                            properties: {
-                                                b: {
-                                                    displayName: 'b',
-                                                    items: {
-                                                        type: ['object', null],
-                                                        properties: {
-                                                            c: {
-                                                                description: 'my object description',
-                                                                displayName: 'c',
-                                                                required: false,
-                                                                type: ['string', "null"],
-                                                            },
-                                                            d: {
-                                                                description: 'a unique ID',
-                                                                displayName: 'd',
-                                                                required: true,
-                                                                type: 'integer',
-                                                            },
-                                                            g: {
-                                                                displayName: 'g',
-                                                                enum: ['val1', 'val2'],
-                                                                required: false,
-                                                                type: 'string',
-                                                            },
-                                                            h: {
-                                                                displayName: 'h',
-                                                                items: {
+                                            schema: {
+                                                isExpandable: true,
+                                                objectDescription: '',
+                                                properties: {
+                                                    b: {
+                                                        displayName: 'b',
+                                                        items: {
+                                                            type: ['object', null],
+                                                            properties: {
+                                                                c: {
+                                                                    description: 'my object description',
+                                                                    displayName: 'c',
+                                                                    required: false,
+                                                                    type: ['string', "null"],
+                                                                },
+                                                                d: {
+                                                                    description: 'a unique ID',
+                                                                    displayName: 'd',
+                                                                    required: true,
+                                                                    type: 'integer',
+                                                                },
+                                                                g: {
+                                                                    displayName: 'g',
+                                                                    enum: ['val1', 'val2'],
+                                                                    required: false,
                                                                     type: 'string',
                                                                 },
-                                                                required: false,
-                                                                type: 'array',
+                                                                h: {
+                                                                    displayName: 'h',
+                                                                    items: {
+                                                                        type: 'string',
+                                                                    },
+                                                                    required: false,
+                                                                    type: 'array',
+                                                                },
                                                             },
                                                             oneOf: [
                                                                 {
@@ -79,12 +83,10 @@ describe('transform()', function () {
                                                                 },
                                                             ],
                                                         },
+                                                        required: false,
+                                                        type: ['array', 'null'],
                                                     },
-                                                    required: false,
-                                                    type: ['array', 'null'],
                                                 },
-                                                isExpandable: true,
-                                                objectDescription: '',
                                             },
                                         },
                                     },
@@ -96,29 +98,31 @@ describe('transform()', function () {
                                     body: {
                                         'application/json': {
                                             example: '{\n  \"prop\": {\n    \"a\": {\n      \"b\": 1\n    }\n  }\n}',
-                                            properties: {
-                                                prop: {
-                                                    displayName: 'prop',
-                                                    required: false,
-                                                    type: 'object',
-                                                    properties: {
-                                                        a: {
-                                                            displayName: 'a',
-                                                            required: false,
-                                                            type: 'object',
-                                                            properties: {
-                                                                b: {
-                                                                    displayName: 'b',
-                                                                    required: false,
-                                                                    type: 'integer',
+                                            schema: {
+                                                isExpandable: true,
+                                                objectDescription: '',
+                                                properties: {
+                                                    prop: {
+                                                        displayName: 'prop',
+                                                        required: false,
+                                                        type: 'object',
+                                                        properties: {
+                                                            a: {
+                                                                displayName: 'a',
+                                                                required: false,
+                                                                type: 'object',
+                                                                properties: {
+                                                                    b: {
+                                                                        displayName: 'b',
+                                                                        required: false,
+                                                                        type: 'integer',
+                                                                    },
                                                                 },
                                                             },
                                                         },
                                                     },
                                                 },
-                                                isExpandable: true,
-                                                objectDescription: '',
-                                            },
+                                            }
                                         },
                                     },
                                     displayName: 'foo',

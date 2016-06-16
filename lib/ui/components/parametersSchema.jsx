@@ -9,7 +9,6 @@ var ReactDOM = require('react-dom')
 var ROOT = 'root'
 module.exports = React.createClass({
     expanded: false,
-    showNested: false,
     displayName: 'Parameters',
     mixins: [
         PureRenderMixin,
@@ -27,7 +26,7 @@ module.exports = React.createClass({
             required: React.PropTypes.bool,
             type: React.PropTypes.any,
         }),
-        onChange: React.PropTypes.func,
+        onChange: React.PropTypes.func.isRequired,
     },
 
     getInitialState: function () {
@@ -65,19 +64,17 @@ module.exports = React.createClass({
         this.setState({
             selected: displayName,
         })
-        this.showNested =  true
+        this.expanded =  true
     },
 
     componentDidUpdate: function () {
-        if (!this.isBreadCrumbsVisible() && this.showNested) {
+        if (!this.isBreadCrumbsVisible() && this.expanded) {
             this.refs.breadcrumbs.scrollIntoView()
-            this.showNested = false
         }
         if (this.props.onChange && this.expanded) {
             this.props.onChange()
-            this.expanded = false
         }
-        this.expanded = true
+        this.expanded = false
     },
 
     isBreadCrumbsVisible: function () {
