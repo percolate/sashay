@@ -65,7 +65,7 @@ describe('transform()', function () {
                                                                     },
                                                                     required: false,
                                                                     type: 'array',
-                                                                }
+                                                                },
                                                             },
                                                             oneOf: [
                                                                 {
