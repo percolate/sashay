@@ -2,113 +2,28 @@ var _ = require('lodash')
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var ReactDOM = require('react-dom')
-
-var ROOT = 'root'
 
 module.exports = React.createClass({
     expanded: false,
+    showNested: false,
     displayName: 'Parameters',
     mixins: [
         PureRenderMixin,
     ],
     propTypes: {
         parameters: React.PropTypes.shape({
-            description: React.PropTypes.string,
             default: React.PropTypes.string,
             displayName: React.PropTypes.string,
             enum: React.PropTypes.array,
-            isExpandable: React.PropTypes.bool,
             pattern: React.PropTypes.string,
-            properties: React.PropTypes.object,
             required: React.PropTypes.bool,
             type: React.PropTypes.any,
         }),
-        onChange: React.PropTypes.func,
-    },
-
-    getInitialState: function () {
-        var objects = {}
-        objects[ROOT] = this.props.parameters
-        return {
-            breadcrumbs: this.props.parameters.isExpandable ? [ROOT] : null,
-            objects: objects,
-            selected: ROOT,
-        }
-    },
-
-    displayNestedObject: function (object) {
-        var index = _.indexOf(this.state.breadcrumbs, object.displayName)
-        if (index === -1) {
-            var objects = this.state.objects
-            objects[object.displayName] = object
-            this.state.breadcrumbs.push(object.displayName)
-            this.setState({
-                breadcrumbs: this.state.breadcrumbs,
-                objects: objects,
-                selected: object.displayName,
-            })
-        } else {
-            this.setState({
-                breadcrumbs: _.dropRight(this.state.breadcrumbs, this.state.breadcrumbs.length - index - 1),
-                selected: object.displayName,
-            })
-        }
-        if (!this.isBreadCrumbsVisible()) {
-            this.refs.breadcrumbs.scrollIntoView()
-        }
-        this.expanded = true
-    },
-
-    componentDidUpdate: function () {
-        if (this.props.onChange && this.expanded) {
-            this.props.onChange()
-            this.expanded = false
-        }
-    },
-
-    isBreadCrumbsVisible: function () {
-        var el = ReactDOM.findDOMNode(this.refs.breadcrumbs)
-        var rect = el.getBoundingClientRect()
-        var containmentRect = {
-            top: 0,
-            left: 0,
-            bottom: window.innerHeight || document.documentElement.clientHeight,
-            right: window.innerWidth || document.documentElement.clientWidth,
-        }
-
-        var visibilityRect = {
-            top: rect.top >= containmentRect.top,
-            left: rect.left >= containmentRect.left,
-            bottom: rect.bottom <= containmentRect.bottom,
-            right: rect.right <= containmentRect.right,
-        }
-
-        return (
-            visibilityRect.top &&
-            visibilityRect.left &&
-            visibilityRect.bottom &&
-            visibilityRect.right
-        )
-    },
-
-    createBreadCrumbs: function (parameters) {
-        return _.map(this.state.breadcrumbs, function (breadcrumb, i) {
-            var separator = i < this.state.breadcrumbs.length - 1 ? (<span className="separator">{'.'}</span>) : (<span/>)
-            var parameterObject = breadcrumb === ROOT ? {
-                displayName: ROOT,
-                properties: parameters,
-            } : this.state.objects[breadcrumb]
-            var el = breadcrumb !== this.state.selected ? <a onClick={this.displayNestedObject.bind(null, parameterObject)}>
-                {breadcrumb}
-                </a> : <a className="selected">{breadcrumb}</a>
-            return (<span key={i}>{el}{separator}</span>)
-        }.bind(this))
+        onClick: React.PropTypes.func,
     },
 
     render: function () {
-        var parameters = _.chain(this.state.selected !== ROOT ? this.state.objects[this.state.selected].properties : this.props.parameters)
-            .omit(['isExpandable', 'description'])
+        var parameters = _.chain(this.props.parameters)
             .map(function (parameter) {
                 if (_.has(parameter, 'schema')) return getParametersFromSchema(parameter.schema)
                 return _.extend(parameter, {
@@ -120,10 +35,9 @@ module.exports = React.createClass({
                 return parameter.displayName
             })
             .value()
-        var breadcrumbs = this.createBreadCrumbs(parameters)
+
         return (
             <div>
-                <div ref="breadcrumbs" className="breadcrumbs">{breadcrumbs}</div>
                 <ul className="parameters">
                     {_.map(parameters, function (parameter, i) {
                         return (
@@ -133,10 +47,10 @@ module.exports = React.createClass({
                             >
                                 <div className="parameter-spec">
                                     <div>
-                                      {parameter.properties && (
-                                          <a onClick={this.displayNestedObject.bind(this, parameter)}>{parameter.displayName}</a>
+                                      {(parameter.properties || _.has(parameter, ['items', 'properties'])) && (
+                                          <a onClick={this.props.onClick.bind(null, parameter)}>{parameter.displayName}</a>
                                       )}
-                                      {!parameter.properties && parameter.displayName}
+                                      {!parameter.properties && !_.has(parameter, ['items', 'properties']) && parameter.displayName}
                                     </div>
                                     <div className="parameter-info">
                                         <div>{parameter.type}</div>
@@ -195,7 +109,17 @@ function getParametersFromSchema (schema) {
 
 function getType (property) {
     if (_.isArray(property.type)) {
-        return property.type.join(' | ')
+        var types = _.map(property.type, function (type) {
+            if (type === 'array') {
+                if (_.isArray(_.get(property, ['items', 'type']))) {
+                    return '(' + _.get(property, ['items', 'type'], ['string']).join(' | ') + ')'
+                }
+                return _.get(property, ['items', 'type']).concat('[]')
+            } else {
+                return type
+            }
+        })
+        return types.join(' | ')
     }
-    return (property.type === 'array') ? ['[', ']'].join(_.get(property, ['items', 'type'], 'string')) : property.type
+    return (property.type === 'array') ? _.get(property, ['items', 'type']).concat('[]') : property.type
 }

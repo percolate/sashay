@@ -2,7 +2,8 @@ var _ = require('lodash')
 var Code = require('./code.jsx')
 var helper = require('../../helper')
 var Markdown = require('./markdown.jsx')
-var Parameters = require('./parameters.jsx')
+var ParametersSchema = require('./parametersschema.jsx')
+var ParametersList = require('./parameterslist.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
@@ -121,19 +122,19 @@ module.exports = React.createClass({
                     {(!_.isEmpty(method.uriParameters)) && (
                         <section>
                             <h1>URI Parameters</h1>
-                            <Parameters parameters={method.uriParameters} />
+                            <ParametersList parameters={method.uriParameters} />
                         </section>
                     )}
                     {(!_.isEmpty(method.queryParameters)) && (
                         <section>
                             <h1>Query Parameters</h1>
-                            <Parameters parameters={method.queryParameters} />
+                            <ParametersList parameters={method.queryParameters} />
                         </section>
                     )}
-                    {_.has(body, 'properties') && (
+                    {_.has(body, 'schema') && (
                         <section>
                             <h1>Body</h1>
-                            <Parameters parameters={_.get(body, 'properties')} onChange={this.props.onChange} />
+                            <ParametersSchema schema={body.schema} onChange={this.props.onChange}/>
                         </section>
                     )}
                 </content>
