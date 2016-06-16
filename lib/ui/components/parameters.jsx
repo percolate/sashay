@@ -111,17 +111,15 @@ function getType (property) {
     if (_.isArray(property.type)) {
         var types = _.map(property.type, function (type) {
             if (type === 'array') {
-                if (_.isArray(_.get(property, ['items', 'type'], ['string']))) {
-                    return '(' + _.map(_.get(property, ['items', 'type'], ['string']), function (t) {
-                        return t === null ? 'null' : t.concat('[]')
-                    }).join(' | ') + ')'
+                if (_.isArray(_.get(property, ['items', 'type']))) {
+                    return '(' + _.get(property, ['items', 'type'], ['string']).join(' | ') + ')'
                 }
-                return _.get(property, ['items', 'type'], ['string']).concat('[]')
+                return _.get(property, ['items', 'type']).concat('[]')
             } else {
                 return type
             }
         })
         return types.join(' | ')
     }
-    return (property.type === 'array') ? _.get(property, ['items', 'type'], 'string').concat('[]') : property.type
+    return (property.type === 'array') ? _.get(property, ['items', 'type']).concat('[]') : property.type
 }

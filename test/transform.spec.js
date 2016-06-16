@@ -25,11 +25,12 @@ describe('transform()', function () {
                                             schema: {
                                                 isExpandable: true,
                                                 objectDescription: '',
+                                                type: 'object',
                                                 properties: {
                                                     b: {
                                                         displayName: 'b',
                                                         items: {
-                                                            type: ['object', null],
+                                                            type: ['object', 'null'],
                                                             properties: {
                                                                 c: {
                                                                     description: 'my object description',
@@ -57,6 +58,14 @@ describe('transform()', function () {
                                                                     required: false,
                                                                     type: 'array',
                                                                 },
+                                                                i: {
+                                                                    displayName: 'i',
+                                                                    items: {
+                                                                        type: 'object',
+                                                                    },
+                                                                    required: false,
+                                                                    type: 'array',
+                                                                }
                                                             },
                                                             oneOf: [
                                                                 {
@@ -69,6 +78,7 @@ describe('transform()', function () {
                                                                             type: 'boolean',
                                                                         },
                                                                     },
+                                                                    type: 'object',
                                                                 },
                                                                 {
                                                                     displayName: 'b',
@@ -80,6 +90,7 @@ describe('transform()', function () {
                                                                             type: 'string',
                                                                         },
                                                                     },
+                                                                    type: 'object',
                                                                 },
                                                             ],
                                                         },
@@ -101,6 +112,7 @@ describe('transform()', function () {
                                             schema: {
                                                 isExpandable: true,
                                                 objectDescription: '',
+                                                type: 'object',
                                                 properties: {
                                                     prop: {
                                                         displayName: 'prop',
