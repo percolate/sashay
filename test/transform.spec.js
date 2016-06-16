@@ -35,7 +35,7 @@ describe('transform()', function () {
                                                                     description: 'my object description',
                                                                     displayName: 'c',
                                                                     required: false,
-                                                                    type: ['string', "null"],
+                                                                    type: ['string', 'null'],
                                                                 },
                                                                 d: {
                                                                     description: 'a unique ID',
@@ -122,7 +122,7 @@ describe('transform()', function () {
                                                         },
                                                     },
                                                 },
-                                            }
+                                            },
                                         },
                                     },
                                     displayName: 'foo',

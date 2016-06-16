@@ -1,11 +1,8 @@
 var _ = require('lodash')
-var Select = require('./dropdown.jsx')
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var ReactDOM = require('react-dom')
 
-var ROOT = 'root'
 module.exports = React.createClass({
     expanded: false,
     showNested: false,
@@ -26,18 +23,18 @@ module.exports = React.createClass({
     },
 
     render: function () {
-      var parameters = _.chain(this.props.parameters)
-          .map(function (parameter) {
-              if (_.has(parameter, 'schema')) return getParametersFromSchema(parameter.schema)
-              return _.extend(parameter, {
-                  type: getType(parameter),
-              })
-          })
-          .flatten()
-          .sortBy(function (parameter) {
-              return parameter.displayName
-          })
-          .value()
+        var parameters = _.chain(this.props.parameters)
+            .map(function (parameter) {
+                if (_.has(parameter, 'schema')) return getParametersFromSchema(parameter.schema)
+                return _.extend(parameter, {
+                    type: getType(parameter),
+                })
+            })
+            .flatten()
+            .sortBy(function (parameter) {
+                return parameter.displayName
+            })
+            .value()
 
         return (
             <div>
@@ -98,7 +95,6 @@ module.exports = React.createClass({
 
 })
 
-
 function getParametersFromSchema (schema) {
     return _.chain(schema.properties)
         .map(function (property, name) {
@@ -116,9 +112,9 @@ function getType (property) {
         var types = _.map(property.type, function (type) {
             if (type === 'array') {
                 if (_.isArray(_.get(property, ['items', 'type'], ['string']))) {
-                  return '(' + _.map(_.get(property, ['items', 'type'], ['string']), function (t) {
-                      return t == null ? 'null' : t.concat('[]')
-                  }).join(' | ') + ')'
+                    return '(' + _.map(_.get(property, ['items', 'type'], ['string']), function (t) {
+                        return t === null ? 'null' : t.concat('[]')
+                    }).join(' | ') + ')'
                 }
                 return _.get(property, ['items', 'type'], ['string']).concat('[]')
             } else {

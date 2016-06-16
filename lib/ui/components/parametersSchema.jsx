@@ -14,17 +14,15 @@ module.exports = React.createClass({
         PureRenderMixin,
     ],
     propTypes: {
-        parameters: React.PropTypes.shape({
-            objectDescription: React.PropTypes.string,
-            default: React.PropTypes.string,
-            displayName: React.PropTypes.string,
-            enum: React.PropTypes.array,
-            isExpandable: React.PropTypes.bool,
-            oneOf: React.PropTypes.array,
-            pattern: React.PropTypes.string,
+        schema: React.PropTypes.shape({
+            objectDescription: React.PropTypes.string.isRequired,
+            isExpandable: React.PropTypes.bool.isRequired,
             properties: React.PropTypes.object,
-            required: React.PropTypes.bool,
-            type: React.PropTypes.any,
+            oneOf: React.PropTypes.arrayOf(React.PropTypes.shape({
+                displayName: React.PropTypes.string.isRequired,
+                objectDescription: React.PropTypes.string.isRequired,
+                properties: React.PropTypes.object,
+            })),
         }),
         onChange: React.PropTypes.func.isRequired,
     },
@@ -64,7 +62,7 @@ module.exports = React.createClass({
         this.setState({
             selected: displayName,
         })
-        this.expanded =  true
+        this.expanded = true
     },
 
     componentDidUpdate: function () {
