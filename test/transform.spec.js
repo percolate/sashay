@@ -35,7 +35,7 @@ describe('transform()', function () {
                                                             description: 'my object description',
                                                             displayName: 'c',
                                                             required: false,
-                                                            type: ['string', null],
+                                                            type: ['string', 'null'],
                                                         },
                                                         d: {
                                                             description: 'a unique ID',
@@ -56,6 +56,26 @@ describe('transform()', function () {
                                                             },
                                                             required: false,
                                                             type: 'array',
+                                                        },
+                                                        i: {
+                                                            displayName: 'i',
+                                                            required: false,
+                                                            type: 'string',
+                                                        },
+                                                        j: {
+                                                            displayName: 'j',
+                                                            properties: {
+                                                              k: {
+                                                                displayName: 'k',
+                                                                items: {
+                                                                  type: 'string',
+                                                                },
+                                                                required: false,
+                                                                type: 'array',
+                                                              },
+                                                            },
+                                                            required: false,
+                                                            type: 'object',
                                                         },
                                                         oneOf: [
                                                             {
