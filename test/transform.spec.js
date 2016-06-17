@@ -65,14 +65,14 @@ describe('transform()', function () {
                                                         j: {
                                                             displayName: 'j',
                                                             properties: {
-                                                              k: {
-                                                                displayName: 'k',
-                                                                items: {
-                                                                  type: 'string',
+                                                                k: {
+                                                                  displayName: 'k',
+                                                                  items: {
+                                                                    type: 'string',
+                                                                  },
+                                                                  required: false,
+                                                                  type: 'array',
                                                                 },
-                                                                required: false,
-                                                                type: 'array',
-                                                              },
                                                             },
                                                             required: false,
                                                             type: 'object',
@@ -229,7 +229,7 @@ describe('transform()', function () {
                                 {
                                     text: 'Percolate API is generated from RAML (Restful APIs Markup Language), a human and machine readable API definition enabling the creation of automated and reusable ecosystems of tools.\n        The Percolate API RAML definition will help you automate your work interacting with Percolate API, importing it into testing tools (like Postman or Paw) or monitoring tools (like SoapUI, Runscope or APIscience) and work efficiently with the large ecosystem or RAML plugins.\n        Download the Percolate RAML file [here](index.raml).',
                                     type: 'text',
-                                }
+                                },
                             ],
                             displayName: 'Download',
                             slug: 'topic.download',
