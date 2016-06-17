@@ -66,12 +66,12 @@ describe('transform()', function () {
                                                             displayName: 'j',
                                                             properties: {
                                                                 k: {
-                                                                  displayName: 'k',
-                                                                  items: {
-                                                                    type: 'string',
-                                                                  },
-                                                                  required: false,
-                                                                  type: 'array',
+                                                                    displayName: 'k',
+                                                                    items: {
+                                                                        type: 'string',
+                                                                    },
+                                                                    required: false,
+                                                                    type: 'array',
                                                                 },
                                                             },
                                                             required: false,
