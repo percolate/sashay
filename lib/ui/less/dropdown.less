@@ -1,0 +1,98 @@
+.reactDropdown-wrapper {
+    margin-top: -10px;
+    float: right;
+
+    .reactDropdown {
+        display: inline-block;
+        position: relative;
+
+        .trigger, .menu {
+            font-size: 13px;
+            line-height: 16px;
+        }
+
+        .trigger {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            border: 1px solid #c1c3c6;
+            cursor: pointer;
+            display: inline-block;
+            padding: 0 7px;
+            height: 32px;
+            line-height: 32px;
+            vertical-align: top;
+            width: 93%;
+        }
+
+        .menu {
+            background: #ffffff;
+            border: 1px solid #e0e2e2;
+            position: absolute;
+            top: 31px;
+            min-width: 100%;
+            max-height: 400px;
+            text-align: left;
+            overflow-y: scroll;
+            white-space: nowrap;
+
+            .menuItem,
+            .menuItemHeading {
+                border-bottom: 1px solid #e0e2e2;
+                padding: 10px;
+                min-width: 100px;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            .menuItem {
+                cursor: pointer;
+
+                &:hover {
+                    color: #f16421;
+                }
+            }
+
+        }
+
+        &.closed .menu {
+            display: none;
+        }
+
+        &.open {
+            .trigger {
+                background-color: #ffffff;
+                color: #f16421;
+                z-index: 1021;
+                position: relative;
+            }
+            .menu {
+                z-index: 1020;
+            }
+        }
+
+        &.left .menu {
+            right: 0;
+        }
+
+        &.right .menu {
+            left: 0;
+        }
+
+        .arrow-down {
+            border-color: #999 transparent transparent;
+            border-style: solid;
+            border-width: 5px 5px 2.5px;
+            display: inline-block;
+            height: 0;
+            margin-left: 120px;
+            width: 0;
+        }
+    }
+}

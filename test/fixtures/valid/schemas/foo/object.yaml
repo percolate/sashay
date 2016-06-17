@@ -32,14 +32,20 @@ properties:
             - val2
         h:
           type: array
-        oneOf:
-            -
-              type: object
-              properties:
-                e:
-                  type: boolean
-                  default: true
-            - type: object
-              properties:
-                f:
-                  type: string
+        i:
+          example: 123
+        j:
+          properties:
+            k:
+              items:
+      oneOf:
+          -
+            type: object
+            properties:
+              e:
+                type: boolean
+                default: true
+          - type: object
+            properties:
+              f:
+                type: string
