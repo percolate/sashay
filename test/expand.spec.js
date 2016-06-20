@@ -74,6 +74,19 @@ describe('expand()', function () {
             .caught(done)
     })
 
+    it('should throw missing json schema type error', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/missing-type/invalid-missing-type.raml'),
+        }
+        expand(options)
+            .caught(function (err) {
+                expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.match(/^Missing type property .*/)
+                return done()
+            })
+            .caught(done)
+    })
+
     it('should throw invalid method request example error', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid/invalid-method-request-example.raml'),
