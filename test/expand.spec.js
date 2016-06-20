@@ -74,6 +74,19 @@ describe('expand()', function () {
             .caught(done)
     })
 
+    it('should throw missing json schema type error', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/missing-type/invalid-missing-type.raml'),
+        }
+        expand(options)
+            .caught(function (err) {
+                expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.match(/^Missing type property .*/)
+                return done()
+            })
+            .caught(done)
+    })
+
     it('should throw invalid method request example error', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid/invalid-method-request-example.raml'),
@@ -106,7 +119,6 @@ describe('expand()', function () {
         }
         expand(options)
             .then(function (res) {
-                expect(res.schemas[0].foo).to.equal('{\n  \"type\": \"object\",\n  \"properties\": {\n    \"b\": {\n      \"type\": [\n        \"array\",\n        \"null\"\n      ],\n      \"minItems\": 1,\n      \"items\": {\n        \"type\": [\n          \"object\",\n          null\n        ],\n        \"required\": [\n          \"d\"\n        ],\n        \"additionalProperties\": false,\n        \"properties\": {\n          \"c\": {\n            \"description\": \"my object description\",\n            \"type\": [\n              \"string\",\n              \"null\"\n            ],\n            \"example\": \"firstname.lastname@percolate.com\",\n            \"format\": \"email\",\n            \"maxLength\": 100\n          },\n          \"d\": {\n            \"description\": \"a unique ID\",\n            \"type\": \"integer\",\n            \"minimum\": 10,\n            \"maximum\": 20\n          },\n          \"g\": {\n            \"enum\": [\n              \"val1\",\n              \"val2\"\n            ],\n            \"type\": \"string\"\n          },\n          \"h\": {\n            \"type\": \"array\"\n          },\n          \"i\": {\n            \"example\": 123,\n            \"type\": \"string\"\n          },\n          \"j\": {\n            \"properties\": {\n              \"k\": {\n                \"items\": {\n                  \"type\": \"string\"\n                },\n                \"type\": \"array\"\n              }\n            },\n            \"type\": \"object\"\n          }\n        },\n        \"oneOf\": [\n          {\n            \"type\": \"object\",\n            \"properties\": {\n              \"e\": {\n                \"type\": \"boolean\",\n                \"default\": true\n              }\n            }\n          },\n          {\n            \"type\": \"object\",\n            \"properties\": {\n              \"f\": {\n                \"type\": \"string\"\n              }\n            }\n          }\n        ]\n      }\n    }\n  }\n}')
                 var resBody = _.get(res, [
                     'resources',
                     0,

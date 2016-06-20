@@ -30,14 +30,9 @@ properties:
           enum:
             - val1
             - val2
+          type: string
         h:
           type: array
-        i:
-          example: 123
-        j:
-          properties:
-            k:
-              items:
       oneOf:
           -
             type: object
