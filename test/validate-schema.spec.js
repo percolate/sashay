@@ -79,11 +79,10 @@ var schema = {
                     type: 'object',
                     properties: {
                         f: {
-                            type: 'string'
+                            type: 'string',
                         },
                     },
-                  },
-                ],
+                }],
             },
         },
     },
@@ -96,7 +95,6 @@ function validatePath (path, optionalSchema) {
 }
 
 describe('validate-schema', function () {
-
     it('should run', function () {
         validateSchema(schema)
     })
