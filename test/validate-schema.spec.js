@@ -17,7 +17,7 @@ var allOf = {
         type: 'integer',
     }, {
         type: 'string',
-    }]
+    }],
 }
 
 var anyOf = {
@@ -34,8 +34,8 @@ var schema = {
     properties: {
         b: {
             type: [
-              'array',
-              null,
+                'array',
+                null,
             ],
             items: {
                 type: [
@@ -44,16 +44,16 @@ var schema = {
                 ],
                 patternProperties: {
                     a: {
-                      description: 'Filter by FIELD date (inclusive) (ex. `created_at:from=2016-03-02 00:38:00`)',
-                      type: 'string',
+                        description: 'Filter by FIELD date (inclusive) (ex. `created_at:from=2016-03-02 00:38:00`)',
+                        type: 'string',
                     },
                 },
                 properties: {
                     c: {
                         description: 'my object description',
                         type: [
-                          'string',
-                          null,
+                            'string',
+                            null,
                         ],
                     },
                     d: {
@@ -61,39 +61,35 @@ var schema = {
                         items: [{
                             type: 'string',
                             description: 'object1',
-                        },
-                        {
+                        }, {
                             type: 'integer',
                             description: 'object2',
                         }],
                     },
                 },
-                oneOf: [
-                  {
-                      type: 'object',
-                      properties: {
-                          e: {
-                              type: 'boolean',
-                              default: true
-                          },
-                      },
+                oneOf: [{
+                    type: 'object',
+                    properties: {
+                        e: {
+                            type: 'boolean',
+                            default: true,
+                        },
+                    },
+                }, {
+                    type: 'object',
+                    properties: {
+                        f: {
+                            type: 'string'
+                        },
+                    },
                   },
-                  {
-                      type: 'object',
-                      properties: {
-                          f: {
-                              type: 'string'
-                          },
-                      },
-                  },
-                ]
-            }
-        }
-    }
+                ],
+            },
+        },
+    },
 }
 
 function validatePath (path, optionalSchema) {
-    var error = false
     var schema1 = _.cloneDeep(optionalSchema ? optionalSchema : schema)
     _.unset(schema1, path)
     expect(validateSchema.bind(undefined, schema1)).to.throw(/.*Missing type property.*/)
