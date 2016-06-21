@@ -4,6 +4,7 @@ var validateType = require('../lib/validate-type')
 
 var oneOf = {
     description: 'desc',
+    type: 'integer',
     oneOf: [{
         type: 'integer',
     }, {
@@ -13,6 +14,7 @@ var oneOf = {
 
 var allOf = {
     description: 'desc',
+    type: 'integer',
     allOf: [{
         type: 'integer',
     }, {
@@ -22,6 +24,7 @@ var allOf = {
 
 var anyOf = {
     description: 'desc',
+    type: 'integer',
     anyOf: [{
         type: 'integer',
     }, {
@@ -88,7 +91,7 @@ var schema = {
     },
 }
 
-function validatePath (path, optionalSchema) {
+function createSchema (path, optionalSchema) {
     var schema1 = _.cloneDeep(optionalSchema ? optionalSchema : schema)
     if (_.isArray(path)) {
         _.forEach(path, function (p) {
@@ -97,7 +100,10 @@ function validatePath (path, optionalSchema) {
     } else {
         _.unset(schema1, path)
     }
-    expect(validateType.bind(undefined, schema1)).to.throw(/.*Missing type property.*/)
+    return schema1
+}
+function validatePath (path, optionalSchema) {
+    expect(validateType.bind(undefined, createSchema(path, optionalSchema))).to.throw(/.*Missing type property.*/)
 }
 
 describe('validate-schema', function () {
@@ -109,10 +115,22 @@ describe('validate-schema', function () {
         validateType(undefined)
     })
 
-    it('should validate mising oneOf/allOf/anyOf type at the upper level', function () {
-        validateType(oneOf)
-        validateType(allOf)
-        validateType(anyOf)
+    it('should validate missing oneOf/allOf/anyOf type at the upper level', function () {
+        validateType(createSchema('type', oneOf))
+        validateType(createSchema('type', allOf))
+        validateType(createSchema('type', anyOf))
+    })
+
+    it('should validate oneOf/allOf/anyOf type and missing in one item', function () {
+        validateType(createSchema('oneOf[0].type', oneOf))
+        validateType(createSchema('allOf[0].type', allOf))
+        validateType(createSchema('anyOf[0].type', anyOf))
+    })
+
+    it('should throw missing oneOf/allOf/anyOf type', function () {
+        validatePath(['oneOf[1].type', 'type'], oneOf)
+        validatePath(['allOf[0].type', 'type'], allOf)
+        validatePath(['anyOf[1].type', 'type'], anyOf)
     })
 
     it('should run with oneOf', function () {
@@ -133,18 +151,6 @@ describe('validate-schema', function () {
 
     it('should throw missing scalar type', function () {
         validatePath('properties.b.items.properties.c.type')
-    })
-
-    it('should throw missing oneOf type', function () {
-        validatePath('properties.b.items.oneOf[0].type')
-    })
-
-    it('should throw missing allOf type', function () {
-        validatePath('allOf[0].type', allOf)
-    })
-
-    it('should throw missing anyOf type', function () {
-        validatePath('anyOf[1].type', anyOf)
     })
 
     it('should throw missing patternProperties type', function () {
