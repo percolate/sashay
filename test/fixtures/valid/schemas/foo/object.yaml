@@ -30,16 +30,16 @@ properties:
           enum:
             - val1
             - val2
-        h:
-          type: array
-        oneOf:
-            -
-              type: object
-              properties:
-                e:
-                  type: boolean
-                  default: true
-            - type: object
-              properties:
-                f:
-                  type: string
+          type: string
+      oneOf:
+          -
+            type: object
+            properties:
+              e:
+                type: boolean
+                default: true
+          -
+            type: object
+            properties:
+              f:
+                type: string
