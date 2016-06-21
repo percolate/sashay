@@ -2,6 +2,96 @@ var _ = require('lodash')
 var expect = require('chai').expect
 var validateSchema = require('../lib/validate-schema')
 
+var oneOf = {
+    description: 'desc',
+    oneOf: [{
+        type: 'integer',
+    }, {
+        type: 'string',
+    }],
+}
+
+var allOf = {
+    description: 'desc',
+    allOf: [{
+        type: 'integer',
+    }, {
+        type: 'string',
+    }]
+}
+
+var anyOf = {
+    description: 'desc',
+    anyOf: [{
+        type: 'integer',
+    }, {
+        type: 'string',
+    }],
+}
+
+var schema = {
+    type: 'object',
+    properties: {
+        b: {
+            type: [
+              'array',
+              null,
+            ],
+            items: {
+                type: [
+                    'object',
+                    null,
+                ],
+                patternProperties: {
+                    a: {
+                      description: 'Filter by FIELD date (inclusive) (ex. `created_at:from=2016-03-02 00:38:00`)',
+                      type: 'string',
+                    },
+                },
+                properties: {
+                    c: {
+                        description: 'my object description',
+                        type: [
+                          'string',
+                          null,
+                        ],
+                    },
+                    d: {
+                        type: 'array',
+                        items: [{
+                            type: 'string',
+                            description: 'object1',
+                        },
+                        {
+                            type: 'integer',
+                            description: 'object2',
+                        }],
+                    },
+                },
+                oneOf: [
+                  {
+                      type: 'object',
+                      properties: {
+                          e: {
+                              type: 'boolean',
+                              default: true
+                          },
+                      },
+                  },
+                  {
+                      type: 'object',
+                      properties: {
+                          f: {
+                              type: 'string'
+                          },
+                      },
+                  },
+                ]
+            }
+        }
+    }
+}
+
 function validatePath (path, optionalSchema) {
     var error = false
     var schema1 = _.cloneDeep(optionalSchema ? optionalSchema : schema)
@@ -50,96 +140,4 @@ describe('validate-schema', function () {
     it('should throw missing patternProperties type', function () {
         validatePath('properties.b.items.patternProperties.a.type')
     })
-
 })
-
-var oneOf = {
-    description: 'desc',
-    oneOf: [{
-        type: 'integer',
-    }, {
-        type: 'string',
-    }]
-}
-
-var allOf = {
-  description: 'desc',
-  allOf: [{
-      type: 'integer',
-  }, {
-      type: 'string',
-  }]
-}
-
-var anyOf = {
-  description: 'desc',
-  anyOf: [{
-      type: 'integer',
-  }, {
-      type: 'string',
-  }]
-}
-
-var schema = {
-  type: 'object',
-  properties: {
-    b: {
-      type: [
-        'array',
-        null
-      ],
-      items: {
-        type: [
-          'object',
-          null
-        ],
-        additionalProperties: false,
-        patternProperties: {
-            a: {
-              description: 'Filter by FIELD date (inclusive) (ex. `created_at:from=2016-03-02 00:38:00`)',
-              type: 'string',
-            },
-        },
-        properties: {
-            c: {
-              description: 'my object description',
-              type: [
-                'string',
-                null
-              ],
-            },
-            d: {
-              type: 'array',
-              items: [{
-                  type: 'string',
-                  description: 'object1'
-              },
-              {
-                  type: 'integer',
-                  description: 'object2'
-              }]
-            },
-        },
-        oneOf: [
-          {
-            type: 'object',
-            properties: {
-              e: {
-                type: 'boolean',
-                default: true
-              }
-            }
-          },
-          {
-            type: 'object',
-            properties: {
-              f: {
-                type: 'string'
-              }
-            }
-          }
-        ]
-      }
-    }
-  }
-}
