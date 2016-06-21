@@ -1,6 +1,6 @@
 var _ = require('lodash')
 var expect = require('chai').expect
-var validateSchema = require('../lib/validate-schema')
+var validateType = require('../lib/validate-type')
 
 var oneOf = {
     description: 'desc',
@@ -90,17 +90,33 @@ var schema = {
 
 function validatePath (path, optionalSchema) {
     var schema1 = _.cloneDeep(optionalSchema ? optionalSchema : schema)
-    _.unset(schema1, path)
-    expect(validateSchema.bind(undefined, schema1)).to.throw(/.*Missing type property.*/)
+    if (_.isArray(path)) {
+        _.forEach(path, function (p) {
+            _.unset(schema1, p)
+        })
+    } else {
+        _.unset(schema1, path)
+    }
+    expect(validateType.bind(undefined, schema1)).to.throw(/.*Missing type property.*/)
 }
 
 describe('validate-schema', function () {
     it('should run', function () {
-        validateSchema(schema)
+        validateType(schema)
+    })
+
+    it('should validate undefined schema', function () {
+       validateType(undefined)
+    })
+
+    it('should validate mising oneOf/allOf/anyOf type at the upper level', function () {
+        validateType(oneOf)
+        validateType(allOf)
+        validateType(anyOf)
     })
 
     it('should run with oneOf', function () {
-        validateSchema(oneOf)
+        validateType(oneOf)
     })
 
     it('should throw missing object type', function () {
@@ -112,7 +128,7 @@ describe('validate-schema', function () {
     })
 
     it('should throw missing items object type', function () {
-        validatePath('properties.b.items.type')
+        validatePath(['properties.b.items.type', 'properties.b.items.oneOf'])
     })
 
     it('should throw missing scalar type', function () {
