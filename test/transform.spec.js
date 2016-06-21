@@ -49,19 +49,6 @@ describe('transform()', function () {
                                                             required: false,
                                                             type: 'string',
                                                         },
-                                                        h: {
-                                                            displayName: 'h',
-                                                            items: {
-                                                                type: 'string',
-                                                            },
-                                                            required: false,
-                                                            type: 'array',
-                                                        },
-                                                        oneOf: {
-                                                            displayName: 'oneOf',
-                                                            required: false,
-                                                            type: 'string',
-                                                        },
                                                     },
                                                 },
                                                 isExpandable: true,
