@@ -106,7 +106,7 @@ describe('validate-schema', function () {
     })
 
     it('should validate undefined schema', function () {
-       validateType(undefined)
+        validateType(undefined)
     })
 
     it('should validate mising oneOf/allOf/anyOf type at the upper level', function () {
