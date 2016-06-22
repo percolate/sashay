@@ -1,10 +1,14 @@
-type: object
-properties:
-  prop:
+description: 'my oneOf'
+oneOf:
+  -
+    title: a
     type: object
     properties:
       a:
-        type: object
-        properties:
-          b:
-            type: integer
+        type: number
+  -
+    title: b
+    type: object
+    properties:
+      b:
+        type: integer

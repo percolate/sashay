@@ -22,37 +22,162 @@ describe('transform()', function () {
                                 {
                                     body: {
                                         'application/json': {
-                                            properties: {
-                                                b: {
-                                                    displayName: 'b',
-                                                    items: {
-                                                        type: ['object', null],
-                                                    },
-                                                    required: false,
-                                                    type: 'array',
-                                                    properties: {
-                                                        c: {
-                                                            description: 'my object description',
-                                                            displayName: 'c',
-                                                            required: false,
-                                                            type: ['string', null],
-                                                        },
-                                                        d: {
-                                                            description: 'a unique ID',
-                                                            displayName: 'd',
-                                                            required: true,
-                                                            type: 'integer',
-                                                        },
-                                                        g: {
-                                                            displayName: 'g',
-                                                            enum: ['val1', 'val2'],
-                                                            required: false,
-                                                            type: 'string',
+                                            schema: {
+                                                description: 'my object',
+                                                properties: {
+                                                    b: {
+                                                        required: false,
+                                                        types: {
+                                                            array: {
+                                                                types: {
+                                                                    types: {
+                                                                        e: {
+                                                                            title: 'e',
+                                                                            properties: {
+                                                                                c: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        null: {
+                                                                                            description: 'my object description',
+                                                                                        },
+                                                                                        string: {
+                                                                                            description: 'my object description',
+                                                                                            example: 'firstname.lastname@percolate.com',
+                                                                                            format: 'email',
+                                                                                            maxLength: 100,
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                d: {
+                                                                                    required: true,
+                                                                                    types: {
+                                                                                        null: {
+                                                                                            description: 'null',
+                                                                                        },
+                                                                                        string: [{
+                                                                                            title: 'license ID',
+                                                                                            description: 'a license ID',
+                                                                                            pattern: 'license:\\d+',
+                                                                                        }, {
+                                                                                            title: 'brand ID',
+                                                                                            description: 'a brand ID',
+                                                                                            pattern: 'brand:\\d+',
+                                                                                        }],
+                                                                                    },
+                                                                                },
+                                                                                g: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        string: {
+                                                                                            enum: [
+                                                                                                'val1',
+                                                                                                'val2',
+                                                                                            ],
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                ext: {
+                                                                                    required: false,
+                                                                                    description: 'Extra data',
+                                                                                    properties: {
+                                                                                        limit: {
+                                                                                            required: false,
+                                                                                            types: {
+                                                                                                integer: {},
+                                                                                            },
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                type: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        string: {
+                                                                                            description: 'The type of field',
+                                                                                            enum: ['asset'],
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        },
+                                                                        f: {
+                                                                            title: 'f',
+                                                                            properties: {
+                                                                                c: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        null: {
+                                                                                            description: 'my object description',
+                                                                                        },
+                                                                                        string: {
+                                                                                            description: 'my object description',
+                                                                                            example: 'firstname.lastname@percolate.com',
+                                                                                            format: 'email',
+                                                                                            maxLength: 100,
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                d: {
+                                                                                    required: true,
+                                                                                    types: {
+                                                                                        null: {
+                                                                                            description: 'null',
+                                                                                        },
+                                                                                        string: [{
+                                                                                            title: 'license ID',
+                                                                                            description: 'a license ID',
+                                                                                            pattern: 'license:\\d+',
+                                                                                        }, {
+                                                                                            title: 'brand ID',
+                                                                                            description: 'a brand ID',
+                                                                                            pattern: 'brand:\\d+',
+                                                                                        }],
+                                                                                    },
+                                                                                },
+                                                                                f: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        string: {},
+                                                                                    },
+                                                                                },
+                                                                                g: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        string: {
+                                                                                            enum: [
+                                                                                                'val1',
+                                                                                                'val2',
+                                                                                            ],
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                ext: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        null: {
+                                                                                            description: 'Extra data',
+                                                                                        },
+                                                                                        object: {
+                                                                                            description: 'Extra data',
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                type: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        string: {
+                                                                                            description: 'The type of field',
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                },
+                                                            },
+                                                            null: {},
                                                         },
                                                     },
                                                 },
-                                                isExpandable: true,
-                                                description: '',
                                             },
                                         },
                                     },
@@ -63,28 +188,32 @@ describe('transform()', function () {
                                     absoluteUri: '/foo/{foo_id}',
                                     body: {
                                         'application/json': {
-                                            properties: {
-                                                description: '',
-                                                prop: {
-                                                    displayName: 'prop',
-                                                    required: false,
-                                                    type: 'object',
-                                                    properties: {
-                                                        a: {
-                                                            displayName: 'a',
-                                                            required: false,
-                                                            type: 'object',
-                                                            properties: {
-                                                                b: {
-                                                                    displayName: 'b',
-                                                                    required: false,
-                                                                    type: 'integer',
+                                            schema: {
+                                                description: 'my oneOf',
+                                                types: {
+                                                    a: {
+                                                        title: 'a',
+                                                        properties: {
+                                                            a: {
+                                                                required: false,
+                                                                types: {
+                                                                    number: {},
+                                                                },
+                                                            },
+                                                        },
+                                                    },
+                                                    b: {
+                                                        title: 'b',
+                                                        properties: {
+                                                            b: {
+                                                                required: false,
+                                                                types: {
+                                                                    integer: {},
                                                                 },
                                                             },
                                                         },
                                                     },
                                                 },
-                                                isExpandable: true,
                                             },
                                         },
                                     },
