@@ -342,7 +342,7 @@ describe('transform()', function () {
 
     it('should throw validation error', function (done) {
         var options = {
-            source: path.resolve(__dirname, './fixtures/invalid/invalid-oneOf.raml'),
+            source: path.resolve(__dirname, './fixtures/invalid/invalid-oneof.raml'),
         }
         expand(options)
             .then(function (res) {
