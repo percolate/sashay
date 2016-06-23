@@ -2,6 +2,7 @@ type: object
 description: my object
 properties:
   b:
+    description: my array
     type:
       - array
       - null
@@ -63,6 +64,7 @@ properties:
                 properties:
                   limit:
                     type: integer
+                    minimum: 10
 
           -
             type: object
