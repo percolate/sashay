@@ -1,74 +1,42 @@
 type: object
-description: my object
 properties:
   b:
-    description: my array
     type:
       - array
-      - null
+      - "null"
     minItems: 1
     items:
       type:
         - object
-        - null
+        - "null"
       required:
         - d
+      additionalProperties: false
       properties:
         c:
           description: my object description
           type:
             - string
-            - null
+            - "null"
           example: firstname.lastname@percolate.com
           format: email
           maxLength: 100
         d:
-          oneOf:
-            -
-                type: "null"
-                title: "null"
-            -
-                title: license ID
-                type: string
-                description: a license ID
-                pattern: license:\d+
-            -
-                title: brand ID
-                type: string
-                description: a brand ID
-                pattern: brand:\d+
+          description: a unique ID
+          type: integer
+          minimum: 10
+          maximum: 20
         g:
           enum:
             - val1
             - val2
           type: string
-        type:
-          description: The type of field
-          type: string
-        ext:
-          description: Extra data
-          type:
-            - object
-            - "null"
       oneOf:
           -
             type: object
-            title: e
+            required:
+              - e
             properties:
-              type:
-                type: string
-                enum:
-                  - asset
-              ext:
-                type: object
-                properties:
-                  limit:
-                    type: integer
-                    minimum: 10
-
-          -
-            type: object
-            title: f
-            properties:
-              f:
-                type: string
+              e:
+                type: boolean
+                default: true

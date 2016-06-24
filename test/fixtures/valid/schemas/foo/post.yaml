@@ -1,14 +1,10 @@
-description: 'my oneOf'
-oneOf:
-  -
-    title: a
+type: object
+properties:
+  prop:
     type: object
     properties:
       a:
-        type: number
-  -
-    title: b
-    type: object
-    properties:
-      b:
-        type: integer
+        type: object
+        properties:
+          b:
+            type: integer
