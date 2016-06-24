@@ -5,6 +5,7 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
+var Schema = require('./parameters-schema.jsx')
 
 module.exports = React.createClass({
 
@@ -104,7 +105,6 @@ module.exports = React.createClass({
         var successResponse = helper.getSuccessResponseFromMethod(method)
         var absoluteUri = this.props.baseUri + method.absoluteUri
         var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
-
         return (
             <row
                 id={method.slug}
@@ -121,19 +121,19 @@ module.exports = React.createClass({
                     {(!_.isEmpty(method.uriParameters)) && (
                         <section>
                             <h1>URI Parameters</h1>
-                            <Parameters parameters={method.uriParameters} />
+                            <Parameters parameters={method.uriParameters} onChange={this.props.onChange} />
                         </section>
                     )}
                     {(!_.isEmpty(method.queryParameters)) && (
                         <section>
                             <h1>Query Parameters</h1>
-                            <Parameters parameters={method.queryParameters} />
+                            <Parameters parameters={method.queryParameters} onChange={this.props.onChange} />
                         </section>
                     )}
-                    {_.has(body, 'properties') && (
+                    {_.has(body, 'schema') && (
                         <section>
                             <h1>Body</h1>
-                            <Parameters parameters={_.get(body, 'properties')} onChange={this.props.onChange} />
+                            <Schema schema={body.schema} onChange={this.props.onChange} />
                         </section>
                     )}
                 </content>

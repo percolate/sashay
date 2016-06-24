@@ -116,6 +116,7 @@ main {
         border-top: solid 1px #e0e2e2;
         margin: -1px 0 40px;
         padding: 0;
+
         .parameter {
             border-bottom: solid 1px #e0e2e2;
             display: flex;
@@ -125,27 +126,62 @@ main {
             &:last-child {
                 border-color: #e0e2e2;
             }
-        }
-        .parameter-spec {
-            flex: 0 0 180px;
-            font-weight: bold;
-            padding-right: 20px;
-            text-align: right;
-            a {
-                cursor: pointer;
-                text-decoration: underline;
+            .parameter-wrapper {
+                width: 100%;
+                .parameter-spec {
+                    float: left;
+                    font-weight: bold;
+                    text-align: right;
+                    width: 180px;
+                    a {
+                        cursor: pointer;
+                        text-decoration: underline;
+                    }
+                }
+                .parameter-types {
+                    padding-left: 200px;
+                    .separator {
+                        margin-right: 5px;
+                    }
+                    a {
+                        color: #77bcd7;
+                        cursor: pointer;
+                        &.selected {
+                            color: #ffae54;
+                        }
+                    }
+                }
+                .parameter-subtypes {
+                    margin-top: 5px;
+                    padding-left: 200px;
+                    a {
+                        color: #77bcd7;
+                        cursor: pointer;
+                        margin-right: 5px;
+                        &.selected {
+                            color: #ffae54;
+                        }
+                    }
+                }
+                .parameter-desc {
+                    margin-left: 20px;
+                    margin-top: 5px;
+                    padding-left: 180px;
+                    a {
+                        color: #77bcd7;
+                        cursor: pointer;
+                    }
+                }
+                .parameter-info {
+                    color: #999999;
+                    font-weight: normal;
+                }
+                .parameter-required {
+                    color: #ff7800;
+                    font-weight: bold;
+                }
             }
         }
-        .parameter-desc {
-            flex: 1;
-        }
-        .parameter-info {
-            color: #999999;
-            font-weight: normal;
-        }
-        .parameter-required {
-            color: #ff7800;
-            font-weight: bold;
-        }
+
     }
 }
