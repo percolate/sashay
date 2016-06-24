@@ -211,7 +211,8 @@ describe('transform-data-type()', function () {
                 { title: 'diff type', type: 'null' },
             ],
         })).to.deep.equal({
-            string: [{
+            string: [
+                {
                     title: 'union',
                     description: 'foo',
                     enum: ['foo', 'bar'],

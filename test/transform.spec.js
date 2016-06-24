@@ -59,7 +59,7 @@ describe('transform()', function () {
                                                                                         string: [{
                                                                                             description: undefined,
                                                                                             pattern: undefined,
-                                                                                            enum: ['val1', 'val2']
+                                                                                            enum: ['val1', 'val2'],
                                                                                         }],
                                                                                     },
                                                                                 },
