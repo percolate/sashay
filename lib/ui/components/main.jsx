@@ -5,7 +5,7 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var Schema = require('./parameters-schema.jsx')
+var Payload = require('./payload.jsx')
 
 module.exports = React.createClass({
 
@@ -121,19 +121,19 @@ module.exports = React.createClass({
                     {(!_.isEmpty(method.uriParameters)) && (
                         <section>
                             <h1>URI Parameters</h1>
-                            <Parameters parameters={method.uriParameters} onChange={this.props.onChange} />
+                            <Parameters parameters={method.uriParameters} />
                         </section>
                     )}
                     {(!_.isEmpty(method.queryParameters)) && (
                         <section>
                             <h1>Query Parameters</h1>
-                            <Parameters parameters={method.queryParameters} onChange={this.props.onChange} />
+                            <Parameters parameters={method.queryParameters} />
                         </section>
                     )}
-                    {_.has(body, 'schema') && (
+                    {_.has(body, 'payload') && (
                         <section>
                             <h1>Body</h1>
-                            <Schema schema={body.schema} onChange={this.props.onChange} />
+                            <Payload types={body.payload} onChange={this.props.onChange} />
                         </section>
                     )}
                 </content>

@@ -1,0 +1,111 @@
+var _ = require('lodash')
+var Markdown = require('./markdown.jsx')
+var React = require('react')
+var PropTypes = require('./payload/property-types.jsx')
+var Types = require('./payload/types.jsx')
+var isVisible = require('./utils').isVisible
+
+module.exports = React.createClass({
+    displayName: 'Payload',
+    propTypes: {
+        types: React.PropTypes.shape({
+            object: React.PropTypes.arrayOf(React.PropTypes.shape({
+                properties: React.PropTypes.objectOf(React.PropTypes.shape({
+                    required: React.PropTypes.bool.isRequired,
+                    types: React.PropTypes.object.isRequired,
+                })).isRequired,
+            })).isRequired,
+        }).isRequired,
+    },
+
+    getInitialState: function () {
+        return this.buildState(this.props.types, [])
+    },
+
+    buildState: function (types, prevTypes) {
+        if (!prevTypes) prevTypes = this.state.prevTypes
+        return {
+            prevTypes,
+            properties: _.get(types, ['object', 0, 'properties']),
+            types,
+        }
+    },
+
+    componentDidUpdate: function () {
+        if (this.refs.back && !isVisible(this.refs.back)) {
+            this.refs.back.scrollIntoView()
+        }
+    },
+
+    render: function () {
+        return (
+            <div className="payload">
+                {this.renderBackLink()}
+                <Types
+                    types={this.state.types}
+                    onSelect={this.typeSelectHandler}
+                />
+                <div className="properties-title">Properties:</div>
+                {this.renderProps()}
+            </div>
+        )
+    },
+
+    renderBackLink: function () {
+        if (_.isEmpty(this.state.prevTypes)) return undefined
+
+        return <a href="javascript:void(0)" onClick={this.backLinkHandler} ref="back" className="back-link">Back to parent object</a>
+    },
+
+    renderProps: function () {
+        if (_.isEmpty(this.state.properties)) {
+            return <div className="properties-empty">None</div>
+        }
+
+        var props = this.state.properties
+        var sortedKeys = _.chain(props)
+            .keys()
+            .sort()
+            .value()
+
+        return (
+            <ul className="properties">
+                {_.map(sortedKeys, function (key) {
+                    var prop = props[key]
+
+                    return (
+                        <li
+                            className="property"
+                            key={key}
+                        >
+                            <div className="property-spec">
+                                {key}
+                                {prop.required && <span className="property-required" title="required"> *</span>}
+                            </div>
+                            <div className="property-info">
+                                <PropTypes types={prop.types} onViewObject={this.viewObjectHandler} />
+                            </div>
+                        </li>
+                    )
+                }.bind(this))}
+            </ul>
+        )
+    },
+
+    viewObjectHandler: function (types) {
+        this.state.prevTypes.push(this.state.types)
+        this.setState(this.buildState(types))
+
+    },
+
+    typeSelectHandler: function (object, type, index) {
+        this.setState({
+            properties: object.properties,
+        })
+    },
+
+    backLinkHandler: function () {
+        var prevTypes = this.state.prevTypes.pop()
+        this.setState(this.buildState(prevTypes))
+    },
+})
