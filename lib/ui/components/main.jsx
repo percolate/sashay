@@ -30,7 +30,6 @@ module.exports = React.createClass({
         ).isRequired,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
-        onChange: React.PropTypes.func.isRequired,
     },
 
     render: function () {
@@ -133,7 +132,7 @@ module.exports = React.createClass({
                     {_.has(body, 'payload') && (
                         <section>
                             <h1>Body</h1>
-                            <Payload types={body.payload} onChange={this.props.onChange} />
+                            <Payload types={body.payload} />
                         </section>
                     )}
                 </content>

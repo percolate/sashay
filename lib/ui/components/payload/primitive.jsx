@@ -1,4 +1,5 @@
 var _ = require('lodash')
+var Code = require('../code.jsx')
 var Markdown = require('../markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
@@ -16,7 +17,7 @@ module.exports = React.createClass({
 
     propTypes: {
         definition: React.PropTypes.shape({
-            description: React.PropTypes.string,
+            description: React.PropTypes.array,
         }).isRequired,
         type: React.PropTypes.oneOf([
             'array',
@@ -40,10 +41,14 @@ module.exports = React.createClass({
         }
         return (
             <div className="primitive">
-                {description && <Markdown content={description} />}
+                {_.map(description, this.renderContent)}
                 {metadata}
             </div>
         )
+    },
+
+    renderContent: function (content, index) {
+        return (content.type === 'code') ? <Code key={index} lang={content.lang} code={content.text} /> : <Markdown key={index} content={content.text} />
     },
 
     getMetadata: function () {

@@ -9,6 +9,9 @@ if (IS_BROWSER) require('../less/index.less')
 module.exports = React.createClass({
 
     displayName: 'Controller',
+    childContextTypes: {
+        onChange: React.PropTypes.func.isRequired,
+    },
 
     _updateOffsets: function () {
         this._offsets = _.chain(this.refs.main.refs)
@@ -51,6 +54,12 @@ module.exports = React.createClass({
         window.removeEventListener('resize')
     },
 
+    getChildContext: function ()  {
+        return {
+            onChange: this.resizeHandler,
+        }
+    },
+
     getInitialState: function () {
         return {
             hash: undefined,
@@ -68,7 +77,6 @@ module.exports = React.createClass({
                 <Main
                     {...this.props}
                     ref="main"
-                    onChange={this.resizeHandler}
                 />
             </div>
         )

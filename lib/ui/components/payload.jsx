@@ -1,11 +1,14 @@
 var _ = require('lodash')
-var Markdown = require('./markdown.jsx')
 var React = require('react')
 var PropTypes = require('./payload/property-types.jsx')
 var Types = require('./payload/types.jsx')
 var isVisible = require('./utils').isVisible
 
 module.exports = React.createClass({
+    contextTypes: {
+        onChange: React.PropTypes.func,
+    },
+
     displayName: 'Payload',
     propTypes: {
         types: React.PropTypes.shape({
@@ -34,6 +37,9 @@ module.exports = React.createClass({
     componentDidUpdate: function () {
         if (this.refs.back && !isVisible(this.refs.back)) {
             this.refs.back.scrollIntoView()
+        }
+        if (this.context.onChange) {
+            this.context.onChange()
         }
     },
 
@@ -95,10 +101,9 @@ module.exports = React.createClass({
     viewObjectHandler: function (types) {
         this.state.prevTypes.push(this.state.types)
         this.setState(this.buildState(types))
-
     },
 
-    typeSelectHandler: function (object, type, index) {
+    typeSelectHandler: function (object, type) {
         this.setState({
             properties: object.properties,
         })

@@ -36,20 +36,39 @@ module.exports = React.createClass({
 
         return {
             selectedType: this.props.selectedType || firstType,
-            indexesByType: {
-                array: 0,
-                boolean: 0,
-                integer: 0,
-                null: 0,
-                number: 0,
-                object: 0,
-                string: 0,
-            },
+            indexesByType: this.initializeIndices(),
+        }
+    },
+
+    componentWillReceiveProps: function (nextProps) {
+        var overflow = _.chain(nextProps.types)
+            .map(function (type, key) {
+                return this.state.indexesByType[key] >= type.length
+            }.bind(this))
+            .includes(true)
+            .value()
+
+        if (overflow) {
+            this.setState({
+              indexesByType: this.initializeIndices(),
+          })
         }
     },
 
     getTypes: function () {
         return _.keys(this.props.types)
+    },
+
+    initializeIndices: function () {
+        return {
+            array: 0,
+            boolean: 0,
+            integer: 0,
+            null: 0,
+            number: 0,
+            object: 0,
+            string: 0,
+        }
     },
 
     render: function () {
