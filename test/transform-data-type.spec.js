@@ -21,7 +21,10 @@ describe('transform-data-type()', function () {
             description: 'foo',
         })).to.deep.equal({
             number: [{
-                description: 'foo',
+                description: [{
+                    text: 'foo',
+                    type: 'text',
+                }],
             }],
         })
     })
@@ -35,7 +38,10 @@ describe('transform-data-type()', function () {
             bogus: 'hi',
         })).to.deep.equal({
             string: [{
-                description: 'hello',
+                description: [{
+                    text: 'hello',
+                    type: 'text',
+                }],
                 pattern: '\w+',
                 enum: ['hello', 'world'],
             }],
@@ -124,7 +130,10 @@ describe('transform-data-type()', function () {
             },
         })).to.deep.equal({
             object: [{
-                description: 'hello',
+                description: [{
+                    text: 'hello',
+                    type: 'text',
+                }],
                 properties: {
                     id: {
                         required: false,
@@ -214,35 +223,53 @@ describe('transform-data-type()', function () {
             string: [
                 {
                     title: 'abstract',
-                    description: 'foo',
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
                     pattern: undefined,
                     enum: ['foo'],
                 },
                 {
                     title: 'union',
-                    description: 'foo',
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
                     enum: ['foo', 'bar'],
                     pattern: undefined,
                 }, {
                     title: 'unique',
-                    description: 'foo',
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
                     enum: ['foo', 'bar'],
                     pattern: undefined,
                 }, {
                     title: 'override',
-                    description: 'foo',
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
                     enum: 'override',
                     pattern: undefined,
                 }, {
                     title: 'merge',
-                    description: 'foo',
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
                     enum: ['foo'],
                     pattern: '\\w+',
                 },
             ],
             null: [{
                 title: 'diff type',
-                description: 'foo',
+                description: [{
+                    text: 'foo',
+                    type: 'text',
+                }],
             }],
         })
     })

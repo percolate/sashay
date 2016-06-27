@@ -40,17 +40,30 @@ describe('transform()', function () {
                                                                                     required: false,
                                                                                     types: {
                                                                                         string: [{
-                                                                                            description: 'my object description',
+                                                                                            description: [{
+                                                                                                text: 'my object description',
+                                                                                                type: 'text',
+                                                                                            }],
                                                                                             pattern: undefined,
                                                                                             enum: undefined,
                                                                                         }],
-                                                                                        null: [{ description: 'my object description' }],
+                                                                                        null: [{
+                                                                                            description: [{
+                                                                                                text: 'my object description',
+                                                                                                type: 'text',
+                                                                                            }],
+                                                                                        }],
                                                                                     },
                                                                                 },
                                                                                 d: {
                                                                                     required: true,
                                                                                     types: {
-                                                                                        integer: [{ description: 'a unique ID' }],
+                                                                                        integer: [{
+                                                                                            description: [{
+                                                                                                text: 'a unique ID',
+                                                                                                type: 'text',
+                                                                                            }],
+                                                                                        }],
                                                                                     },
                                                                                 },
                                                                                 g: {
@@ -73,17 +86,30 @@ describe('transform()', function () {
                                                                                     required: false,
                                                                                     types: {
                                                                                         string: [{
-                                                                                            description: 'my object description',
+                                                                                            description: [{
+                                                                                                text: 'my object description',
+                                                                                                type: 'text',
+                                                                                            }],
                                                                                             pattern: undefined,
                                                                                             enum: undefined,
                                                                                         }],
-                                                                                        null: [{ description: 'my object description' }],
+                                                                                        null: [{
+                                                                                            description: [{
+                                                                                                text: 'my object description',
+                                                                                                type: 'text',
+                                                                                            }],
+                                                                                        }],
                                                                                     },
                                                                                 },
                                                                                 d: {
                                                                                     required: true,
                                                                                     types: {
-                                                                                        integer: [{ description: 'a unique ID' }],
+                                                                                        integer: [{
+                                                                                            description: [{
+                                                                                                text: 'a unique ID',
+                                                                                                type: 'text',
+                                                                                            }],
+                                                                                        }],
                                                                                     },
                                                                                 },
                                                                                 g: {
