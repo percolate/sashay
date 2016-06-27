@@ -22,7 +22,7 @@ describe('transform()', function () {
                                 {
                                     body: {
                                         'application/json': {
-                                            schema: {
+                                            payload: {
                                                 object: [{
                                                     description: undefined,
                                                     properties: {
@@ -33,7 +33,40 @@ describe('transform()', function () {
                                                                     description: undefined,
                                                                     types: {
                                                                         object: [{
-                                                                            title: 'Subtype 1',
+                                                                            title: 'abstract',
+                                                                            description: undefined,
+                                                                            properties: {
+                                                                                c: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        string: [{
+                                                                                            description: 'my object description',
+                                                                                            pattern: undefined,
+                                                                                            enum: undefined,
+                                                                                        }],
+                                                                                        null: [{ description: 'my object description' }],
+                                                                                    },
+                                                                                },
+                                                                                d: {
+                                                                                    required: true,
+                                                                                    types: {
+                                                                                        integer: [{ description: 'a unique ID' }],
+                                                                                    },
+                                                                                },
+                                                                                g: {
+                                                                                    required: false,
+                                                                                    types: {
+                                                                                        string: [{
+                                                                                            description: undefined,
+                                                                                            pattern: undefined,
+                                                                                            enum: ['val1', 'val2'],
+                                                                                        }],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        },
+                                                                        {
+                                                                            title: 'Subtype 2',
                                                                             description: undefined,
                                                                             properties: {
                                                                                 c: {
@@ -88,7 +121,7 @@ describe('transform()', function () {
                                     absoluteUri: '/foo/{foo_id}',
                                     body: {
                                         'application/json': {
-                                            schema: {
+                                            payload: {
                                                 object: [{
                                                     description: undefined,
                                                     properties: {

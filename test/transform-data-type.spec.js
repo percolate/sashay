@@ -213,6 +213,12 @@ describe('transform-data-type()', function () {
         })).to.deep.equal({
             string: [
                 {
+                    title: 'abstract',
+                    description: 'foo',
+                    pattern: undefined,
+                    enum: ['foo'],
+                },
+                {
                     title: 'union',
                     description: 'foo',
                     enum: ['foo', 'bar'],
