@@ -50,8 +50,8 @@ module.exports = React.createClass({
 
         if (overflow) {
             this.setState({
-              indexesByType: this.initializeIndices(),
-          })
+                indexesByType: this.initializeIndices(),
+            })
         }
     },
 

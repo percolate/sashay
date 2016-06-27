@@ -54,7 +54,7 @@ module.exports = React.createClass({
         window.removeEventListener('resize')
     },
 
-    getChildContext: function ()  {
+    getChildContext: function () {
         return {
             onChange: this.resizeHandler,
         }

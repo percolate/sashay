@@ -103,7 +103,7 @@ module.exports = React.createClass({
         this.setState(this.buildState(types))
     },
 
-    typeSelectHandler: function (object, type) {
+    typeSelectHandler: function (object) {
         this.setState({
             properties: object.properties,
         })
