@@ -7,7 +7,7 @@ var SOURCE = path.resolve(__dirname, './fixtures/valid/index.raml')
 var DESTINATION = path.resolve(__dirname, './fixtures/temp/build/')
 
 describe('build()', function () {
-    this.timeout(1.2 * 10e3)
+    this.timeout(1.5 * 10e3)
 
     afterEach(function () {
         fs.removeSync(DESTINATION)
