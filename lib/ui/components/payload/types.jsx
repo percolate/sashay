@@ -3,8 +3,8 @@ var Primitive = require('./primitive.jsx')
 var React = require('react')
 
 module.exports = React.createClass({
+    back: false,
     displayName: 'Types',
-
     propTypes: {
         types: React.PropTypes.shape({
             array: React.PropTypes.array,
@@ -37,21 +37,32 @@ module.exports = React.createClass({
         return {
             selectedType: this.props.selectedType || firstType,
             indexesByType: this.initializeIndices(),
+            prevIndices: [],
         }
     },
 
     componentWillReceiveProps: function (nextProps) {
         var overflow = _.chain(nextProps.types)
             .map(function (type, key) {
-                return this.state.indexesByType[key] >= type.length
+                return this.props.types[key] && !_.isEqual(this.props.types[key], type)
             }.bind(this))
             .includes(true)
             .value()
 
         if (overflow) {
-            this.setState({
-                indexesByType: this.initializeIndices(),
-            })
+            if (this.back) {
+                var prevIndices = this.state.prevIndices
+                var indexesByType = prevIndices.pop()
+                this.setState({
+                    prevIndices: prevIndices,
+                    indexesByType: indexesByType ? indexesByType : this.initializeIndices(),
+                })
+                this.back = false
+            } else {
+                this.setState({
+                    indexesByType: this.initializeIndices(),
+                })
+            }
         }
     },
 
@@ -150,4 +161,15 @@ module.exports = React.createClass({
         this.props.onViewObject(_.pick(this.props.types, this.state.selectedType))
     },
 
+    storePreviousIndices: function () {
+        var prevIndices = this.state.prevIndices
+        prevIndices.push(this.state.indexesByType)
+        this.setState({
+            prevIndices: prevIndices,
+        })
+    },
+
+    backLinkHandler: function () {
+        this.back = true
+    }
 })

@@ -48,6 +48,7 @@ module.exports = React.createClass({
             <div className="payload">
                 {this.renderBackLink()}
                 <Types
+                    ref="types"
                     types={this.state.types}
                     onSelect={this.typeSelectHandler}
                 />
@@ -104,6 +105,7 @@ module.exports = React.createClass({
     },
 
     viewObjectHandler: function (types) {
+        this.refs.types.storePreviousIndices()
         this.state.prevTypes.push(this.state.types)
         this.setState(this.buildState(types))
     },
@@ -117,5 +119,6 @@ module.exports = React.createClass({
     backLinkHandler: function () {
         var prevTypes = this.state.prevTypes.pop()
         this.setState(this.buildState(prevTypes))
+        this.refs.types.backLinkHandler()
     },
 })
