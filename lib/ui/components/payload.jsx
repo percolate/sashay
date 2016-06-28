@@ -65,7 +65,13 @@ module.exports = React.createClass({
 
     renderProps: function () {
         if (_.isEmpty(this.state.properties)) {
-            return <div className="properties-empty">None</div>
+            return (
+                <ul className="properties">
+                    <li className="property">
+                        <div className="property-key">None</div>
+                    </li>
+                </ul>
+            )
         }
 
         var props = this.state.properties
@@ -84,9 +90,8 @@ module.exports = React.createClass({
                             className="property"
                             key={key}
                         >
-                            <div className="property-spec">
+                            <div className={`property-key ${prop.required && 'required'}`}>
                                 {key}
-                                {prop.required && <span className="property-required" title="required"> *</span>}
                             </div>
                             <div className="property-info">
                                 <PropTypes types={prop.types} onViewObject={this.viewObjectHandler} />

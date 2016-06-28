@@ -81,13 +81,11 @@ module.exports = React.createClass({
             <div className="types">
                 {this.renderTypes(types, currIndex, this.typeClickHandler)}
                 {this.renderSubTypes()}
-                <div className="primitive-wrapper">
-                    <Primitive
-                        definition={this.props.types[selectedType][this.state.indexesByType[selectedType]]}
-                        type={this.state.selectedType}
-                        onViewObject={viewObjectHandler}
-                    />
-                </div>
+                <Primitive
+                    definition={this.props.types[selectedType][this.state.indexesByType[selectedType]]}
+                    type={this.state.selectedType}
+                    onViewObject={viewObjectHandler}
+                />
             </div>
         )
     },
@@ -109,7 +107,7 @@ module.exports = React.createClass({
 
     renderSubTypes: function () {
         var subTypes = this.props.types[this.state.selectedType]
-        if (subTypes.length === 1 || this.props.onViewObject) return undefined
+        if (subTypes.length === 1 || this.props.onViewObject && this.state.selectedType === 'object') return undefined
 
         var titles = _.map(subTypes, 'title')
         var currIndex = this.state.indexesByType[this.state.selectedType]

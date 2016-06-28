@@ -32,23 +32,30 @@ module.exports = React.createClass({
     },
 
     render: function () {
-        var { description } = this.props.definition
-        var metadata
-        if (this.props.type === 'object' && this.props.onViewObject) {
-            metadata = <a href="javascript:void(0)" className="view-object-link" onClick={this.viewObjectHandler}>View object details</a>
-        } else {
-            metadata = this.renderMetadata()
-        }
+        var metadata = this.renderMetadata()
+        var description = this.renderDescription()
+
+        if (!metadata && !description) return null
+
         return (
             <div className="primitive">
-                {_.map(description, this.renderContent)}
+                {description}
                 {metadata}
             </div>
         )
     },
 
-    renderContent: function (content, index) {
-        return (content.type === 'code') ? <Code key={index} lang={content.lang} code={content.text} /> : <Markdown key={index} content={content.text} />
+    renderDescription: function () {
+        var { description } = this.props.definition
+        if (_.isEmpty(description)) return undefined
+
+        return _.map(description, function (content, index) {
+            if (content.type === 'code') {
+                return <Code key={index} lang={content.lang} code={content.text} />
+            } else {
+                return <Markdown key={index} content={content.text} />
+            }
+        })
     },
 
     getMetadata: function () {
@@ -67,6 +74,10 @@ module.exports = React.createClass({
     },
 
     renderMetadata: function () {
+        if (this.props.type === 'object' && this.props.onViewObject) {
+            return <a href="javascript:void(0)" className="view-object-link" onClick={this.viewObjectHandler}>View object details</a>
+        }
+
         var metadata = this.getMetadata()
         if (_.isEmpty(metadata)) return undefined
 
