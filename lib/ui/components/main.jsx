@@ -132,7 +132,7 @@ module.exports = React.createClass({
                     {_.has(body, 'payload') && (
                         <section>
                             <h1>Body</h1>
-                            <Payload types={body.payload} />
+                            <Payload root={body.payload} />
                         </section>
                     )}
                 </content>

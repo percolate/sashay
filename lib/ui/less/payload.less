@@ -12,20 +12,8 @@
     font-size: 13px;
     margin-bottom: 40px;
 
-    .back-link {
-        border-left: 5px solid #2477b2;
-        color: #2477b2;
-        display: inline-block;
-        line-height: 32px;
-        margin-bottom: 5px;
-        padding-left: 10px;
-        text-decoration: none;
-        vertical-align: middle;
-
-        &:hover {
-            border-color: #f16421;
-            color: #f16421;
-        }
+    .breadcrumbs {
+        padding: @spacing * 1.5 0;
     }
 
     .properties-title {
@@ -42,31 +30,41 @@
             display: table-row;
         }
 
-        .property-key, .property-info {
+        .property-left, .property-right {
             border-bottom: solid 1px #e0e2e2;
             display: table-cell;
-            padding: @row-spacing 5px;
+            padding: @row-spacing 10px;
         }
-        .property-key {
-            font-weight: bold;
-            padding-left: 0;
+        .property-left {
+            @asterix-width: 10px;
             text-align: right;
 
-            &.required:after {
+            &.required .property-key:after {
                 color: #ff7800;
                 content: "*";
-                padding-left: 0.2em;
+                position: absolute;
+                text-align: center;
+                width: @asterix-width;
             }
-        }
-        .property-info {
-            width: 100%;
+
+            .property-key {
+                font-weight: bold;
+            }
         }
     }
 
     .types {
-        .type-list-item {
+        &.primitive .type-list-item a {
+            font-family: monospace;
+        }
+        &.sub {
+            margin-top: @spacing / 2;
+            .type-list-item a {
+                text-transform: capitalize;
+            }
+        }
+        &.inline .type-list-item {
             display: inline-block;
-            list-style: none;
 
             &:after {
                 color: #999999;
@@ -77,12 +75,27 @@
             }
 
             a {
-                font-family: monospace;
                 padding: 0 5px;
-                text-decoration: none;
             }
             &:first-child a {
                 padding-left: 0;
+            }
+        }
+
+        &.stacked .type-list-item {
+            display: block;
+            padding-bottom: 5px;
+
+            &:last-child {
+                padding-bottom: 0;
+            }
+        }
+
+        .type-list-item {
+            list-style: none;
+
+            a {
+                text-decoration: none;
             }
 
             &.selectable a {
@@ -99,11 +112,17 @@
         }
     }
 
-    .array-types {
+    .array-types-wrapper {
         margin-top: @header-spacing;
 
         .array-types-title {
             .header();
+            margin-bottom: @spacing;
+        }
+
+        .array-types {
+            border-left: solid 3px #e0e2e2;
+            padding-left: 15px;
         }
     }
 
@@ -111,27 +130,18 @@
         .markdown {
             margin-top: @spacing;
         }
+    }
 
-        .view-object-link {
-            color: #2477b2;
-            display: inline-block;
-            margin-top: @spacing;
-            text-decoration: none;
+    .metadata {
+        display: table;
 
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-        .metadata-list {
-            display: table;
-        }
-        .metadata-list-item {
+        .metadata-item {
             display: table-row;
             list-style: none;
 
             .metadata-label, .metadata-value {
                 display: table-cell;
-                padding-top: 10px;
+                padding-top: @spacing;
                 vertical-align: top;
             }
 
@@ -147,17 +157,25 @@
 
                 ul li {
                     list-style: none;
+                    padding-right: 5px;
 
-                    &:after {
-                        color: #999999;
-                        content: ",";
-                        padding-right: 5px;
-                    }
-                    &:last-child:after {
-                        content: "";
+                    &:last-child {
                         padding-right: 0;
                     }
                 }
+            }
+        }
+    }
+
+    .view-props-link {
+        margin-top: @spacing;
+
+        a {
+            color: #2477b2;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
             }
         }
     }

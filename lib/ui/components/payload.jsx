@@ -1,8 +1,11 @@
 var _ = require('lodash')
+var Breadcrumbs = require('./payload/breadcrumbs.jsx')
 var React = require('react')
-var PropTypes = require('./payload/property-types.jsx')
+var Primitive = require('./payload/primitive.jsx')
 var Types = require('./payload/types.jsx')
 var isVisible = require('./utils').isVisible
+
+var ROOT_PATH = ['root']
 
 module.exports = React.createClass({
     contextTypes: {
@@ -11,7 +14,7 @@ module.exports = React.createClass({
 
     displayName: 'Payload',
     propTypes: {
-        types: React.PropTypes.shape({
+        root: React.PropTypes.shape({
             object: React.PropTypes.arrayOf(React.PropTypes.shape({
                 properties: React.PropTypes.objectOf(React.PropTypes.shape({
                     required: React.PropTypes.bool.isRequired,
@@ -22,35 +25,90 @@ module.exports = React.createClass({
     },
 
     getInitialState: function () {
-        return this.buildState(this.props.types, [])
-    },
-
-    buildState: function (types, prevTypes) {
-        if (!prevTypes) prevTypes = this.state.prevTypes
         return {
-            prevTypes,
-            properties: _.get(types, ['object', 0, 'properties']),
-            types,
+            crumbs: ['root'],
+            currPath: ROOT_PATH,
+            paths: {},
+            prevPaths: [],
         }
     },
 
     componentDidUpdate: function () {
-        if (this.refs.back && !isVisible(this.refs.back)) {
-            this.refs.back.scrollIntoView()
-        }
-        if (this.context.onChange) {
-            this.context.onChange()
-        }
+        if (this.context.onChange) this.context.onChange()
+    },
+
+    getSchema: function (path) {
+        return _.get(this.props, path)
+    },
+
+    getTypes: function (path) {
+        return _.keys(this.getSchema(path))
+    },
+
+    getSubTypes: function (path) {
+        var subTypes = _.get(this.getSchema(path), this.getCurrType(path))
+        return _.chain(subTypes)
+            .map('title')
+            .compact()
+            .value()
+    },
+
+    getCurrType: function (path) {
+        return this.getStateValue(path, 'type') || _.first(this.getTypes(path))
+    },
+
+    getCurrSubType: function (path) {
+        return this.getStateValue(path, 'subType') || 0
+    },
+
+    getCurrSchema: function (path) {
+        return _.get(this.getSchema(path), [this.getCurrType(path), this.getCurrSubType(path)])
+    },
+
+    getTypedPath: function (path) {
+        return _.concat(path, this.getCurrType(path), this.getCurrSubType(path))
+    },
+
+    getPathString: function (path) {
+        if (!_.isArray(path)) throw new Error('path must be an array')
+        return path.join(',')
+    },
+
+    getStateValue: function (path, key) {
+        var pathString = this.getPathString(path)
+        return _.get(this.state.paths, key ? [pathString, key] : pathString)
+    },
+
+    setStateValue: function (path, key, value) {
+        var data = this.getStateValue(path) || {}
+        data[key] = value
+
+        var paths = this.state.paths
+        paths[this.getPathString(path)] = data
+
+        this.setState({
+            paths: paths,
+        })
     },
 
     render: function () {
         return (
-            <div className="payload">
-                {this.renderBackLink()}
+            <div className="payload" ref="payload">
+                {this.renderBreadcrumbs()}
                 <Types
-                    ref="types"
-                    types={this.state.types}
-                    onSelect={this.typeSelectHandler}
+                    types={['object']}
+                    currType="object"
+                    onClick={this.subTypeClickhandler.bind(this, this.state.currPath)}
+                />
+                <Types
+                    isSubTypes
+                    types={this.getSubTypes(this.state.currPath)}
+                    currType={this.getCurrSubType(this.state.currPath)}
+                    onClick={this.subTypeClickhandler.bind(this, this.state.currPath)}
+                />
+                <Primitive
+                    type={this.getCurrType(this.state.currPath)}
+                    description={this.getCurrSchema(this.state.currPath).description}
                 />
                 <div className="properties-title">Properties:</div>
                 {this.renderProps()}
@@ -58,24 +116,19 @@ module.exports = React.createClass({
         )
     },
 
-    renderBackLink: function () {
-        if (_.isEmpty(this.state.prevTypes)) return undefined
-
-        return <a href="javascript:void(0)" onClick={this.backLinkHandler} ref="back" className="back-link">Back to parent object</a>
+    renderBreadcrumbs: function () {
+        if (this.state.crumbs.length <= 1) return undefined
+        return (
+            <Breadcrumbs
+                crumbs={this.state.crumbs}
+                onClick={this.breadcrumbClickHandler}
+                ref="breadcrumbs"
+            />
+        )
     },
 
     renderProps: function () {
-        if (_.isEmpty(this.state.properties)) {
-            return (
-                <ul className="properties">
-                    <li className="property">
-                        <div className="property-key">None</div>
-                    </li>
-                </ul>
-            )
-        }
-
-        var props = this.state.properties
+        var props = this.getCurrSchema(this.state.currPath).properties
         var sortedKeys = _.chain(props)
             .keys()
             .sort()
@@ -85,17 +138,24 @@ module.exports = React.createClass({
             <ul className="properties">
                 {_.map(sortedKeys, function (key) {
                     var prop = props[key]
+                    var path = _.concat(this.getTypedPath(this.state.currPath), 'properties', key, 'types')
 
                     return (
-                        <li
-                            className="property"
-                            key={key}
-                        >
-                            <div className={`property-key ${prop.required && 'required'}`}>
-                                {key}
+                        <li className="property" key={key}>
+                            <div className={`property-left ${prop.required && 'required'}`}>
+                                <div className="property-key">
+                                    {key}
+                                </div>
+                                <Types
+                                    isStacked
+                                    types={this.getTypes(path)}
+                                    currType={this.getCurrType(path)}
+                                    onClick={this.typeClickHandler.bind(this, path)}
+                                />
                             </div>
-                            <div className="property-info">
-                                <PropTypes types={prop.types} onViewObject={this.viewObjectHandler} />
+                            <div className="property-right">
+                                {this.renderPropTypes(path, key)}
+                                {this.renderArrayTypes(path, key)}
                             </div>
                         </li>
                     )
@@ -104,21 +164,97 @@ module.exports = React.createClass({
         )
     },
 
-    viewObjectHandler: function (types) {
-        this.refs.types.storePreviousIndices()
-        this.state.prevTypes.push(this.state.types)
-        this.setState(this.buildState(types))
+    renderPropTypes: function (path, propKey) {
+        var type = this.getCurrType(path)
+        var schema = this.getCurrSchema(path)
+
+        var viewProps
+        if (type === 'object' && !_.isEmpty(schema.properties)) {
+            viewProps = (
+                <div className="view-props-link">
+                    <a href="#" onClick={this.viewPropsHandler.bind(this, path, propKey)}>
+                        View {schema.title || type} properties
+                    </a>
+                </div>
+            )
+        }
+
+        return (
+            <div className="prop-types">
+                <Types
+                    isSubTypes
+                    types={this.getSubTypes(path)}
+                    currType={this.getCurrSubType(path)}
+                    onClick={this.subTypeClickhandler.bind(this, path)}
+                />
+                <Primitive
+                    type={this.getCurrType(path)}
+                    description={schema.description}
+                    metadata={schema.metadata}
+                />
+                {viewProps}
+            </div>
+        )
     },
 
-    typeSelectHandler: function (object) {
+    renderArrayTypes: function (arrayPath, propKey) {
+        var type = this.getCurrType(arrayPath)
+        if (type !== 'array') return undefined
+
+        var arrayKey = `[ ${propKey} ]`
+        var path = _.concat(this.getTypedPath(arrayPath), 'types')
+        return (
+            <div className="array-types-wrapper">
+                <div className="array-types-title">Array items:</div>
+                    <div className="array-types">
+                        <Types
+                            types={this.getTypes(path)}
+                            currType={this.getCurrType(path)}
+                            onClick={this.typeClickHandler.bind(this, path)}
+                        />
+                        {this.renderPropTypes(path, arrayKey)}
+                    </div>
+            </div>
+        )
+    },
+
+    typeClickHandler: function (path, type) {
+        this.setStateValue(path, 'type', type)
+    },
+
+    subTypeClickhandler: function (path, type) {
+        this.setStateValue(path, 'subType', type)
+    },
+
+    viewPropsHandler: function (path, propKey, e) {
+        e.preventDefault()
+
+        var prevPaths = this.state.prevPaths
+        var crumbs = this.state.crumbs
+
+        prevPaths.push(this.state.currPath)
+        crumbs.push(propKey)
+
         this.setState({
-            properties: object.properties,
-        })
+            crumbs,
+            currPath: path,
+            prevPaths,
+        }, function () {
+            if (this.refs.breadcrumbs && !isVisible(this.refs.breadcrumbs)) {
+                this.refs.payload.scrollIntoView()
+            }
+        }.bind(this))
     },
 
-    backLinkHandler: function () {
-        var prevTypes = this.state.prevTypes.pop()
-        this.setState(this.buildState(prevTypes))
-        this.refs.types.backLinkHandler()
+    breadcrumbClickHandler: function (name, index) {
+        var crumbs = _.take(this.state.crumbs, index + 1)
+        var currPath = this.state.prevPaths[index]
+        var prevPaths = _.take(this.state.prevPaths, index)
+
+        this.setState({
+            crumbs,
+            currPath,
+            prevPaths,
+        })
     },
 })

@@ -231,7 +231,7 @@ describe('transform-data-type()', function () {
                     }],
                     metadata: {
                         enum: ['foo'],
-                    }
+                    },
                 },
                 {
                     title: 'union',
