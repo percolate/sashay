@@ -260,10 +260,10 @@ describe('transform-data-type()', function () {
                     type: 'object',
                     properties: {
                         a: {
-                            type: 'string'
+                            type: 'string',
                         },
                         b: {
-                            type: 'integer'
+                            type: 'integer',
                         },
                     },
                 },
@@ -271,7 +271,7 @@ describe('transform-data-type()', function () {
                     type: 'object',
                     properties: {
                         c: {
-                            type: 'boolean'
+                            type: 'boolean',
                         },
                     },
                 },
@@ -283,31 +283,31 @@ describe('transform-data-type()', function () {
                     a: {
                         required: false,
                         types: {
-                          string: [{
-                              description: undefined,
-                              enum: undefined,
-                              pattern: undefined,
-                          }],
+                            string: [{
+                                description: undefined,
+                                enum: undefined,
+                                pattern: undefined,
+                            }],
                         },
                     },
                     b: {
                         required: false,
                         types: {
-                          integer: [{
-                              description: undefined,
-                          }],
+                            integer: [{
+                                description: undefined,
+                            }],
                         },
                     },
                     c: {
                         required: false,
                         types: {
-                          boolean: [{
-                              description: undefined,
-                          }],
+                            boolean: [{
+                                description: undefined,
+                            }],
                         },
                     },
-                }
-            }]
+                },
+            }],
         })
     })
 
@@ -318,7 +318,7 @@ describe('transform-data-type()', function () {
                     type: 'object',
                     properties: {
                         a: {
-                            type: 'string'
+                            type: 'string',
                         },
                     },
                 },
@@ -341,23 +341,23 @@ describe('transform-data-type()', function () {
                     a: {
                         required: false,
                         types: {
-                          string: [{
-                              description: undefined,
-                              enum: undefined,
-                              pattern: undefined,
-                          }],
+                            string: [{
+                                description: undefined,
+                                enum: undefined,
+                                pattern: undefined,
+                            }],
                         },
                     },
                     c: {
                         required: false,
                         types: {
-                          number: [{
-                              description: undefined,
-                          }],
+                            number: [{
+                                description: undefined,
+                            }],
                         },
                     },
-                }
-            }]
+                },
+            }],
         })
     })
 
@@ -369,7 +369,7 @@ describe('transform-data-type()', function () {
                     type: 'object',
                     properties: {
                         a: {
-                            type: 'string'
+                            type: 'string',
                         },
                     },
                 },
@@ -400,19 +400,19 @@ describe('transform-data-type()', function () {
                     a: {
                         required: false,
                         types: {
-                          string: [{
-                              description: undefined,
-                              enum: undefined,
-                              pattern: undefined,
-                          }],
+                            string: [{
+                                description: undefined,
+                                enum: undefined,
+                                pattern: undefined,
+                            }],
                         },
                     },
                     b: {
                         required: false,
                         types: {
-                          integer: [{
-                              description: undefined,
-                          }],
+                            integer: [{
+                                description: undefined,
+                            }],
                         },
                     },
                     c: {
@@ -423,11 +423,10 @@ describe('transform-data-type()', function () {
                           }],
                         },
                     },
-                }
-            }]
+                },
+            }],
         })
     })
-
 })
 
 
