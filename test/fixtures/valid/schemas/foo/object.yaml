@@ -6,9 +6,7 @@ properties:
       - "null"
     minItems: 1
     items:
-      type:
-        - object
-        - "null"
+      type: object
       required:
         - d
       additionalProperties: false

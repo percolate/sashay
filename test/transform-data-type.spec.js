@@ -21,7 +21,10 @@ describe('transform-data-type()', function () {
             description: 'foo',
         })).to.deep.equal({
             number: [{
-                description: 'foo',
+                description: [{
+                    text: 'foo',
+                    type: 'text',
+                }],
             }],
         })
     })
@@ -35,9 +38,14 @@ describe('transform-data-type()', function () {
             bogus: 'hi',
         })).to.deep.equal({
             string: [{
-                description: 'hello',
-                pattern: '\w+',
-                enum: ['hello', 'world'],
+                description: [{
+                    text: 'hello',
+                    type: 'text',
+                }],
+                metadata: {
+                    pattern: '\w+',
+                    enum: ['hello', 'world'],
+                },
             }],
         })
     })
@@ -124,7 +132,10 @@ describe('transform-data-type()', function () {
             },
         })).to.deep.equal({
             object: [{
-                description: 'hello',
+                description: [{
+                    text: 'hello',
+                    type: 'text',
+                }],
                 properties: {
                     id: {
                         required: false,
@@ -213,30 +224,60 @@ describe('transform-data-type()', function () {
         })).to.deep.equal({
             string: [
                 {
+                    title: 'abstract',
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
+                    metadata: {
+                        enum: ['foo'],
+                    },
+                },
+                {
                     title: 'union',
-                    description: 'foo',
-                    enum: ['foo', 'bar'],
-                    pattern: undefined,
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
+                    metadata: {
+                        enum: ['foo', 'bar'],
+                    },
                 }, {
                     title: 'unique',
-                    description: 'foo',
-                    enum: ['foo', 'bar'],
-                    pattern: undefined,
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
+                    metadata: {
+                        enum: ['foo', 'bar'],
+                    },
                 }, {
                     title: 'override',
-                    description: 'foo',
-                    enum: 'override',
-                    pattern: undefined,
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
+                    metadata: {
+                        enum: 'override',
+                    },
                 }, {
                     title: 'merge',
-                    description: 'foo',
-                    enum: ['foo'],
-                    pattern: '\\w+',
+                    description: [{
+                        text: 'foo',
+                        type: 'text',
+                    }],
+                    metadata: {
+                        enum: ['foo'],
+                        pattern: '\\w+',
+                    },
                 },
             ],
             null: [{
                 title: 'diff type',
-                description: 'foo',
+                description: [{
+                    text: 'foo',
+                    type: 'text',
+                }],
             }],
         })
     })
@@ -434,14 +475,6 @@ function emptyScalar (type, subTypeNumber) {
 
     if (subTypeNumber) {
         formatted.title = `Subtype ${subTypeNumber}`
-    }
-
-    if (type === 'string') {
-        formatted = {
-            description: undefined,
-            pattern: undefined,
-            enum: undefined,
-        }
     }
 
     return [formatted]

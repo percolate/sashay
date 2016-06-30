@@ -4,6 +4,8 @@
 @import "markdown.less";
 @import "nav.less";
 @import "prism.less";
+@import "payload.less";
+@import "breadcrumbs.less";
 
 .container {
     color: #555555;
@@ -36,7 +38,6 @@ main {
 
                     > h1 {
                         color: #999;
-                        font-size: 13px;
                         font-weight: bold;
                         margin-bottom: 5px;
                         font-size: 13px;
@@ -101,20 +102,9 @@ main {
         }
     }
 
-    .breadcrumbs {
-        padding-top: 5px;
-        a {
-            cursor: pointer;
-        }
-        a.selected {
-            color: #f16421;
-            font-weight: bold;
-        }
-    }
-
     .parameters {
         border-top: solid 1px #e0e2e2;
-        margin: -1px 0 40px;
+        margin: 8px 0 40px;
         padding: 0;
         .parameter {
             border-bottom: solid 1px #e0e2e2;
@@ -131,16 +121,13 @@ main {
             font-weight: bold;
             padding-right: 20px;
             text-align: right;
-            a {
-                cursor: pointer;
-                text-decoration: underline;
-            }
         }
         .parameter-desc {
             flex: 1;
         }
         .parameter-info {
             color: #999999;
+            font-family: monospace;
             font-weight: normal;
         }
         .parameter-required {
