@@ -88,6 +88,7 @@ describe('transform()', function () {
                                     absoluteUri: '/foo/{foo_id}',
                                     body: {
                                         'application/json': {
+                                            example: '{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}',
                                             schema: {
                                                 object: [{
                                                     description: undefined,
