@@ -42,8 +42,10 @@ describe('transform-data-type()', function () {
                     text: 'hello',
                     type: 'text',
                 }],
-                pattern: '\w+',
-                enum: ['hello', 'world'],
+                metadata: {
+                    pattern: '\w+',
+                    enum: ['hello', 'world'],
+                },
             }],
         })
     })
@@ -227,8 +229,9 @@ describe('transform-data-type()', function () {
                         text: 'foo',
                         type: 'text',
                     }],
-                    pattern: undefined,
-                    enum: ['foo'],
+                    metadata: {
+                        enum: ['foo'],
+                    }
                 },
                 {
                     title: 'union',
@@ -236,32 +239,37 @@ describe('transform-data-type()', function () {
                         text: 'foo',
                         type: 'text',
                     }],
-                    enum: ['foo', 'bar'],
-                    pattern: undefined,
+                    metadata: {
+                        enum: ['foo', 'bar'],
+                    },
                 }, {
                     title: 'unique',
                     description: [{
                         text: 'foo',
                         type: 'text',
                     }],
-                    enum: ['foo', 'bar'],
-                    pattern: undefined,
+                    metadata: {
+                        enum: ['foo', 'bar'],
+                    },
                 }, {
                     title: 'override',
                     description: [{
                         text: 'foo',
                         type: 'text',
                     }],
-                    enum: 'override',
-                    pattern: undefined,
+                    metadata: {
+                        enum: 'override',
+                    },
                 }, {
                     title: 'merge',
                     description: [{
                         text: 'foo',
                         type: 'text',
                     }],
-                    enum: ['foo'],
-                    pattern: '\\w+',
+                    metadata: {
+                        enum: ['foo'],
+                        pattern: '\\w+',
+                    },
                 },
             ],
             null: [{
@@ -293,14 +301,6 @@ function emptyScalar (type, subTypeNumber) {
 
     if (subTypeNumber) {
         formatted.title = `Subtype ${subTypeNumber}`
-    }
-
-    if (type === 'string') {
-        formatted = {
-            description: undefined,
-            pattern: undefined,
-            enum: undefined,
-        }
     }
 
     return [formatted]

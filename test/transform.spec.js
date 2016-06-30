@@ -44,8 +44,6 @@ describe('transform()', function () {
                                                                                                 text: 'my object description',
                                                                                                 type: 'text',
                                                                                             }],
-                                                                                            pattern: undefined,
-                                                                                            enum: undefined,
                                                                                         }],
                                                                                         null: [{
                                                                                             description: [{
@@ -71,8 +69,9 @@ describe('transform()', function () {
                                                                                     types: {
                                                                                         string: [{
                                                                                             description: undefined,
-                                                                                            pattern: undefined,
-                                                                                            enum: ['val1', 'val2'],
+                                                                                            metadata: {
+                                                                                                enum: ['val1', 'val2'],
+                                                                                            },
                                                                                         }],
                                                                                     },
                                                                                 },
@@ -90,8 +89,6 @@ describe('transform()', function () {
                                                                                                 text: 'my object description',
                                                                                                 type: 'text',
                                                                                             }],
-                                                                                            pattern: undefined,
-                                                                                            enum: undefined,
                                                                                         }],
                                                                                         null: [{
                                                                                             description: [{
@@ -117,8 +114,9 @@ describe('transform()', function () {
                                                                                     types: {
                                                                                         string: [{
                                                                                             description: undefined,
-                                                                                            pattern: undefined,
-                                                                                            enum: ['val1', 'val2'],
+                                                                                            metadata: {
+                                                                                                enum: ['val1', 'val2'],
+                                                                                            },
                                                                                         }],
                                                                                     },
                                                                                 },
