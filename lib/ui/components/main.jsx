@@ -5,6 +5,7 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
+var Payload = require('./payload.jsx')
 
 module.exports = React.createClass({
 
@@ -29,7 +30,6 @@ module.exports = React.createClass({
         ).isRequired,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
-        onChange: React.PropTypes.func.isRequired,
     },
 
     render: function () {
@@ -104,7 +104,6 @@ module.exports = React.createClass({
         var successResponse = helper.getSuccessResponseFromMethod(method)
         var absoluteUri = this.props.baseUri + method.absoluteUri
         var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
-
         return (
             <row
                 id={method.slug}
@@ -130,10 +129,10 @@ module.exports = React.createClass({
                             <Parameters parameters={method.queryParameters} />
                         </section>
                     )}
-                    {_.has(body, 'properties') && (
+                    {_.has(body, 'payload') && (
                         <section>
                             <h1>Body</h1>
-                            <Parameters parameters={_.get(body, 'properties')} onChange={this.props.onChange} />
+                            <Payload root={body.payload} />
                         </section>
                     )}
                 </content>

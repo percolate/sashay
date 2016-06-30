@@ -3,12 +3,10 @@ properties:
   b:
     type:
       - array
-      - null
+      - "null"
     minItems: 1
     items:
-      type:
-        - object
-        - null
+      type: object
       required:
         - d
       additionalProperties: false
@@ -17,7 +15,7 @@ properties:
           description: my object description
           type:
             - string
-            - null
+            - "null"
           example: firstname.lastname@percolate.com
           format: email
           maxLength: 100
@@ -34,12 +32,9 @@ properties:
       oneOf:
           -
             type: object
+            required:
+              - e
             properties:
               e:
                 type: boolean
                 default: true
-          -
-            type: object
-            properties:
-              f:
-                type: string
