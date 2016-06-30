@@ -389,8 +389,7 @@ describe('transform-data-type()', function () {
                                 type: 'integer',
                             },
                         },
-                    }
-                    ],
+                    }],
                 },
             ],
         })).to.deep.equal({
@@ -418,9 +417,9 @@ describe('transform-data-type()', function () {
                     c: {
                         required: false,
                         types: {
-                          integer: [{
-                              description: undefined,
-                          }],
+                            integer: [{
+                                description: undefined,
+                            }],
                         },
                     },
                 },
