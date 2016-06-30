@@ -326,8 +326,6 @@ describe('transform-data-type()', function () {
                         types: {
                             string: [{
                                 description: undefined,
-                                enum: undefined,
-                                pattern: undefined,
                             }],
                         },
                     },
@@ -384,8 +382,6 @@ describe('transform-data-type()', function () {
                         types: {
                             string: [{
                                 description: undefined,
-                                enum: undefined,
-                                pattern: undefined,
                             }],
                         },
                     },
@@ -442,8 +438,6 @@ describe('transform-data-type()', function () {
                         types: {
                             string: [{
                                 description: undefined,
-                                enum: undefined,
-                                pattern: undefined,
                             }],
                         },
                     },
