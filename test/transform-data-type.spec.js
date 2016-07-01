@@ -293,6 +293,177 @@ describe('transform-data-type()', function () {
             null: emptyScalar('null', 1),
         })
     })
+
+    it('should tranforms \`allOf\`', function () {
+        expect(transform({
+            allOf: [
+                {
+                    type: 'object',
+                    properties: {
+                        a: {
+                            type: 'string',
+                        },
+                        b: {
+                            type: 'integer',
+                        },
+                    },
+                },
+                {
+                    type: 'object',
+                    properties: {
+                        c: {
+                            type: 'boolean',
+                        },
+                    },
+                },
+            ],
+        })).to.deep.equal({
+            object: [{
+                description: undefined,
+                properties: {
+                    a: {
+                        required: false,
+                        types: {
+                            string: [{
+                                description: undefined,
+                            }],
+                        },
+                    },
+                    b: {
+                        required: false,
+                        types: {
+                            integer: [{
+                                description: undefined,
+                            }],
+                        },
+                    },
+                    c: {
+                        required: false,
+                        types: {
+                            boolean: [{
+                                description: undefined,
+                            }],
+                        },
+                    },
+                },
+            }],
+        })
+    })
+
+    it('should tranforms multiple types in \`allOf\`', function () {
+        expect(transform({
+            allOf: [
+                {
+                    type: 'object',
+                    properties: {
+                        a: {
+                            type: 'string',
+                        },
+                    },
+                },
+                {
+                    type: ['object', 'null'],
+                    properties: {
+                        c: {
+                            type: 'number',
+                        },
+                    },
+                },
+            ],
+        })).to.deep.equal({
+            null: [{
+                description: undefined,
+            }],
+            object: [{
+                description: undefined,
+                properties: {
+                    a: {
+                        required: false,
+                        types: {
+                            string: [{
+                                description: undefined,
+                            }],
+                        },
+                    },
+                    c: {
+                        required: false,
+                        types: {
+                            number: [{
+                                description: undefined,
+                            }],
+                        },
+                    },
+                },
+            }],
+        })
+    })
+
+    it('should tranforms nested \`allOf\`', function () {
+        expect(transform({
+            allOf: [
+                {
+                    description: 'my desc',
+                    type: 'object',
+                    properties: {
+                        a: {
+                            type: 'string',
+                        },
+                    },
+                },
+                {
+                    allOf: [{
+                        type: 'object',
+                        properties: {
+                            b: {
+                                type: 'integer',
+                            },
+                        },
+                    },
+                    {
+                        type: 'object',
+                        properties: {
+                            c: {
+                                type: 'integer',
+                            },
+                        },
+                    }],
+                },
+            ],
+        })).to.deep.equal({
+            object: [{
+                description: [{
+                    text: 'my desc',
+                    type: 'text',
+                }],
+                properties: {
+                    a: {
+                        required: false,
+                        types: {
+                            string: [{
+                                description: undefined,
+                            }],
+                        },
+                    },
+                    b: {
+                        required: false,
+                        types: {
+                            integer: [{
+                                description: undefined,
+                            }],
+                        },
+                    },
+                    c: {
+                        required: false,
+                        types: {
+                            integer: [{
+                                description: undefined,
+                            }],
+                        },
+                    },
+                },
+            }],
+        })
+    })
 })
 
 
