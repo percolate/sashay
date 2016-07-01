@@ -188,7 +188,58 @@ describe('transform()', function () {
                                             body: {
                                                 'application/json': {
                                                     example: '{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}',
-                                                    schema: '{\n  \"allOf\": [\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    },\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"b\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"required\": [\n       \       "d\"\n            ],\n            \"properties\": {\n              \"c\": {\n                \"description\": \"my object description\",\n                \"type\": \"string\"\n              },\n              \"d\": {\n                \"description\": \"a unique ID\",\n                \"type\": \"integer\"\n              }\n            }\n          }\n        }\n      }\n    }\n  ]\n}',
+                                                    payload: {
+                                                        object: [{
+                                                            description: undefined,
+                                                            properties: {
+                                                                a: {
+                                                                    required: false,
+                                                                    types: {
+                                                                        string: [{
+                                                                            description: undefined,
+                                                                        }],
+                                                                    },
+                                                                },
+                                                                b: {
+                                                                    required: false,
+                                                                    types: {
+                                                                        array: [{
+                                                                            description: undefined,
+                                                                            types: {
+                                                                                object: [{
+                                                                                    description: undefined,
+                                                                                    properties: {
+                                                                                        c: {
+                                                                                            required: false,
+                                                                                            types: {
+                                                                                                string: [{
+                                                                                                    description: [{
+                                                                                                        text: 'my object description',
+                                                                                                        type: 'text',
+                                                                                                    }],
+                                                                                                }],
+                                                                                            },
+                                                                                        },
+                                                                                        d: {
+                                                                                            required: true,
+                                                                                            types: {
+                                                                                                integer: [{
+                                                                                                    description: [{
+                                                                                                        text: 'a unique ID',
+                                                                                                        type: 'text',
+                                                                                                    }],
+                                                                                                }],
+                                                                                            },
+                                                                                        },
+                                                                                    },
+                                                                                }],
+                                                                            },
+                                                                        }],
+                                                                    },
+                                                                },
+                                                            },
+                                                        }],
+                                                    },
                                                 },
                                             },
                                         },
@@ -211,7 +262,58 @@ describe('transform()', function () {
                                             body: {
                                                 'application/json': {
                                                     example: '{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}',
-                                                    schema: '{\n  \"allOf\": [\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    },\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"b\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"required\": [\n       \       "d\"\n            ],\n            \"properties\": {\n              \"c\": {\n                \"description\": \"my object description\",\n                \"type\": \"string\"\n              },\n              \"d\": {\n                \"description\": \"a unique ID\",\n                \"type\": \"integer\"\n              }\n            }\n          }\n        }\n      }\n    }\n  ]\n}',
+                                                    payload: {
+                                                        object: [{
+                                                            description: undefined,
+                                                            properties: {
+                                                                a: {
+                                                                    required: false,
+                                                                    types: {
+                                                                        string: [{
+                                                                            description: undefined,
+                                                                        }],
+                                                                    },
+                                                                },
+                                                                b: {
+                                                                    required: false,
+                                                                    types: {
+                                                                        array: [{
+                                                                            description: undefined,
+                                                                            types: {
+                                                                                object: [{
+                                                                                    description: undefined,
+                                                                                    properties: {
+                                                                                        c: {
+                                                                                            required: false,
+                                                                                            types: {
+                                                                                                string: [{
+                                                                                                    description: [{
+                                                                                                        text: 'my object description',
+                                                                                                        type: 'text',
+                                                                                                    }],
+                                                                                                }],
+                                                                                            },
+                                                                                        },
+                                                                                        d: {
+                                                                                            required: true,
+                                                                                            types: {
+                                                                                                integer: [{
+                                                                                                    description: [{
+                                                                                                        text: 'a unique ID',
+                                                                                                        type: 'text',
+                                                                                                    }],
+                                                                                                }],
+                                                                                            },
+                                                                                        },
+                                                                                    },
+                                                                                }],
+                                                                            },
+                                                                        }],
+                                                                    },
+                                                                },
+                                                            },
+                                                        }],
+                                                    },
                                                 },
                                             },
                                         },
@@ -227,7 +329,58 @@ describe('transform()', function () {
                                             body: {
                                                 'application/json': {
                                                     example: '{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}',
-                                                    schema: '{\n  \"allOf\": [\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"a\": {\n          \"type\": \"string\"\n        }\n      }\n    },\n    {\n      \"type\": \"object\",\n      \"properties\": {\n        \"b\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"required\": [\n       \       "d\"\n            ],\n            \"properties\": {\n              \"c\": {\n                \"description\": \"my object description\",\n                \"type\": \"string\"\n              },\n              \"d\": {\n                \"description\": \"a unique ID\",\n                \"type\": \"integer\"\n              }\n            }\n          }\n        }\n      }\n    }\n  ]\n}',
+                                                    payload: {
+                                                        object: [{
+                                                            description: undefined,
+                                                            properties: {
+                                                                a: {
+                                                                    required: false,
+                                                                    types: {
+                                                                        string: [{
+                                                                            description: undefined,
+                                                                        }],
+                                                                    },
+                                                                },
+                                                                b: {
+                                                                    required: false,
+                                                                    types: {
+                                                                        array: [{
+                                                                            description: undefined,
+                                                                            types: {
+                                                                                object: [{
+                                                                                    description: undefined,
+                                                                                    properties: {
+                                                                                        c: {
+                                                                                            required: false,
+                                                                                            types: {
+                                                                                                string: [{
+                                                                                                    description: [{
+                                                                                                        text: 'my object description',
+                                                                                                        type: 'text',
+                                                                                                    }],
+                                                                                                }],
+                                                                                            },
+                                                                                        },
+                                                                                        d: {
+                                                                                            required: true,
+                                                                                            types: {
+                                                                                                integer: [{
+                                                                                                    description: [{
+                                                                                                        text: 'a unique ID',
+                                                                                                        type: 'text',
+                                                                                                    }],
+                                                                                                }],
+                                                                                            },
+                                                                                        },
+                                                                                    },
+                                                                                }],
+                                                                            },
+                                                                        }],
+                                                                    },
+                                                                },
+                                                            },
+                                                        }],
+                                                    },
                                                 },
                                             },
                                         },
