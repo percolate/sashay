@@ -63,7 +63,7 @@ module.exports = React.createClass({
         })
     },
 
-    getRootCurrType: function (path) {
+    getRootCurrType: function () {
         return this.getStateValue(this.state.currPath, 'type') || _.first(this.getRootTypes())
     },
 
