@@ -139,13 +139,7 @@ module.exports = React.createClass({
     },
 
     renderMethod: function (method, i) {
-        var body = _.get(method, [
-            'body',
-            'application/json',
-        ])
-        var successResponse = helper.getSuccessResponseFromMethod(method)
         var absoluteUri = this.props.baseUri + method.absoluteUri
-        var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
         var uniqueKey = method.absoluteUri + '-' + method.method
         var showExampleRequest = _.has(this.state, uniqueKey) ? this.state[uniqueKey] : this.showExampleRequest(method)
 
@@ -176,7 +170,7 @@ module.exports = React.createClass({
                         </section>
                     )}
 
-                    {method.absoluteUri && <Example showExampleRequest={this.state[uniqueKey] || showExampleRequest} method={method} baseUri={this.props.baseUri} onChange={this.props.onChange}/>}
+                    {method.absoluteUri && <Example showExampleRequest={this.state[uniqueKey] || showExampleRequest} method={method} baseUri={this.props.baseUri} />}
                 </aside>
             </row>
         )

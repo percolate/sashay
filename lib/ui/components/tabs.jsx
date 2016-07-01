@@ -10,7 +10,6 @@ var Tabs = EasyTabs.Tabs
 var TabList = EasyTabs.TabList
 var Tab = EasyTabs.Tab
 var helper = require('../../helper')
-var util = require('util')
 
 var TABS = {
     QUERY: 'Query',
@@ -32,42 +31,40 @@ module.exports = React.createClass({
 
     prepareTabsData: function (method) {
         if (!method) {
-            return
+            return null
         }
         var body = _.get(method, [
             'body',
             'application/json',
         ])
         var successResponse = helper.getSuccessResponseFromMethod(method)
-        {_.get(successResponse, 'example')}
-
         var tabs = []
         var panels = []
         var tabNames = []
         if (!_.isEmpty(method.queryParameters)) {
-            tabs.push(<Tab key='query' className='tabs__item'>{TABS.QUERY}</Tab>)
-            panels.push(<Panel key='query' className="tabs__content">
-                <Parameters parameters={method.queryParameters} onChange={this.props.onChange} />
+            tabs.push(<Tab key="query" className="tabs__item">{TABS.QUERY}</Tab>)
+            panels.push(<Panel key="query" className="tabs__content">
+                <Parameters parameters={method.queryParameters} />
             </Panel>)
             tabNames.push(TABS.QUERY)
         }
         if (!_.isEmpty(method.uriParameters)) {
-            tabs.push(<Tab key='uri' className='tabs__item'>{TABS.URI}</Tab>)
-            panels.push(<Panel key='uri' className="tabs__content">
-                <Parameters parameters={method.uriParameters} onChange={this.props.onChange} />
+            tabs.push(<Tab key="uri" className="tabs__item">{TABS.URI}</Tab>)
+            panels.push(<Panel key="uri" className="tabs__content">
+                <Parameters parameters={method.uriParameters} />
             </Panel>)
             tabNames.push(TABS.URI)
         }
         if (!_.isEmpty(_.get(body, 'payload'))) {
-            tabs.push(<Tab key='request' className='tabs__item'>{TABS.REQUEST}</Tab>)
-            panels.push(<Panel key='request' className="tabs__content">
+            tabs.push(<Tab key="request" className="tabs__item">{TABS.REQUEST}</Tab>)
+            panels.push(<Panel key="request" className="tabs__content">
                 <Payload root={body.payload} />
             </Panel>)
             tabNames.push(TABS.REQUEST)
         }
         if (!_.isEmpty(_.get(successResponse, 'payload'))) {
-            tabs.push(<Tab key='response' className='tabs__item'>{TABS.RESPONSE}</Tab>)
-            panels.push(<Panel key='response' className="tabs__content">
+            tabs.push(<Tab key="response" className="tabs__item">{TABS.RESPONSE}</Tab>)
+            panels.push(<Panel key="response" className="tabs__content">
                 <Payload root={successResponse.payload} />
             </Panel>)
             tabNames.push(TABS.RESPONSE)

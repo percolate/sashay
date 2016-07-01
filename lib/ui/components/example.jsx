@@ -2,7 +2,6 @@ var _ = require('lodash')
 var Code = require('./code.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var util = require('util')
 var helper = require('../../helper')
 
 module.exports = React.createClass({
@@ -13,12 +12,8 @@ module.exports = React.createClass({
     ],
     propTypes: {
         method: React.PropTypes.object.isRequired,
-    },
-
-    componentDidUpdate: function () {
-        if (this.props.onChange) {
-            this.props.onChange()
-        }
+        baseUri: React.PropTypes.string.isRequired,
+        showExampleRequest: React.PropTypes.bool,
     },
 
     getInitialState: function () {
@@ -35,7 +30,7 @@ module.exports = React.createClass({
         var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
 
         if (this.props.showExampleRequest) {
-            return <div>
+            return (<div>
                 {_.has(body, 'example') && (
                     <section>
                         <h1>Example request body</h1>
@@ -49,14 +44,14 @@ module.exports = React.createClass({
                             <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), '{your_api_key}')} />
                     </section>
                 )}
-            </div>
+            </div>)
         } else if (this.props.showExampleRequest === false) {
-            return <div>{_.has(successResponse, 'example') && (
+            return (<div>{_.has(successResponse, 'example') && (
                 <section>
                     <h1>Example response</h1>
                     <Code lang="json" code={_.get(successResponse, 'example')} />
                 </section>
-            )}</div>
+            )}</div>)
         } else {
             return null
         }
