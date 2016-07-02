@@ -12,11 +12,14 @@ var TABS = ['Request', 'Response']
 module.exports = React.createClass({
     displayName: 'Method',
 
+    contextTypes: {
+        onChange: React.PropTypes.func,
+    },
+
     propTypes: {
         method: React.PropTypes.shape({
             description: React.PropTypes.string,
             displayName: React.PropTypes.string.isRequired,
-            slug: React.PropTypes.string.isRequired,
             method: React.PropTypes.string,
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
@@ -28,12 +31,16 @@ module.exports = React.createClass({
         }
     },
 
+    componentDidUpdate: function () {
+        if (this.context.onChange) this.context.onChange()
+    },
+
     render: function () {
         var { method } = this.props
 
         return (
             <div className="method">
-                <row id={method.slug} ref={method.slug} className="endpoint">
+                <row>
                     <content>
                         <h3>{method.displayName}</h3>
                         {this.renderMethod()}

@@ -95,7 +95,14 @@ module.exports = React.createClass({
     },
 
     renderMethod: function (method, i) {
-        return <Method method={method} baseUri={this.props.baseUri} key={i} />
+        return (
+            <div key={i} ref={method.slug} id={method.slug}>
+                <Method
+                    method={method}
+                    baseUri={this.props.baseUri}
+                />
+            </div>
+        )
     },
 
 })
