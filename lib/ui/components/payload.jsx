@@ -15,18 +15,22 @@ module.exports = React.createClass({
     displayName: 'Payload',
     propTypes: {
         root: React.PropTypes.shape({
+            array: React.PropTypes.arrayOf(React.PropTypes.shape({
+                types: React.PropTypes.object.isRequired,
+            })),
             object: React.PropTypes.arrayOf(React.PropTypes.shape({
                 properties: React.PropTypes.objectOf(React.PropTypes.shape({
                     required: React.PropTypes.bool.isRequired,
                     types: React.PropTypes.object.isRequired,
                 })).isRequired,
-            })).isRequired,
+            })),
         }).isRequired,
     },
 
     getInitialState: function () {
+        var type = _.first(this.getTypes(ROOT_PATH))
         return {
-            crumbs: ['root'],
+            crumbs: [type],
             currPath: ROOT_PATH,
             paths: {},
             prevPaths: [],
@@ -51,6 +55,16 @@ module.exports = React.createClass({
             .map('title')
             .compact()
             .value()
+    },
+
+    getRootTypes: function () {
+        return _.filter(this.getTypes(this.state.currPath), function (type) {
+            return type === 'object' || type === 'array'
+        })
+    },
+
+    getRootCurrType: function () {
+        return this.getStateValue(this.state.currPath, 'type') || _.first(this.getRootTypes())
     },
 
     getCurrType: function (path) {
@@ -92,12 +106,14 @@ module.exports = React.createClass({
     },
 
     render: function () {
+        var types = this.getRootTypes()
+        var currType = this.getRootCurrType()
         return (
             <div className="payload" ref="payload">
                 {this.renderBreadcrumbs()}
                 <Types
-                    types={['object']}
-                    currType="object"
+                    types={types}
+                    currType={currType}
                     onClick={this.subTypeClickhandler.bind(this, this.state.currPath)}
                 />
                 <Types
@@ -110,8 +126,13 @@ module.exports = React.createClass({
                     type={this.getCurrType(this.state.currPath)}
                     description={this.getCurrSchema(this.state.currPath).description}
                 />
-                <div className="properties-title">Properties:</div>
-                {this.renderProps()}
+                {(currType === 'object') && (
+                    <div>
+                        <div className="properties-title">Properties:</div>
+                        {this.renderProps()}
+                    </div>
+                )}
+                {(currType === 'array') && this.renderArrayTypes(this.state.currPath, '')}
             </div>
         )
     },
