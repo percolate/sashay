@@ -17,6 +17,7 @@ module.exports = React.createClass({
             description: React.PropTypes.string,
             displayName: React.PropTypes.string.isRequired,
             slug: React.PropTypes.string.isRequired,
+            method: React.PropTypes.string,
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
     },
@@ -95,7 +96,7 @@ module.exports = React.createClass({
         var { method } = this.props
         var body = _.get(method, ['body', 'application/json'])
         var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
-
+        var action = method.method ? method.method.toUpperCase() : 'Definition'
         return (
             <row>
                 <content>
@@ -113,7 +114,7 @@ module.exports = React.createClass({
                     )}
                     {(body && body.payload) && (
                         <section>
-                            <h1>Body</h1>
+                            <h1>{action}</h1>
                             <Payload root={body.payload} />
                         </section>
                     )}
