@@ -24,7 +24,6 @@ main {
     display: block;
 
     article {
-        @header-offset: 5px;
         row {
             display: flex;
 
@@ -59,7 +58,6 @@ main {
                     font-family: "Futura W01 Bold", Arial, sans-serif;
                     font-size: 13px;
                     font-weight: bold;
-                    padding-top: @header-offset;
                     text-transform: uppercase;
                 }
             }
@@ -71,10 +69,6 @@ main {
                 section {
                     > h1 {
                         color: #d0d4d7;
-                    }
-
-                    &:first-child {
-                        margin-top: @header-offset;
                     }
                 }
 
@@ -102,9 +96,24 @@ main {
             }
         }
     }
+    .method {
+        .tabs-section {
+            content {
+                padding-top: 30px;
+                padding-right: 0;
+            }
+            aside {
+                padding-top: 30px;
+                padding-left: 0;
+                .tab {
+                    border-color: #33383a;
+                }
+            }
+        }
+    }
 
     .parameters {
-        margin: -1px 0 40px;
+        margin: 8px 0 40px;
         padding: 0;
         .parameter {
             border-bottom: solid 1px #e0e2e2;

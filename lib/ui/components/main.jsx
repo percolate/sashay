@@ -1,14 +1,9 @@
 var _ = require('lodash')
 var Code = require('./code.jsx')
-var Example = require('./example.jsx')
-var helper = require('../../helper')
 var Markdown = require('./markdown.jsx')
+var Method = require('./method.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var Tabs = require('./tabs.jsx')
-
-var REQUEST = 'Request'
-var RESPONSE = 'Response'
 
 module.exports = React.createClass({
 
@@ -33,10 +28,6 @@ module.exports = React.createClass({
         ).isRequired,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
-    },
-
-    getInitialState: function () {
-        return {}
     },
 
     render: function () {
@@ -103,77 +94,8 @@ module.exports = React.createClass({
         )
     },
 
-    showExample: function (tab, key, index) {
-        var tabName = tab[index - 1]
-        if (tabName) {
-            var show
-            if (tabName === REQUEST) {
-                show = true
-            } else if (tabName === RESPONSE) {
-                show = false
-            } else {
-                show = undefined
-            }
-            this.setState({
-                [key]: show,
-            })
-        }
-    },
-
-    showExampleRequest: function (method) {
-        if (!_.isEmpty(method.queryParameters) || !_.isEmpty(method.uriParameters)) {
-            return undefined
-        }
-        var body = _.get(method, [
-            'body',
-            'application/json',
-        ])
-        if (!_.isEmpty(_.get(body, 'payload'))) {
-            return true
-        }
-        var successResponse = helper.getSuccessResponseFromMethod(method)
-        if (!_.isEmpty(_.get(successResponse, 'payload'))) {
-            return false
-        }
-        return undefined
-    },
-
     renderMethod: function (method, i) {
-        var absoluteUri = this.props.baseUri + method.absoluteUri
-        var uniqueKey = method.absoluteUri + '-' + method.method
-        var showExampleRequest = _.has(this.state, uniqueKey) ? this.state[uniqueKey] : this.showExampleRequest(method)
-
-        return (
-            <row
-                id={method.slug}
-                key={i}
-                ref={method.slug}
-            >
-                <content>
-                    <h3>{method.displayName}</h3>
-                    {!_.isEmpty(method.description) && (
-                        <section>
-                            <Markdown content={method.description} />
-                        </section>
-                    )}
-                    <Tabs method={method} onSelect={this.showExample}/>
-                </content>
-                <aside>
-                    {_.has(method, 'method') && (
-                        <section>
-                            <h1>Definition</h1>
-                            <Code lang="http" code={[
-                                method.method.toUpperCase(),
-                                absoluteUri,
-                            ].join(' ')}
-                            />
-                        </section>
-                    )}
-
-                    {method.absoluteUri && <Example showExampleRequest={this.state[uniqueKey] || showExampleRequest} method={method} baseUri={this.props.baseUri} />}
-                </aside>
-            </row>
-        )
+        return <Method method={method} baseUri={this.props.baseUri} key={i} />
     },
 
 })
