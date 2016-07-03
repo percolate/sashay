@@ -1,11 +1,9 @@
 var _ = require('lodash')
 var Code = require('./code.jsx')
-var helper = require('../../helper')
 var Markdown = require('./markdown.jsx')
-var Parameters = require('./parameters.jsx')
+var Method = require('./method.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var Payload = require('./payload.jsx')
 
 module.exports = React.createClass({
 
@@ -97,79 +95,13 @@ module.exports = React.createClass({
     },
 
     renderMethod: function (method, i) {
-        var body = _.get(method, [
-            'body',
-            'application/json',
-        ])
-        var successResponse = helper.getSuccessResponseFromMethod(method)
-        var absoluteUri = this.props.baseUri + method.absoluteUri
-        var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
         return (
-            <row
-                id={method.slug}
-                key={i}
-                ref={method.slug}
-            >
-                <content>
-                    <h3>{method.displayName}</h3>
-                    {!_.isEmpty(method.description) && (
-                        <section>
-                            <Markdown content={method.description} />
-                        </section>
-                    )}
-                    {(!_.isEmpty(method.uriParameters)) && (
-                        <section>
-                            <h1>URI Parameters</h1>
-                            <Parameters parameters={method.uriParameters} />
-                        </section>
-                    )}
-                    {(!_.isEmpty(method.queryParameters)) && (
-                        <section>
-                            <h1>Query Parameters</h1>
-                            <Parameters parameters={method.queryParameters} />
-                        </section>
-                    )}
-                    {_.has(body, 'payload') && (
-                        <section>
-                            <h1>Body</h1>
-                            <Payload root={body.payload} />
-                        </section>
-                    )}
-                </content>
-                <aside>
-                    {_.has(method, 'method') && (
-                        <section>
-                            <h1>Definition</h1>
-                            <Code lang="http" code={[
-                                method.method.toUpperCase(),
-                                absoluteUri,
-                            ].join(' ')}
-                            />
-                        </section>
-                    )}
-
-                    {_.has(body, 'example') && (
-                        <section>
-                            <h1>Example request body</h1>
-                            <Code lang="json" code={_.get(body, 'example')} />
-                        </section>
-                    )}
-
-                    {_.has(method, 'method') && (
-                        <section>
-                            <h1>Example curl request</h1>
-                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), '{your_api_key}')} />
-                        </section>
-                    )}
-
-                    {_.has(successResponse, 'example') && (
-                        <section>
-                            <h1>Example response</h1>
-                            <Code lang="json" code={_.get(successResponse, 'example')} />
-                        </section>
-                    )}
-                </aside>
-            </row>
+            <div key={i} ref={method.slug} id={method.slug}>
+                <Method
+                    method={method}
+                    baseUri={this.props.baseUri}
+                />
+            </div>
         )
     },
 

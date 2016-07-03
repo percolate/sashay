@@ -6,6 +6,7 @@
 @import "prism.less";
 @import "payload.less";
 @import "breadcrumbs.less";
+@import "tabs.less";
 
 .container {
     color: #555555;
@@ -23,7 +24,6 @@ main {
     display: block;
 
     article {
-        @header-offset: 5px;
         row {
             display: flex;
 
@@ -58,7 +58,6 @@ main {
                     font-family: "Futura W01 Bold", Arial, sans-serif;
                     font-size: 13px;
                     font-weight: bold;
-                    padding-top: @header-offset;
                     text-transform: uppercase;
                 }
             }
@@ -70,10 +69,6 @@ main {
                 section {
                     > h1 {
                         color: #d0d4d7;
-                    }
-
-                    &:first-child {
-                        margin-top: @header-offset;
                     }
                 }
 
@@ -101,9 +96,23 @@ main {
             }
         }
     }
+    .method {
+        .tabs-section {
+            content {
+                padding-top: 30px;
+                padding-right: 0;
+            }
+            aside {
+                padding-top: 30px;
+                padding-left: 0;
+                .tab {
+                    border-color: #33383a;
+                }
+            }
+        }
+    }
 
     .parameters {
-        border-top: solid 1px #e0e2e2;
         margin: 8px 0 40px;
         padding: 0;
         .parameter {
