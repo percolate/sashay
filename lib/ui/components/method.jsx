@@ -8,6 +8,7 @@ var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
 
 var TABS = ['Request', 'Response']
+var ROOT_PATH = ['root']
 
 module.exports = React.createClass({
     displayName: 'Method',
@@ -28,11 +29,53 @@ module.exports = React.createClass({
     getInitialState: function () {
         return {
             activeTab: _.first(TABS),
+            requestPayload: this.getInitialPayloadState(),
+            responsePayload: this.getInitialPayloadState(),
         }
     },
 
     componentDidUpdate: function () {
         if (this.context.onChange) this.context.onChange()
+    },
+
+    getTypes: function (path) {
+        return _.keys(this.getSchema(path))
+    },
+
+    getSchema: function (path) {
+        return _.get(this.props, path)
+    },
+
+    getInitialPayloadState: function () {
+        var type = _.first(this.getTypes(ROOT_PATH))
+        return {
+            crumbs: [type],
+            currPath: ROOT_PATH,
+            paths: {},
+            prevPaths: [],
+        }
+    },
+
+    getPathString: function (path) {
+        if (!_.isArray(path)) throw new Error('path must be an array')
+        return path.join(',')
+    },
+
+    getStateValue: function (obj, path, key) {
+        var pathString = this.getPathString(path)
+        return _.get(obj, key ? [pathString, key] : pathString)
+    },
+
+    setStateValue: function (isRequest, path, key, value) {
+        var obj = isRequest ? this.state.requestPayload : this.state.responsePayload
+        var data = this.getStateValue(obj, path) || {}
+        data[key] = value
+
+        obj.paths[this.getPathString(path)] = data
+        var objKey = isRequest ? 'requestPayload' : 'responsePayload'
+        this.setState({
+            [objKey]: obj,
+        })
     },
 
     render: function () {
@@ -122,7 +165,10 @@ module.exports = React.createClass({
                     {(body && body.payload) && (
                         <section>
                             <h1>{action}</h1>
-                            <Payload root={body.payload} />
+                            <Payload root={body.payload} state={this.state.requestPayload} onTypeClick={this.typeClickHandler.bind(this, true)}
+                                onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
+                                onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
+                                onViewPropsClick={this.viewPropsHandler.bind(this, true)} />
                         </section>
                     )}
                 </content>
@@ -152,7 +198,10 @@ module.exports = React.createClass({
             <row>
                 <content>
                     <section>
-                        <Payload root={response.payload} />
+                        <Payload root={response.payload} state={this.state.responsePayload} onTypeClick={this.typeClickHandler.bind(this, false)}
+                            onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
+                            onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
+                            onViewPropsClick={this.viewPropsHandler.bind(this, false)}/>
                     </section>
                 </content>
                 <aside>
@@ -167,10 +216,49 @@ module.exports = React.createClass({
         )
     },
 
+    typeClickHandler: function (isRequest, path, type) {
+        this.setStateValue(isRequest, path, 'type', type)
+    },
+
+    subTypeClickhandler: function (isRequest, path, type) {
+        this.setStateValue(isRequest, path, 'subType', type)
+    },
+
     tabClickHandler: function (tab) {
         this.setState({
             activeTab: tab,
         })
     },
 
+    viewPropsHandler: function (isRequest, path, propKey, e) {
+        e.preventDefault()
+
+        var prevPaths = this.props.state.prevPaths
+        var crumbs = this.props.state.crumbs
+
+        prevPaths.push(this.props.state.currPath)
+        crumbs.push(propKey)
+
+        this.setState({
+            crumbs,
+            currPath: path,
+            prevPaths,
+        }, function () {
+            if (this.refs.breadcrumbs && !isVisible(this.refs.breadcrumbs)) {
+                this.refs.payload.scrollIntoView()
+            }
+        }.bind(this))
+    },
+
+    breadcrumbClickHandler: function (isRequest, name, index) {
+        var obj = isRequest ? this.state.requestPayload : this.state.responsePayload
+        obj.crumbs = _.take(obj.crumbs, index + 1)
+        obj.currPath = obj.prevPaths[index]
+        obj.prevPaths = _.take(obj.prevPaths, index)
+
+        var key = isRequest ? this.state.requestPayload : this.state.responsePayload
+        this.setState({
+            [key]: obj,
+        })
+    },
 })

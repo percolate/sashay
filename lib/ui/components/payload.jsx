@@ -25,24 +25,30 @@ module.exports = React.createClass({
                 })).isRequired,
             })),
         }).isRequired,
-    },
-
-    getInitialState: function () {
-        var type = _.first(this.getTypes(ROOT_PATH))
-        return {
-            crumbs: [type],
-            currPath: ROOT_PATH,
-            paths: {},
-            prevPaths: [],
-        }
+        state: React.PropTypes.shape({
+            crumbs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+            currPath: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+            paths: React.PropTypes.object.isRequired,
+            prevPaths: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+        }).isRequired,
     },
 
     componentDidUpdate: function () {
         if (this.context.onChange) this.context.onChange()
     },
 
+    getPathString: function (path) {
+        if (!_.isArray(path)) throw new Error('path must be an array')
+        return path.join(',')
+    },
+
     getSchema: function (path) {
         return _.get(this.props, path)
+    },
+
+    getStateValue: function (path, key) {
+        var pathString = this.getPathString(path)
+        return _.get(this.props.state.paths, key ? [pathString, key] : pathString)
     },
 
     getTypes: function (path) {
@@ -58,13 +64,13 @@ module.exports = React.createClass({
     },
 
     getRootTypes: function () {
-        return _.filter(this.getTypes(this.state.currPath), function (type) {
+        return _.filter(this.getTypes(this.props.state.currPath), function (type) {
             return type === 'object' || type === 'array'
         })
     },
 
     getRootCurrType: function () {
-        return this.getStateValue(this.state.currPath, 'type') || _.first(this.getRootTypes())
+        return this.getStateValue(this.props.state.currPath, 'type') || _.first(this.getRootTypes())
     },
 
     getCurrType: function (path) {
@@ -83,28 +89,6 @@ module.exports = React.createClass({
         return _.concat(path, this.getCurrType(path), this.getCurrSubType(path))
     },
 
-    getPathString: function (path) {
-        if (!_.isArray(path)) throw new Error('path must be an array')
-        return path.join(',')
-    },
-
-    getStateValue: function (path, key) {
-        var pathString = this.getPathString(path)
-        return _.get(this.state.paths, key ? [pathString, key] : pathString)
-    },
-
-    setStateValue: function (path, key, value) {
-        var data = this.getStateValue(path) || {}
-        data[key] = value
-
-        var paths = this.state.paths
-        paths[this.getPathString(path)] = data
-
-        this.setState({
-            paths: paths,
-        })
-    },
-
     render: function () {
         var types = this.getRootTypes()
         var currType = this.getRootCurrType()
@@ -114,17 +98,17 @@ module.exports = React.createClass({
                 <Types
                     types={types}
                     currType={currType}
-                    onClick={this.subTypeClickhandler.bind(this, this.state.currPath)}
+                    onClick={this.props.onSubTypeClick.bind(this, this.props.state.currPath)}
                 />
                 <Types
                     isSubTypes
-                    types={this.getSubTypes(this.state.currPath)}
-                    currType={this.getCurrSubType(this.state.currPath)}
-                    onClick={this.subTypeClickhandler.bind(this, this.state.currPath)}
+                    types={this.getSubTypes(this.props.state.currPath)}
+                    currType={this.getCurrSubType(this.props.state.currPath)}
+                    onClick={this.props.onSubTypeClick.bind(this, this.props.state.currPath)}
                 />
                 <Primitive
-                    type={this.getCurrType(this.state.currPath)}
-                    description={this.getCurrSchema(this.state.currPath).description}
+                    type={this.getCurrType(this.props.state.currPath)}
+                    description={this.getCurrSchema(this.props.state.currPath).description}
                 />
                 {(currType === 'object') && (
                     <div>
@@ -132,24 +116,24 @@ module.exports = React.createClass({
                         {this.renderProps()}
                     </div>
                 )}
-                {(currType === 'array') && this.renderArrayTypes(this.state.currPath, '')}
+                {(currType === 'array') && this.renderArrayTypes(this.props.state.currPath, '')}
             </div>
         )
     },
 
     renderBreadcrumbs: function () {
-        if (this.state.crumbs.length <= 1) return undefined
+        if (this.props.state.crumbs.length <= 1) return undefined
         return (
             <Breadcrumbs
-                crumbs={this.state.crumbs}
-                onClick={this.breadcrumbClickHandler}
+                crumbs={this.props.state.crumbs}
+                onClick={this.props.breadcrumbClickHandler}
                 ref="breadcrumbs"
             />
         )
     },
 
     renderProps: function () {
-        var props = this.getCurrSchema(this.state.currPath).properties
+        var props = this.getCurrSchema(this.props.state.currPath).properties
         var sortedKeys = _.chain(props)
             .keys()
             .sort()
@@ -159,7 +143,7 @@ module.exports = React.createClass({
             <ul className="properties">
                 {_.map(sortedKeys, function (key) {
                     var prop = props[key]
-                    var path = _.concat(this.getTypedPath(this.state.currPath), 'properties', key, 'types')
+                    var path = _.concat(this.getTypedPath(this.props.state.currPath), 'properties', key, 'types')
 
                     return (
                         <li className="property" key={key}>
@@ -171,7 +155,7 @@ module.exports = React.createClass({
                                     isStacked
                                     types={this.getTypes(path)}
                                     currType={this.getCurrType(path)}
-                                    onClick={this.typeClickHandler.bind(this, path)}
+                                    onClick={this.props.onTypeClick.bind(this, path)}
                                 />
                             </div>
                             <div className="property-right">
@@ -193,7 +177,7 @@ module.exports = React.createClass({
         if (type === 'object' && !_.isEmpty(schema.properties)) {
             viewProps = (
                 <div className="view-props-link">
-                    <a href="#" onClick={this.viewPropsHandler.bind(this, path, propKey)}>
+                    <a href="#" onClick={this.props.onTypeClick.bind(this, path, propKey)}>
                         View {schema.title || type} properties
                     </a>
                 </div>
@@ -206,7 +190,7 @@ module.exports = React.createClass({
                     isSubTypes
                     types={this.getSubTypes(path)}
                     currType={this.getCurrSubType(path)}
-                    onClick={this.subTypeClickhandler.bind(this, path)}
+                    onClick={this.props.onSubTypeClick.bind(this, path)}
                 />
                 <Primitive
                     type={this.getCurrType(path)}
@@ -231,51 +215,11 @@ module.exports = React.createClass({
                         <Types
                             types={this.getTypes(path)}
                             currType={this.getCurrType(path)}
-                            onClick={this.typeClickHandler.bind(this, path)}
+                            onClick={this.props.onTypeClick.bind(this, path)}
                         />
                         {this.renderPropTypes(path, arrayKey)}
                     </div>
             </div>
         )
-    },
-
-    typeClickHandler: function (path, type) {
-        this.setStateValue(path, 'type', type)
-    },
-
-    subTypeClickhandler: function (path, type) {
-        this.setStateValue(path, 'subType', type)
-    },
-
-    viewPropsHandler: function (path, propKey, e) {
-        e.preventDefault()
-
-        var prevPaths = this.state.prevPaths
-        var crumbs = this.state.crumbs
-
-        prevPaths.push(this.state.currPath)
-        crumbs.push(propKey)
-
-        this.setState({
-            crumbs,
-            currPath: path,
-            prevPaths,
-        }, function () {
-            if (this.refs.breadcrumbs && !isVisible(this.refs.breadcrumbs)) {
-                this.refs.payload.scrollIntoView()
-            }
-        }.bind(this))
-    },
-
-    breadcrumbClickHandler: function (name, index) {
-        var crumbs = _.take(this.state.crumbs, index + 1)
-        var currPath = this.state.prevPaths[index]
-        var prevPaths = _.take(this.state.prevPaths, index)
-
-        this.setState({
-            crumbs,
-            currPath,
-            prevPaths,
-        })
     },
 })
