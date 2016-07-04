@@ -32,7 +32,7 @@ module.exports = React.createClass({
         return {
             activeTab: _.first(TABS),
             requestPayload: this.getInitialPayloadState(body ? body.payload : {}),
-            responsePayload: this.getInitialPayloadState(response ? response : {}),
+            responsePayload: this.getInitialPayloadState(response ? response.payload : {}),
         }
     },
 
