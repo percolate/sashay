@@ -28,11 +28,11 @@ module.exports = React.createClass({
 
     getInitialState: function () {
         var body = _.get(this.props.method, ['body', 'application/json'])
+        var response = helper.getSuccessResponseFromMethod(this.props.method)
         return {
             activeTab: _.first(TABS),
             requestPayload: this.getInitialPayloadState(body ? body.payload : {}),
-            responsePayload: this.getInitialPayloadState(helper.getSuccessResponseFromMethod(this.props.method) ?
-                helper.getSuccessResponseFromMethod(this.props.method).payload : {}),
+            responsePayload: this.getInitialPayloadState(response ? response : {}),
         }
     },
 

@@ -5,8 +5,6 @@ var Primitive = require('./payload/primitive.jsx')
 var Types = require('./payload/types.jsx')
 var isVisible = require('./utils').isVisible
 
-var ROOT_PATH = ['root']
-
 module.exports = React.createClass({
     contextTypes: {
         onChange: React.PropTypes.func,
@@ -31,6 +29,10 @@ module.exports = React.createClass({
             paths: React.PropTypes.object.isRequired,
             prevPaths: React.PropTypes.array.isRequired,
         }).isRequired,
+        onTypeClick: React.PropTypes.func.isRequired,
+        onSubTypeClick: React.PropTypes.func.isRequired,
+        onBreadCrumbsClick: React.PropTypes.func.isRequired,
+        onViewPropsClick: React.PropTypes.func.isRequired,
     },
 
     componentDidUpdate: function () {
