@@ -183,7 +183,8 @@ module.exports = React.createClass({
                         if (this.refs.breadcrumbs && !isVisible(this.refs.breadcrumbs)) {
                             this.refs.payload.scrollIntoView()
                         }
-                    }.bind(this))}>
+                    }.bind(this))}
+                    >
                         View {schema.title || type} properties
                     </a>
                 </div>

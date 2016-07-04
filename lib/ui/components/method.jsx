@@ -170,7 +170,8 @@ module.exports = React.createClass({
                             <Payload root={body.payload} state={this.state.requestPayload} onTypeClick={this.typeClickHandler.bind(this, true)}
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
-                                onViewPropsClick={this.viewPropsHandler.bind(this, true)} />
+                                onViewPropsClick={this.viewPropsHandler.bind(this, true)}
+                            />
                         </section>
                     )}
                 </content>
@@ -203,7 +204,8 @@ module.exports = React.createClass({
                         <Payload root={response.payload} state={this.state.responsePayload} onTypeClick={this.typeClickHandler.bind(this, false)}
                             onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
                             onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
-                            onViewPropsClick={this.viewPropsHandler.bind(this, false)}/>
+                            onViewPropsClick={this.viewPropsHandler.bind(this, false)}
+                        />
                     </section>
                 </content>
                 <aside>
