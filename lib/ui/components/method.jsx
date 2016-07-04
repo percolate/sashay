@@ -195,7 +195,7 @@ module.exports = React.createClass({
 
     renderResponse: function () {
         var response = helper.getSuccessResponseFromMethod(this.props.method)
-        if (!response.payload) return null
+        if (!response || !response.payload) return null
 
         return (
             <row>
