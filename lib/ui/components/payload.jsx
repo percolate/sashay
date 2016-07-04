@@ -29,8 +29,8 @@ module.exports = React.createClass({
             crumbs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
             currPath: React.PropTypes.array.isRequired,
             paths: React.PropTypes.object.isRequired,
-            prevPaths: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-        }),
+            prevPaths: React.PropTypes.array.isRequired,
+        }).isRequired,
     },
 
     componentDidUpdate: function () {
@@ -126,7 +126,7 @@ module.exports = React.createClass({
         return (
             <Breadcrumbs
                 crumbs={this.props.state.crumbs}
-                onClick={this.props.breadcrumbClickHandler}
+                onClick={this.props.onBreadCrumbsClick}
                 ref="breadcrumbs"
             />
         )

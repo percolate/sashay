@@ -40,16 +40,8 @@ module.exports = React.createClass({
         if (this.context.onChange) this.context.onChange()
     },
 
-    getTypes: function (path, payload) {
-        return _.keys(this.getSchema(path, payload))
-    },
-
-    getSchema: function (path, payload) {
-        return _.get(payload, path)
-    },
-
     getInitialPayloadState: function (payload) {
-        var type = _.first(this.getTypes(ROOT_PATH, payload))
+        var type = _.first(_.keys(payload))
         return {
             crumbs: [type],
             currPath: ROOT_PATH,
