@@ -27,10 +27,10 @@ module.exports = React.createClass({
         }).isRequired,
         state: React.PropTypes.shape({
             crumbs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-            currPath: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+            currPath: React.PropTypes.array.isRequired,
             paths: React.PropTypes.object.isRequired,
             prevPaths: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-        }).isRequired,
+        }),
     },
 
     componentDidUpdate: function () {
@@ -177,7 +177,11 @@ module.exports = React.createClass({
         if (type === 'object' && !_.isEmpty(schema.properties)) {
             viewProps = (
                 <div className="view-props-link">
-                    <a href="#" onClick={this.props.onTypeClick.bind(this, path, propKey)}>
+                    <a href="#" onClick={this.props.onViewPropsClick.bind(this, path, propKey, function () {
+                        if (this.refs.breadcrumbs && !isVisible(this.refs.breadcrumbs)) {
+                            this.refs.payload.scrollIntoView()
+                        }
+                    }.bind(this))}>
                         View {schema.title || type} properties
                     </a>
                 </div>

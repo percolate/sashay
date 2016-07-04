@@ -27,10 +27,12 @@ module.exports = React.createClass({
     },
 
     getInitialState: function () {
+        var body = _.get(this.props.method, ['body', 'application/json'])
         return {
             activeTab: _.first(TABS),
-            requestPayload: this.getInitialPayloadState(),
-            responsePayload: this.getInitialPayloadState(),
+            requestPayload: this.getInitialPayloadState(body ? body.payload : {}),
+            responsePayload: this.getInitialPayloadState(helper.getSuccessResponseFromMethod(this.props.method) ?
+                helper.getSuccessResponseFromMethod(this.props.method).payload : {}),
         }
     },
 
@@ -38,16 +40,16 @@ module.exports = React.createClass({
         if (this.context.onChange) this.context.onChange()
     },
 
-    getTypes: function (path) {
-        return _.keys(this.getSchema(path))
+    getTypes: function (path, payload) {
+        return _.keys(this.getSchema(path, payload))
     },
 
-    getSchema: function (path) {
-        return _.get(this.props, path)
+    getSchema: function (path, payload) {
+        return _.get(payload, path)
     },
 
-    getInitialPayloadState: function () {
-        var type = _.first(this.getTypes(ROOT_PATH))
+    getInitialPayloadState: function (payload) {
+        var type = _.first(this.getTypes(ROOT_PATH, payload))
         return {
             crumbs: [type],
             currPath: ROOT_PATH,
@@ -66,16 +68,24 @@ module.exports = React.createClass({
         return _.get(obj, key ? [pathString, key] : pathString)
     },
 
+    getTabState: function (isRequest) {
+        return isRequest ? this.state.requestPayload : this.state.responsePayload
+    },
+
+    setTabState: function (isRequest, obj, callback) {
+        var key = isRequest ? 'requestPayload' : 'responsePayload'
+        this.setState({
+            [key]: obj,
+        }, callback)
+    },
+
     setStateValue: function (isRequest, path, key, value) {
-        var obj = isRequest ? this.state.requestPayload : this.state.responsePayload
+        var obj = this.getTabState(isRequest)
         var data = this.getStateValue(obj, path) || {}
         data[key] = value
 
         obj.paths[this.getPathString(path)] = data
-        var objKey = isRequest ? 'requestPayload' : 'responsePayload'
-        this.setState({
-            [objKey]: obj,
-        })
+        this.setTabState(isRequest, obj)
     },
 
     render: function () {
@@ -230,24 +240,14 @@ module.exports = React.createClass({
         })
     },
 
-    viewPropsHandler: function (isRequest, path, propKey, e) {
+    viewPropsHandler: function (isRequest, path, propKey, callback, e) {
         e.preventDefault()
+        var obj = this.getTabState(isRequest)
+        obj.prevPaths.push(obj.currPath)
+        obj.crumbs.push(propKey)
+        obj.currPath = path
 
-        var prevPaths = this.props.state.prevPaths
-        var crumbs = this.props.state.crumbs
-
-        prevPaths.push(this.props.state.currPath)
-        crumbs.push(propKey)
-
-        this.setState({
-            crumbs,
-            currPath: path,
-            prevPaths,
-        }, function () {
-            if (this.refs.breadcrumbs && !isVisible(this.refs.breadcrumbs)) {
-                this.refs.payload.scrollIntoView()
-            }
-        }.bind(this))
+        this.setTabState(isRequest, obj, callback)
     },
 
     breadcrumbClickHandler: function (isRequest, name, index) {
