@@ -213,7 +213,7 @@ module.exports = React.createClass({
         var type = this.getCurrType(arrayPath)
         if (type !== 'array') return undefined
 
-        var arrayKey = `[ ${propKey} ]`
+        var arrayKey = `${propKey} [ ]`
         var path = _.concat(this.getTypedPath(arrayPath), 'types')
         return (
             <div className="array-types-wrapper">

@@ -1,19 +1,18 @@
 var _ = require('lodash')
 var Breadcrumb = require('./breadcrumb.jsx')
+var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
 module.exports = React.createClass({
     displayName: 'Breadcrumbs',
 
+    mixins: [
+        PureRenderMixin,
+    ],
+
     propTypes: {
         crumbs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
         onClick: React.PropTypes.func,
-    },
-
-    componentWillReceiveProps: function (newProps) {
-        this.setState({
-            crumbs: newProps.crumbs,
-        })
     },
 
     render: function () {
