@@ -87,19 +87,6 @@ describe('expand()', function () {
             .caught(done)
     })
 
-    it('should throw invalid schemas error', function (done) {
-        var options = {
-            source: path.resolve(__dirname, './fixtures/invalid/invalid-schemas.raml'),
-        }
-        expand(options)
-            .caught(function (err) {
-                expect(err).to.be.an.instanceof(Error)
-                expect(err.message).to.match(/^schemas property must be an array/)
-                return done()
-            })
-            .caught(done)
-    })
-
     it('should throw missing json schema type error', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/missing-type/invalid-missing-type.raml'),
