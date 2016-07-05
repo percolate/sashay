@@ -21,7 +21,7 @@ module.exports = React.createClass({
         method: React.PropTypes.shape({
             description: React.PropTypes.string,
             displayName: React.PropTypes.string.isRequired,
-            method: React.PropTypes.string,
+            method: React.PropTypes.string.isRequired,
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
     },
@@ -115,7 +115,6 @@ module.exports = React.createClass({
     renderMethod: function () {
         var { baseUri, method } = this.props
         var absoluteUri = baseUri + method.absoluteUri
-        if (!method.method) return null
         return (
             <section>
                 <Code lang="http" code={`${method.method.toUpperCase()} ${absoluteUri}`} />
