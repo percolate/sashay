@@ -7,7 +7,9 @@ var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
 
+var DEFAULT_CRUMBS = ['/']
 var TABS = ['Request', 'Response']
+var ROOT_PATH = ['root']
 
 module.exports = React.createClass({
     displayName: 'Method',
@@ -20,7 +22,7 @@ module.exports = React.createClass({
         method: React.PropTypes.shape({
             description: React.PropTypes.string,
             displayName: React.PropTypes.string.isRequired,
-            method: React.PropTypes.string,
+            method: React.PropTypes.string.isRequired,
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
     },
@@ -28,11 +30,52 @@ module.exports = React.createClass({
     getInitialState: function () {
         return {
             activeTab: _.first(TABS),
+            requestPayload: this.getInitialPayloadState(),
+            responsePayload: this.getInitialPayloadState(),
         }
     },
 
     componentDidUpdate: function () {
         if (this.context.onChange) this.context.onChange()
+    },
+
+    getInitialPayloadState: function () {
+        return {
+            crumbs: DEFAULT_CRUMBS,
+            currPath: ROOT_PATH,
+            paths: {},
+            prevPaths: [],
+        }
+    },
+
+    getPathString: function (path) {
+        if (!_.isArray(path)) throw new Error('path must be an array')
+        return path.join(',')
+    },
+
+    getStateValue: function (obj, path, key) {
+        var pathString = this.getPathString(path)
+        return _.get(obj, key ? [pathString, key] : pathString)
+    },
+
+    getTabState: function (isRequest) {
+        return isRequest ? this.state.requestPayload : this.state.responsePayload
+    },
+
+    setTabState: function (isRequest, obj, callback) {
+        var key = isRequest ? 'requestPayload' : 'responsePayload'
+        this.setState({
+            [key]: obj,
+        }, callback)
+    },
+
+    setStateValue: function (isRequest, path, key, value) {
+        var obj = this.getTabState(isRequest)
+        var data = this.getStateValue(obj, path) || {}
+        data[key] = value
+
+        obj.paths[this.getPathString(path)] = data
+        this.setTabState(isRequest, obj)
     },
 
     render: function () {
@@ -70,7 +113,6 @@ module.exports = React.createClass({
     renderMethod: function () {
         var { baseUri, method } = this.props
         var absoluteUri = baseUri + method.absoluteUri
-        if (!method.method) return null
         return (
             <section>
                 <Code lang="http" code={`${method.method.toUpperCase()} ${absoluteUri}`} />
@@ -103,10 +145,19 @@ module.exports = React.createClass({
         var { method } = this.props
         var body = _.get(method, ['body', 'application/json'])
         var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
-        var action = method.method ? method.method.toUpperCase() : 'Definition'
         return (
             <row>
                 <content>
+                    {(body && body.payload) && (
+                        <section>
+                            <h1>Body</h1>
+                            <Payload root={body.payload} state={this.state.requestPayload} onTypeClick={this.typeClickHandler.bind(this, true)}
+                                onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
+                                onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
+                                onViewPropsClick={this.viewPropsHandler.bind(this, true)}
+                            />
+                        </section>
+                    )}
                     {(method.uriParameters) && (
                         <section>
                             <h1>URI Parameters</h1>
@@ -117,12 +168,6 @@ module.exports = React.createClass({
                         <section>
                             <h1>Query Parameters</h1>
                             <Parameters parameters={method.queryParameters} />
-                        </section>
-                    )}
-                    {(body && body.payload) && (
-                        <section>
-                            <h1>{action}</h1>
-                            <Payload root={body.payload} />
                         </section>
                     )}
                 </content>
@@ -146,13 +191,18 @@ module.exports = React.createClass({
 
     renderResponse: function () {
         var response = helper.getSuccessResponseFromMethod(this.props.method)
-        if (!response.payload) return null
+        if (!response || !response.payload) return null
 
         return (
             <row>
                 <content>
                     <section>
-                        <Payload root={response.payload} />
+                        <h1>Body</h1>
+                        <Payload root={response.payload} state={this.state.responsePayload} onTypeClick={this.typeClickHandler.bind(this, false)}
+                            onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
+                            onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
+                            onViewPropsClick={this.viewPropsHandler.bind(this, false)}
+                        />
                     </section>
                 </content>
                 <aside>
@@ -167,10 +217,39 @@ module.exports = React.createClass({
         )
     },
 
+    typeClickHandler: function (isRequest, path, type) {
+        this.setStateValue(isRequest, path, 'type', type)
+    },
+
+    subTypeClickhandler: function (isRequest, path, type) {
+        this.setStateValue(isRequest, path, 'subType', type)
+    },
+
     tabClickHandler: function (tab) {
         this.setState({
             activeTab: tab,
         })
     },
 
+    viewPropsHandler: function (isRequest, path, propKey, callback, e) {
+        e.preventDefault()
+        var obj = this.getTabState(isRequest)
+        obj.prevPaths = _.concat(obj.prevPaths, [obj.currPath])
+        obj.crumbs = _.concat(obj.crumbs, propKey)
+        obj.currPath = path
+
+        this.setTabState(isRequest, obj, callback)
+    },
+
+    breadcrumbClickHandler: function (isRequest, name, index) {
+        var obj = isRequest ? this.state.requestPayload : this.state.responsePayload
+        obj.crumbs = _.take(obj.crumbs, index + 1)
+        obj.currPath = obj.prevPaths[index]
+        obj.prevPaths = _.take(obj.prevPaths, index)
+
+        var key = isRequest ? this.state.requestPayload : this.state.responsePayload
+        this.setState({
+            [key]: obj,
+        })
+    },
 })
