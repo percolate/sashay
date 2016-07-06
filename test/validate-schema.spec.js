@@ -1,6 +1,6 @@
 var _ = require('lodash')
 var expect = require('chai').expect
-var validateType = require('../lib/validate-type')
+var validateSchema = require('../lib/validate-schema')
 
 var oneOf = {
     description: 'desc',
@@ -103,28 +103,35 @@ function createSchema (path, optionalSchema) {
     return schema1
 }
 function validatePath (path, optionalSchema) {
-    expect(validateType.bind(undefined, createSchema(path, optionalSchema))).to.throw(/.*Missing type property.*/)
+    expect(validateSchema.bind(undefined, createSchema(path, optionalSchema))).to.throw(/.*Missing type property.*/)
 }
 
 describe('validate-schema', function () {
     it('should run', function () {
-        validateType(schema)
+        validateSchema(schema)
     })
 
     it('should validate undefined schema', function () {
-        validateType(undefined)
+        validateSchema(undefined)
     })
 
     it('should validate missing oneOf/allOf/anyOf type at the upper level', function () {
-        validateType(createSchema('type', oneOf))
-        validateType(createSchema('type', allOf))
-        validateType(createSchema('type', anyOf))
+        validateSchema(createSchema('type', oneOf))
+        validateSchema(createSchema('type', anyOf))
+    })
+
+    it('should throw different types in allOf', function () {
+        expect(validateSchema.bind(undefined, createSchema('type', allOf))).to.throw(/.*Different types.*/)
+    })
+
+    it('should throw missing type property with empty schema', function () {
+        expect(validateSchema.bind(undefined, {})).to.throw(/.*Missing type property.*/)
     })
 
     it('should validate oneOf/allOf/anyOf type and missing in one item', function () {
-        validateType(createSchema('oneOf[0].type', oneOf))
-        validateType(createSchema('allOf[0].type', allOf))
-        validateType(createSchema('anyOf[0].type', anyOf))
+        validateSchema(createSchema('oneOf[0].type', oneOf))
+        validateSchema(createSchema('allOf[0].type', allOf))
+        validateSchema(createSchema('anyOf[0].type', anyOf))
     })
 
     it('should throw missing oneOf/allOf/anyOf type', function () {
@@ -134,7 +141,7 @@ describe('validate-schema', function () {
     })
 
     it('should run with oneOf', function () {
-        validateType(oneOf)
+        validateSchema(oneOf)
     })
 
     it('should throw missing object type', function () {
@@ -155,5 +162,29 @@ describe('validate-schema', function () {
 
     it('should throw missing patternProperties type', function () {
         validatePath('properties.b.items.patternProperties.a.type')
+    })
+
+    it('should throw an exception when an array has no items', function () {
+        expect(validateSchema.bind(undefined, {
+            type: 'array',
+        })).to.throw()
+
+        expect(validateSchema.bind(undefined, {
+            type: 'array',
+            items: [],
+        })).to.throw()
+
+        expect(validateSchema.bind(undefined, {
+            type: 'array',
+            items: {},
+        })).to.throw()
+    })
+
+    it('should throw for unsupported type', function () {
+        expect(validateSchema.bind(undefined, { type: 'bogus' })).to.throw(/bogus/)
+    })
+
+    it('should throw enum value is not string', function () {
+        expect(validateSchema.bind(undefined, { type: 'string', enum: [null, 'bogus'] })).to.throw(/.*Enum value is not string.*/)
     })
 })
