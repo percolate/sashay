@@ -2,15 +2,17 @@ var _ = require('lodash')
 var Breadcrumbs = require('./payload/breadcrumbs.jsx')
 var React = require('react')
 var Primitive = require('./payload/primitive.jsx')
+var PureRenderMixin = require('react-addons-pure-render-mixin')
 var Types = require('./payload/types.jsx')
 var isVisible = require('./utils').isVisible
 
 module.exports = React.createClass({
-    contextTypes: {
-        onChange: React.PropTypes.func,
-    },
-
     displayName: 'Payload',
+
+    mixins: [
+        PureRenderMixin,
+    ],
+
     propTypes: {
         root: React.PropTypes.shape({
             array: React.PropTypes.arrayOf(React.PropTypes.shape({
@@ -27,16 +29,11 @@ module.exports = React.createClass({
             crumbs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
             currPath: React.PropTypes.array.isRequired,
             paths: React.PropTypes.object.isRequired,
-            prevPaths: React.PropTypes.array.isRequired,
         }).isRequired,
         onTypeClick: React.PropTypes.func.isRequired,
         onSubTypeClick: React.PropTypes.func.isRequired,
         onBreadCrumbsClick: React.PropTypes.func.isRequired,
         onViewPropsClick: React.PropTypes.func.isRequired,
-    },
-
-    componentDidUpdate: function () {
-        if (this.context.onChange) this.context.onChange()
     },
 
     getPathString: function (path) {
