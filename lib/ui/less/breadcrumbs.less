@@ -6,22 +6,18 @@
         display: inline-block;
         list-style: none;
 
-        &.root a {
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        + li:after {
+        &:after {
             content: "/";
             color: #999999;
             font-size: 1.2em;
-            padding-right: 0.5em;
+        }
+        &:first-child a {
+            padding-left: 0;
         }
 
         &:last-child {
             &:after {
                 content: "";
-                padding-right: 0;
             }
             a {
                 padding-right: 0;
@@ -30,7 +26,7 @@
 
         a {
             color: #2477b2;
-            padding-right: 0.5em;
+            padding: 0 0.5em;
             text-decoration: none;
 
             &:hover {
