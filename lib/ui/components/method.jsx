@@ -7,7 +7,7 @@ var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
 
-var DEFAULT_CRUMBS = ['/']
+var DEFAULT_CRUMBS = ['root']
 var TABS = ['Request', 'Response']
 var ROOT_PATH = ['root']
 
