@@ -185,6 +185,6 @@ describe('validate-schema', function () {
     })
 
     it('should throw enum value is not string', function () {
-        expect(validateSchema.bind(undefined, { type: 'string', enum: [null, 'bogus'] })).to.throw(/.*Enum value is not string.*/)
+        expect(validateSchema.bind(undefined, { type: 'string', enum: [123, 'bogus'] })).to.throw(/.*Enum value is not string.*/)
     })
 })
