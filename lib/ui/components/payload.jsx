@@ -174,8 +174,7 @@ module.exports = React.createClass({
         if (type === 'object' && !_.isEmpty(schema.properties)) {
             viewProps = (
                 <div className="view-props-link">
-                    <a href="#" onClick={this.props.onViewPropsClick.bind(this, path, propKey)}
-                    >
+                    <a href="#" onClick={this.props.onViewPropsClick.bind(this, path, propKey)}>
                         View {schema.title || type} properties
                     </a>
                 </div>
