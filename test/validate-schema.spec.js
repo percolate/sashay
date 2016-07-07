@@ -190,24 +190,24 @@ describe('validate-schema', function () {
 
     it('should throw missing title on ID property', function () {
         expect(validateSchema.bind(undefined, {
-              type: 'object',
-              properties: {
-                  id: {
-                      type: 'string',
-                  }
-              }
+            type: 'object',
+            properties: {
+                id: {
+                    type: 'string',
+                },
+            },
         })).to.throw(/.*Id property must have a title with `ID.*/)
     })
 
     it('should throw missing ID in title on ID property', function () {
         expect(validateSchema.bind(undefined, {
-              type: 'object',
-              properties: {
-                  uid: {
-                      type: 'string',
-                      title: 'my'
-                  }
-              }
+            type: 'object',
+            properties: {
+                uid: {
+                    type: 'string',
+                    title: 'my',
+                },
+            },
         })).to.throw(/.*Id property must have a title with `ID.*/)
     })
 })
