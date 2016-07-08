@@ -144,6 +144,28 @@ describe('validate-schema', function () {
         validateSchema(oneOf)
     })
 
+    it('should throw types[] in oneOf', function () {
+        var oneOfCopy = _.cloneDeep(oneOf)
+        oneOfCopy.oneOf[0].type = ['string', 'null']
+        expect(validateSchema.bind(undefined, oneOfCopy)).to.throw(/`type: \[\.\.\.\]` is not supported directly inside `oneOf`/)
+    })
+
+    it('should throw nested oneOf', function () {
+        var oneOfCopy = _.cloneDeep(oneOf)
+        oneOfCopy.oneOf[0].oneOf = []
+        expect(validateSchema.bind(undefined, oneOfCopy)).to.throw(/nested `oneOf` are not supported/)
+    })
+
+    it('should throw unsupported type in oneOf', function () {
+        var oneOfCopy = _.cloneDeep(oneOf)
+        oneOfCopy.oneOf[0].type = 'bogus'
+        expect(validateSchema.bind(undefined, oneOfCopy)).to.throw(/bogus is not a supported type/)
+    })
+
+    it('should validate array type', function () {
+        validateSchema({ type: ['string', 'integer']})
+    })
+
     it('should throw missing object type', function () {
         validatePath('type')
     })
@@ -197,9 +219,7 @@ describe('validate-schema', function () {
                 },
             },
         })).to.throw(/.*Id property must have a title with `ID.*/)
-    })
 
-    it('should throw missing ID in title on ID property', function () {
         expect(validateSchema.bind(undefined, {
             type: 'object',
             properties: {
@@ -210,4 +230,49 @@ describe('validate-schema', function () {
             },
         })).to.throw(/.*Id property must have a title with `ID.*/)
     })
+
+    it('should validate format', function () {
+        validateSchema({
+            type: 'object',
+            properties: {
+                a: {
+                    type: 'string',
+                    format: 'date-time',
+                },
+                b: {
+                    type: 'string',
+                    format: 'email',
+                },
+                c: {
+                    type: 'string',
+                    format: 'hostname',
+                },
+                d: {
+                    type: 'string',
+                    format: 'ipv4',
+                },
+                e: {
+                    type: 'string',
+                    format: 'ipv6',
+                },
+                f: {
+                    type: 'string',
+                    format: 'uri',
+                },
+            },
+        })
+    })
+
+    it('should throw unsupported format', function () {
+        expect(validateSchema.bind(undefined, {
+            type: 'object',
+            properties: {
+                id: {
+                    type: 'string',
+                    format: 'bogus'
+                },
+            },
+        })).to.throw(/.*Unsupported format bogus.*/)
+    })
+
 })
