@@ -1,13 +1,15 @@
 var _ = require('lodash')
 var Code = require('./code.jsx')
 var React = require('react')
+var ReactDOM = require('react-dom')
 var helper = require('../../helper')
+var isVisible = require('./utils').isVisible
 var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
 
-var DEFAULT_CRUMBS = ['/']
+var DEFAULT_CRUMBS = ['root']
 var TABS = ['Request', 'Response']
 var ROOT_PATH = ['root']
 
@@ -97,6 +99,7 @@ module.exports = React.createClass({
                             tabs={TABS}
                             activeTab={this.state.activeTab}
                             onClick={this.tabClickHandler}
+                            ref="tabs"
                         />
                     </content>
                     <aside>
@@ -155,6 +158,7 @@ module.exports = React.createClass({
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
                                 onViewPropsClick={this.viewPropsHandler.bind(this, true)}
+                                ref="payload"
                             />
                         </section>
                     )}
@@ -202,6 +206,7 @@ module.exports = React.createClass({
                             onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
                             onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
                             onViewPropsClick={this.viewPropsHandler.bind(this, false)}
+                            ref="payload"
                         />
                     </section>
                 </content>
@@ -231,14 +236,18 @@ module.exports = React.createClass({
         })
     },
 
-    viewPropsHandler: function (isRequest, path, propKey, callback, e) {
+    viewPropsHandler: function (isRequest, path, propKey, e) {
         e.preventDefault()
         var obj = this.getTabState(isRequest)
         obj.prevPaths = _.concat(obj.prevPaths, [obj.currPath])
         obj.crumbs = _.concat(obj.crumbs, propKey)
         obj.currPath = path
 
-        this.setTabState(isRequest, obj, callback)
+        this.setTabState(isRequest, obj, function () {
+            if (!isVisible(this.refs.tabs)) {
+                ReactDOM.findDOMNode(this.refs.tabs).scrollIntoView()
+            }
+        }.bind(this))
     },
 
     breadcrumbClickHandler: function (isRequest, name, index) {
