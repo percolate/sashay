@@ -259,6 +259,10 @@ describe('validate-schema', function () {
                     type: 'string',
                     format: 'uri',
                 },
+                g: {
+                    type: 'string',
+                    format: 'legacy-date-time',
+                },
             },
         })
     })
