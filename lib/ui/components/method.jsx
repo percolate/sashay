@@ -74,7 +74,7 @@ module.exports = React.createClass({
                             i++
                         }
                         partialPath = _.map(partialPath, function (part) {
-                            return _.toNumber(part) ? _.toNumber(part) : part
+                            return !isNaN(part) ? _.toNumber(part) : part
                         })
                         var index = _.findLastIndex(partialPath, function (val, i) {
                             if (i > 0) {
@@ -82,17 +82,20 @@ module.exports = React.createClass({
                             }
                             return false
                         })
-                        if (partialPath.length > 2 && partialPath[index] !== 0) {
+                        if (partialPath.length > 1 && partialPath[index] !== 0) {
                             this.subTypeClickhandler(isRequest, until, partialPath[index])
                         }
                         if (partialPath.length > 1 && partialPath[partialPath.length - 2] === 'object') {
                             partialPath = _.slice(partialPath, 0, partialPath.length - 2)
                         }
-                        this.viewPropsHandler(isRequest, partialPath, crumbs[k])
+                        if (crumbs[k]) {
+                            this.viewPropsHandler(isRequest, partialPath, crumbs[k])
+                        }
                         k++
                     }
                 }
             }
+            window.history.replaceState(undefined, undefined, window.location.hash)
         }
     },
 
@@ -208,7 +211,8 @@ module.exports = React.createClass({
                     {(body && body.payload) && (
                         <section>
                             <h1>Body</h1>
-                            <Payload root={body.payload} state={this.state.requestPayload} onTypeClick={this.typeClickHandler.bind(this, true)}
+                            <Payload root={body.payload} state={this.state.requestPayload}  slug={this.props.method.slug}
+                                onTypeClick={this.typeClickHandler.bind(this, true)}
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
                                 onViewPropsClick={this.viewPropsHandler.bind(this, true)}
@@ -255,7 +259,8 @@ module.exports = React.createClass({
                 <content>
                     <section>
                         <h1>Body</h1>
-                        <Payload root={response.payload} state={this.state.responsePayload} onTypeClick={this.typeClickHandler.bind(this, false)}
+                        <Payload root={response.payload} state={this.state.responsePayload} slug={this.props.method.slug}
+                            onTypeClick={this.typeClickHandler.bind(this, false)}
                             onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
                             onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
                             onViewPropsClick={this.viewPropsHandler.bind(this, false)}
@@ -292,6 +297,8 @@ module.exports = React.createClass({
         if (e) {
             e.preventDefault()
         }
+        console.log(path);
+        console.log(propKey);
         var obj = this.getTabState(isRequest)
         obj.prevPaths = _.concat(obj.prevPaths, [obj.currPath])
         obj.crumbs = _.concat(obj.crumbs, propKey)

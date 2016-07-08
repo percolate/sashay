@@ -58,12 +58,6 @@ module.exports = React.createClass({
         this.setState({
             slug: window.location.search + window.location.hash,
         })
-        var hash = null
-        var hashArray = window.location.hash.split('.')
-        if (hashArray.length > 3) {
-            hash = _.slice(hashArray, 0, 4).join('.')
-        }
-        window.history.replaceState(undefined, undefined, hash)
     },
 
     componentWillUnmount: function () {

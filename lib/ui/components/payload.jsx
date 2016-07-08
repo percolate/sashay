@@ -30,9 +30,9 @@ module.exports = React.createClass({
             currPath: React.PropTypes.array.isRequired,
             paths: React.PropTypes.object.isRequired,
         }).isRequired,
-        onTypeClick: React.PropTypes.func.isRequired,
-        onSubTypeClick: React.PropTypes.func.isRequired,
         onBreadCrumbsClick: React.PropTypes.func.isRequired,
+        onSubTypeClick: React.PropTypes.func.isRequired,
+        onTypeClick: React.PropTypes.func.isRequired,
         onViewPropsClick: React.PropTypes.func.isRequired,
     },
 
@@ -145,10 +145,10 @@ module.exports = React.createClass({
                     var path = _.concat(this.getTypedPath(this.props.state.currPath), 'properties', key, 'types')
 
                     return (
-                        <li className="property" key={key}>
+                        <li className="property" key={key} id={this.props.slug + '.' + key} >
                             <div className={`property-left ${prop.required && 'required'}`}>
                                 <div className="property-key">
-                                    {key}
+                                    <a href={'#' + this.props.slug + '.' + key} >{key}</a>
                                 </div>
                                 <Types
                                     isStacked
