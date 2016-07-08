@@ -29,6 +29,19 @@ module.exports = React.createClass({
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
     },
+    contextTypes: {
+        slug: React.PropTypes.string,
+    },
+
+    getInitialState: function () {
+        return {}
+    },
+
+    updateSlug: function (method, slugToAppend, breadcrumbs) {
+        this.setState({
+            [method.slug]: '?path=' + slugToAppend + '&crumbs=' + breadcrumbs + '#' + method.slug,
+        })
+    },
 
     render: function () {
         return (
@@ -95,11 +108,13 @@ module.exports = React.createClass({
     },
 
     renderMethod: function (method, i) {
+        var slug = this.state[method.slug] ? this.state[method.slug] : method.slug
         return (
-            <div key={i} ref={method.slug} id={method.slug}>
+            <div key={i} ref={slug} id={method.slug}>
                 <Method
                     method={method}
                     baseUri={this.props.baseUri}
+                    onChange={this.updateSlug.bind(this, method)}
                 />
             </div>
         )

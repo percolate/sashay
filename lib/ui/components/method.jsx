@@ -6,6 +6,7 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
+var querystring = require('querystring')
 
 var DEFAULT_CRUMBS = ['/']
 var TABS = ['Request', 'Response']
@@ -16,6 +17,7 @@ module.exports = React.createClass({
 
     contextTypes: {
         onChange: React.PropTypes.func,
+        slug: React.PropTypes.string,
     },
 
     propTypes: {
@@ -25,6 +27,7 @@ module.exports = React.createClass({
             method: React.PropTypes.string.isRequired,
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
+        onChange: React.PropTypes.func.isRequired,
     },
 
     getInitialState: function () {
@@ -36,7 +39,61 @@ module.exports = React.createClass({
     },
 
     componentDidUpdate: function () {
+        var obj = this.getTabState(this.state.activeTab === 'Request')
+        var slug = (this.state.activeTab === 'Request' ? 'request' : 'response') + '.' + obj.currPath.join('.')
+        slug = obj.paths[obj.currPath] ? (slug + '.object.' + obj.paths[obj.currPath].subType) : slug
+        if (this.props.onChange) this.props.onChange(slug, obj.crumbs)
         if (this.context.onChange) this.context.onChange()
+    },
+
+    componentWillMount: function () {
+        var slug = this.context.slug
+        if (slug) {
+            var re = new RegExp('.*' + this.props.method.slug + '.*')
+            if (slug.match(re)) {
+                if (slug.indexOf('?') !== -1) {
+                    slug = slug.substring(0, slug.indexOf('#'))
+                    var queryParameters = querystring.parse(slug.substring(slug.indexOf('?') + 1))
+                    var path = queryParameters.path.indexOf('.') === -1 ? ROOT_PATH : queryParameters.path.substring(queryParameters.path.indexOf('.') + 1).split('.')
+                    var crumbs = queryParameters.crumbs ? queryParameters.crumbs.split(',') : []
+                    var isRequest = slug.match(/request/) != null
+                    this.tabClickHandler(isRequest ? TABS[0] : TABS[1])
+                    var i = 1
+                    var k = 1
+                    var partialPath = ROOT_PATH
+                    while (i < path.length) {
+                        var until = _.slice(path, 0, i)
+                        if (path[i] === 'object') {
+                            partialPath = partialPath.concat(_.slice(path, i, i + 5))
+                            i = i + 5
+                            if (path[i] === 'array') {
+                                partialPath = partialPath.concat(_.slice(path, i, i + 3))
+                                i = i + 3
+                            }
+                        } else {
+                            i++
+                        }
+                        partialPath = _.map(partialPath, function (part) {
+                            return _.toNumber(part) ? _.toNumber(part) : part
+                        })
+                        var index = _.findLastIndex(partialPath, function (val, i) {
+                            if (i > 0) {
+                                return _.isNumber(val) && partialPath[i - 1] === 'object'
+                            }
+                            return false
+                        })
+                        if (partialPath.length > 2 && partialPath[index] !== 0) {
+                            this.subTypeClickhandler(isRequest, until, partialPath[index])
+                        }
+                        if (partialPath.length > 1 && partialPath[partialPath.length - 2] === 'object') {
+                            partialPath = _.slice(partialPath, 0, partialPath.length - 2)
+                        }
+                        this.viewPropsHandler(isRequest, partialPath, crumbs[k])
+                        k++
+                    }
+                }
+            }
+        }
     },
 
     getInitialPayloadState: function () {
@@ -232,7 +289,9 @@ module.exports = React.createClass({
     },
 
     viewPropsHandler: function (isRequest, path, propKey, callback, e) {
-        e.preventDefault()
+        if (e) {
+            e.preventDefault()
+        }
         var obj = this.getTabState(isRequest)
         obj.prevPaths = _.concat(obj.prevPaths, [obj.currPath])
         obj.crumbs = _.concat(obj.crumbs, propKey)

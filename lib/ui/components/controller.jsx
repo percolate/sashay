@@ -11,6 +11,7 @@ module.exports = React.createClass({
     displayName: 'Controller',
     childContextTypes: {
         onChange: React.PropTypes.func.isRequired,
+        slug: React.PropTypes.string,
     },
 
     _updateOffsets: function () {
@@ -34,7 +35,12 @@ module.exports = React.createClass({
         var slug = offset ? offset.slug : undefined
         if (slug === this.state.hash) return
         this.setState({ hash: slug })
-        var url = slug ? ['#', slug].join('') : ' '
+        var url = null
+        if (slug.indexOf('?') === -1) {
+            url = slug ? ['#', slug].join('') : ' '
+        } else {
+            url = slug
+        }
         if (ignoreHistory !== true) {
             window.history.replaceState(undefined, undefined, url)
         }
@@ -48,6 +54,18 @@ module.exports = React.createClass({
         window.addEventListener('resize', this.resizeHandler)
     },
 
+    componentWillMount: function () {
+        this.setState({
+            slug: window.location.search + window.location.hash,
+        })
+        var hash = null
+        var hashArray = window.location.hash.split('.')
+        if (hashArray.length > 3) {
+            hash = _.slice(hashArray, 0, 4).join('.')
+        }
+        window.history.replaceState(undefined, undefined, hash)
+    },
+
     componentWillUnmount: function () {
         if (!IS_BROWSER) return
         window.removeEventListener('scroll')
@@ -57,6 +75,7 @@ module.exports = React.createClass({
     getChildContext: function () {
         return {
             onChange: this.resizeHandler,
+            slug: this.state.slug,
         }
     },
 
