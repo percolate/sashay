@@ -163,7 +163,7 @@ describe('validate-schema', function () {
     })
 
     it('should validate array type', function () {
-        validateSchema({ type: ['string', 'integer']})
+        validateSchema({ type: ['string', 'integer'] })
     })
 
     it('should throw missing object type', function () {
@@ -269,10 +269,9 @@ describe('validate-schema', function () {
             properties: {
                 id: {
                     type: 'string',
-                    format: 'bogus'
+                    format: 'bogus',
                 },
             },
         })).to.throw(/.*Unsupported format bogus.*/)
     })
-
 })
