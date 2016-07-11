@@ -39,7 +39,7 @@ module.exports = React.createClass({
 
     updateSlug: function (method, path) {
         this.setState({
-            [method.slug]: '#' + method.slug + '.' + path,
+            [method.slug]: '#' + method.slug + '?path=' + path,
         })
     },
 
@@ -110,11 +110,11 @@ module.exports = React.createClass({
     renderMethod: function (method, i) {
         var slug = this.state[method.slug] ? this.state[method.slug] : method.slug
         var re = new RegExp('.*' + method.slug + '.*')
-        if (this.context.slug.match(re)) {
+        if (this.context.slug && this.context.slug.match(re)) {
             slug = this.context.slug
         }
         return (
-            <div key={i} ref={slug} id={method.slug}>
+            <div key={i} ref={slug} id={slug}>
                 <Method
                     method={method}
                     slug={slug}

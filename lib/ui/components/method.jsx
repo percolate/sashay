@@ -6,6 +6,7 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
+var isVisible = require('./utils').isVisible
 
 var DEFAULT_CRUMBS = ['/']
 var TABS = ['Request', 'Response']
@@ -27,6 +28,7 @@ module.exports = React.createClass({
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
         onChange: React.PropTypes.func.isRequired,
+        slug: React.PropTypes.string.isRequired,
     },
 
     getInitialState: function () {
@@ -39,9 +41,9 @@ module.exports = React.createClass({
 
     componentDidUpdate: function () {
         var obj = this.getTabState(this.state.activeTab === 'Request')
-        var path = (this.state.activeTab === 'Request' ? 'request' : 'response') + '.' + obj.currPath.join('.')
+        var path = (this.state.activeTab === 'Request' ? 'request' : 'response') + (obj.currPath.length === 1 ? '' : ('.' + _.slice(obj.currPath, 1).join('.')))
         path = obj.paths[obj.currPath] ? (path + '.object.' + obj.paths[obj.currPath].subType) : path
-        if (this.props.onChange) this.props.onChange(path)
+        if (this.props.onChange && isVisible(this.refs.tabs)) this.props.onChange(path)
         if (this.context.onChange) this.context.onChange()
     },
 
@@ -58,7 +60,7 @@ module.exports = React.createClass({
                     var i = 1
                     var partialPath = ROOT_PATH
                     while (i < path.length) {
-                        var until = _.slice(path, 0, i)
+                        var until = _.slice(partialPath, 0, i)
                         var crumb = null
                         if (path[i] === 'object') {
                             partialPath = partialPath.concat(_.slice(path, i, i + 5))
@@ -92,8 +94,6 @@ module.exports = React.createClass({
                         }
                     }
                 }
-                var hash = window.location.hash
-                window.history.replaceState(undefined, undefined, _.slice(hash.split('.'), 0, 5).join('.'))
             }
         }
     },
@@ -138,12 +138,8 @@ module.exports = React.createClass({
     },
 
     getPath: function (slug) {
-        if (slug && (slug.indexOf('request') !== -1 || slug.indexOf('response') !== -1)) {
-            var index = slug.indexOf('request')
-            if (index === -1) {
-                index = slug.indexOf('response')
-            }
-            return slug.substring(index)
+        if (slug && slug.indexOf('?') !== -1) {
+            return slug.substring(slug.indexOf('?'))
         } else {
             return null
         }
@@ -162,7 +158,7 @@ module.exports = React.createClass({
                     </content>
                     <aside />
                 </row>
-                <row className="tabs-section">
+                <row className="tabs-section" ref="tabs">
                     <content>
                         <Tabs
                             tabs={TABS}
@@ -304,6 +300,10 @@ module.exports = React.createClass({
     tabClickHandler: function (tab) {
         this.setState({
             activeTab: tab,
+        }, function () {
+            if (this.refs.tabs) {
+                this.refs.tabs.scrollIntoView()
+            }
         })
     },
 

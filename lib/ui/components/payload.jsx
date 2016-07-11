@@ -143,12 +143,12 @@ module.exports = React.createClass({
                 {_.map(sortedKeys, function (key) {
                     var prop = props[key]
                     var path = _.concat(this.getTypedPath(this.props.state.currPath), 'properties', key, 'types')
-
+                    var anchor = this.props.slug + '.' + key + (this.props.path ? this.props.path : '')
                     return (
-                        <li className="property" key={key} id={this.props.slug + '.' + key} >
+                        <li className="property" key={key} id={anchor} >
                             <div className={`property-left ${prop.required && 'required'}`}>
                                 <div className="property-key">
-                                    <a href={'#' + this.props.slug + '.' + key + (this.props.path ? ('.' + this.props.path) : '')} >{key}</a>
+                                    <a href={'#' + anchor} >{key}</a>
                                 </div>
                                 <Types
                                     isStacked
