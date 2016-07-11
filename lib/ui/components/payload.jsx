@@ -148,7 +148,7 @@ module.exports = React.createClass({
                         <li className="property" key={key} id={this.props.slug + '.' + key} >
                             <div className={`property-left ${prop.required && 'required'}`}>
                                 <div className="property-key">
-                                    <a href={'#' + this.props.slug + '.' + key} >{key}</a>
+                                    <a href={'#' + this.props.slug + '.' + key + (this.props.path ? ('.' + this.props.path) : '')} >{key}</a>
                                 </div>
                                 <Types
                                     isStacked

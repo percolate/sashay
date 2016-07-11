@@ -6,7 +6,6 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
-var querystring = require('querystring')
 
 var DEFAULT_CRUMBS = ['/']
 var TABS = ['Request', 'Response']
@@ -40,9 +39,9 @@ module.exports = React.createClass({
 
     componentDidUpdate: function () {
         var obj = this.getTabState(this.state.activeTab === 'Request')
-        var slug = (this.state.activeTab === 'Request' ? 'request' : 'response') + '.' + obj.currPath.join('.')
-        slug = obj.paths[obj.currPath] ? (slug + '.object.' + obj.paths[obj.currPath].subType) : slug
-        if (this.props.onChange) this.props.onChange(slug, obj.crumbs)
+        var path = (this.state.activeTab === 'Request' ? 'request' : 'response') + '.' + obj.currPath.join('.')
+        path = obj.paths[obj.currPath] ? (path + '.object.' + obj.paths[obj.currPath].subType) : path
+        if (this.props.onChange) this.props.onChange(path)
         if (this.context.onChange) this.context.onChange()
     },
 
@@ -51,24 +50,24 @@ module.exports = React.createClass({
         if (slug) {
             var re = new RegExp('.*' + this.props.method.slug + '.*')
             if (slug.match(re)) {
-                if (slug.indexOf('?') !== -1) {
-                    slug = slug.substring(0, slug.indexOf('#'))
-                    var queryParameters = querystring.parse(slug.substring(slug.indexOf('?') + 1))
-                    var path = queryParameters.path.indexOf('.') === -1 ? ROOT_PATH : queryParameters.path.substring(queryParameters.path.indexOf('.') + 1).split('.')
-                    var crumbs = queryParameters.crumbs ? queryParameters.crumbs.split(',') : []
+                var path = this.getPath(slug)
+                if (path) {
+                    path = path.split('.')
                     var isRequest = slug.match(/request/) != null
                     this.tabClickHandler(isRequest ? TABS[0] : TABS[1])
                     var i = 1
-                    var k = 1
                     var partialPath = ROOT_PATH
                     while (i < path.length) {
                         var until = _.slice(path, 0, i)
+                        var crumb = null
                         if (path[i] === 'object') {
                             partialPath = partialPath.concat(_.slice(path, i, i + 5))
+                            crumb = path[i + 3]
                             i = i + 5
                             if (path[i] === 'array') {
                                 partialPath = partialPath.concat(_.slice(path, i, i + 3))
                                 i = i + 3
+                                crumb = crumb + ' [ ]'
                             }
                         } else {
                             i++
@@ -88,14 +87,14 @@ module.exports = React.createClass({
                         if (partialPath.length > 1 && partialPath[partialPath.length - 2] === 'object') {
                             partialPath = _.slice(partialPath, 0, partialPath.length - 2)
                         }
-                        if (crumbs[k]) {
-                            this.viewPropsHandler(isRequest, partialPath, crumbs[k])
+                        if (crumb) {
+                            this.viewPropsHandler(isRequest, partialPath, crumb)
                         }
-                        k++
                     }
                 }
+                var hash = window.location.hash
+                window.history.replaceState(undefined, undefined, _.slice(hash.split('.'), 0, 5).join('.'))
             }
-            window.history.replaceState(undefined, undefined, window.location.hash)
         }
     },
 
@@ -136,6 +135,18 @@ module.exports = React.createClass({
 
         obj.paths[this.getPathString(path)] = data
         this.setTabState(isRequest, obj)
+    },
+
+    getPath: function (slug) {
+        if (slug && (slug.indexOf('request') !== -1 || slug.indexOf('response') !== -1)) {
+            var index = slug.indexOf('request')
+            if (index === -1) {
+                index = slug.indexOf('response')
+            }
+            return slug.substring(index)
+        } else {
+            return null
+        }
     },
 
     render: function () {
@@ -205,17 +216,19 @@ module.exports = React.createClass({
         var { method } = this.props
         var body = _.get(method, ['body', 'application/json'])
         var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
+
         return (
             <row>
                 <content>
                     {(body && body.payload) && (
                         <section>
                             <h1>Body</h1>
-                            <Payload root={body.payload} state={this.state.requestPayload}  slug={this.props.method.slug}
+                            <Payload root={body.payload} state={this.state.requestPayload} slug={this.props.method.slug} path={this.getPath(this.props.slug)}
                                 onTypeClick={this.typeClickHandler.bind(this, true)}
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
                                 onViewPropsClick={this.viewPropsHandler.bind(this, true)}
+                                onPropertyClick={this.props.onChange}
                             />
                         </section>
                     )}
@@ -259,11 +272,12 @@ module.exports = React.createClass({
                 <content>
                     <section>
                         <h1>Body</h1>
-                        <Payload root={response.payload} state={this.state.responsePayload} slug={this.props.method.slug}
+                        <Payload root={response.payload} state={this.state.responsePayload} slug={this.props.method.slug} path={this.getPath(this.props.slug)}
                             onTypeClick={this.typeClickHandler.bind(this, false)}
                             onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
                             onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
                             onViewPropsClick={this.viewPropsHandler.bind(this, false)}
+                            onPropertyClick={this.props.onChange}
                         />
                     </section>
                 </content>
@@ -297,8 +311,6 @@ module.exports = React.createClass({
         if (e) {
             e.preventDefault()
         }
-        console.log(path);
-        console.log(propKey);
         var obj = this.getTabState(isRequest)
         obj.prevPaths = _.concat(obj.prevPaths, [obj.currPath])
         obj.crumbs = _.concat(obj.crumbs, propKey)

@@ -37,9 +37,9 @@ module.exports = React.createClass({
         return {}
     },
 
-    updateSlug: function (method, slugToAppend, breadcrumbs) {
+    updateSlug: function (method, path) {
         this.setState({
-            [method.slug]: '?path=' + slugToAppend + '&crumbs=' + breadcrumbs + '#' + method.slug,
+            [method.slug]: '#' + method.slug + '.' + path,
         })
     },
 
@@ -109,10 +109,15 @@ module.exports = React.createClass({
 
     renderMethod: function (method, i) {
         var slug = this.state[method.slug] ? this.state[method.slug] : method.slug
+        var re = new RegExp('.*' + method.slug + '.*')
+        if (this.context.slug.match(re)) {
+            slug = this.context.slug
+        }
         return (
             <div key={i} ref={slug} id={method.slug}>
                 <Method
                     method={method}
+                    slug={slug}
                     baseUri={this.props.baseUri}
                     onChange={this.updateSlug.bind(this, method)}
                 />

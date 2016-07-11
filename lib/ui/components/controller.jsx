@@ -36,7 +36,7 @@ module.exports = React.createClass({
         if (slug === this.state.hash) return
         this.setState({ hash: slug })
         var url = null
-        if (slug.indexOf('?') === -1) {
+        if (slug.indexOf('#') === -1) {
             url = slug ? ['#', slug].join('') : ' '
         } else {
             url = slug
@@ -56,7 +56,7 @@ module.exports = React.createClass({
 
     componentWillMount: function () {
         this.setState({
-            slug: window.location.search + window.location.hash,
+            slug: window.location.hash,
         })
     },
 
