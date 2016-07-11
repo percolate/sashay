@@ -11,6 +11,7 @@ var isVisible = require('./utils').isVisible
 var DEFAULT_CRUMBS = ['/']
 var TABS = ['Request', 'Response']
 var ROOT_PATH = ['root']
+var DELIMITER = '|'
 
 module.exports = React.createClass({
     displayName: 'Method',
@@ -27,8 +28,6 @@ module.exports = React.createClass({
             method: React.PropTypes.string.isRequired,
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
-        onChange: React.PropTypes.func.isRequired,
-        slug: React.PropTypes.string.isRequired,
     },
 
     getInitialState: function () {
@@ -40,10 +39,6 @@ module.exports = React.createClass({
     },
 
     componentDidUpdate: function () {
-        var obj = this.getTabState(this.state.activeTab === 'Request')
-        var path = (this.state.activeTab === 'Request' ? 'request' : 'response') + (obj.currPath.length === 1 ? '' : ('.' + _.slice(obj.currPath, 1).join('.')))
-        path = obj.paths[obj.currPath] ? (path + '.object.' + obj.paths[obj.currPath].subType) : path
-        if (this.props.onChange && isVisible(this.refs.tabs)) this.props.onChange(path)
         if (this.context.onChange) this.context.onChange()
     },
 
@@ -52,7 +47,7 @@ module.exports = React.createClass({
         if (slug) {
             var re = new RegExp('.*' + this.props.method.slug + '.*')
             if (slug.match(re)) {
-                var path = this.getPath(slug)
+                var path = slug.indexOf(DELIMITER) === - 1 ? null : slug.substring(slug.indexOf(DELIMITER) + 1)
                 if (path) {
                     path = path.split('.')
                     var isRequest = slug.match(/request/) != null
@@ -61,17 +56,18 @@ module.exports = React.createClass({
                     var partialPath = ROOT_PATH
                     while (i < path.length) {
                         var until = _.slice(partialPath, 0, i)
-                        var crumb = null
+                        var crumb = ''
                         if (path[i] === 'object') {
                             partialPath = partialPath.concat(_.slice(path, i, i + 5))
                             crumb = path[i + 3]
                             i = i + 5
-                            if (path[i] === 'array') {
-                                partialPath = partialPath.concat(_.slice(path, i, i + 3))
-                                i = i + 3
-                                crumb = crumb + ' [ ]'
-                            }
-                        } else {
+                        }
+                        if (path[i] === 'array') {
+                            partialPath = partialPath.concat(_.slice(path, i, i + 3))
+                            i = i + 3
+                            crumb = crumb + ' [ ]'
+                        }
+                        if (crumb === '') {
                             i++
                         }
                         partialPath = _.map(partialPath, function (part) {
@@ -89,7 +85,7 @@ module.exports = React.createClass({
                         if (partialPath.length > 1 && partialPath[partialPath.length - 2] === 'object') {
                             partialPath = _.slice(partialPath, 0, partialPath.length - 2)
                         }
-                        if (crumb) {
+                        if (crumb !== '') {
                             this.viewPropsHandler(isRequest, partialPath, crumb)
                         }
                     }
@@ -137,12 +133,11 @@ module.exports = React.createClass({
         this.setTabState(isRequest, obj)
     },
 
-    getPath: function (slug) {
-        if (slug && slug.indexOf('?') !== -1) {
-            return slug.substring(slug.indexOf('?'))
-        } else {
-            return null
-        }
+    getPath: function () {
+        var obj = this.getTabState(this.state.activeTab === 'Request')
+        var path = (this.state.activeTab === 'Request' ? 'request' : 'response') + (obj.currPath.length === 1 ? '' : ('.' + _.slice(obj.currPath, 1).join('.')))
+        path = obj.paths[obj.currPath] ? (path + '.object.' + obj.paths[obj.currPath].subType) : path
+        return DELIMITER + path
     },
 
     render: function () {
@@ -219,7 +214,7 @@ module.exports = React.createClass({
                     {(body && body.payload) && (
                         <section>
                             <h1>Body</h1>
-                            <Payload root={body.payload} state={this.state.requestPayload} slug={this.props.method.slug} path={this.getPath(this.props.slug)}
+                            <Payload root={body.payload} state={this.state.requestPayload} slug={this.props.method.slug} path={this.getPath()}
                                 onTypeClick={this.typeClickHandler.bind(this, true)}
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
@@ -268,7 +263,7 @@ module.exports = React.createClass({
                 <content>
                     <section>
                         <h1>Body</h1>
-                        <Payload root={response.payload} state={this.state.responsePayload} slug={this.props.method.slug} path={this.getPath(this.props.slug)}
+                        <Payload root={response.payload} state={this.state.responsePayload} slug={this.props.method.slug} path={this.getPath()}
                             onTypeClick={this.typeClickHandler.bind(this, false)}
                             onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
                             onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
@@ -301,9 +296,7 @@ module.exports = React.createClass({
         this.setState({
             activeTab: tab,
         }, function () {
-            if (this.refs.tabs) {
-                this.refs.tabs.scrollIntoView()
-            }
+            this.refs.tabs.scrollIntoView()
         })
     },
 

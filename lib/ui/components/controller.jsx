@@ -58,9 +58,11 @@ module.exports = React.createClass({
     },
 
     componentWillMount: function () {
-        this.setState({
-            slug: window.location.hash,
-        })
+        if (typeof window !== 'undefined') {
+            this.setState({
+                slug: window.location.hash,
+            })
+        }
     },
 
     componentWillUnmount: function () {
