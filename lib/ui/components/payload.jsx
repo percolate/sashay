@@ -4,7 +4,6 @@ var React = require('react')
 var Primitive = require('./payload/primitive.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var Types = require('./payload/types.jsx')
-var isVisible = require('./utils').isVisible
 
 module.exports = React.createClass({
     displayName: 'Payload',
@@ -94,7 +93,7 @@ module.exports = React.createClass({
         var types = this.getRootTypes()
         var currType = this.getRootCurrType()
         return (
-            <div className="payload" ref="payload">
+            <div className="payload">
                 {this.renderBreadcrumbs()}
                 <Types
                     types={types}
@@ -128,7 +127,6 @@ module.exports = React.createClass({
             <Breadcrumbs
                 crumbs={this.props.state.crumbs}
                 onClick={this.props.onBreadCrumbsClick}
-                ref="breadcrumbs"
             />
         )
     },
@@ -180,12 +178,7 @@ module.exports = React.createClass({
         if (type === 'object' && !_.isEmpty(schema.properties)) {
             viewProps = (
                 <div className="view-props-link">
-                    <a href="#" onClick={this.props.onViewPropsClick.bind(this, path, propKey, function () {
-                        if (this.refs.breadcrumbs && !isVisible(this.refs.breadcrumbs)) {
-                            this.refs.payload.scrollIntoView()
-                        }
-                    }.bind(this))}
-                    >
+                    <a href="#" onClick={this.props.onViewPropsClick.bind(this, path, propKey)}>
                         View {schema.title || type} properties
                     </a>
                 </div>
