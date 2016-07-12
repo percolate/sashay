@@ -14,6 +14,7 @@ module.exports = React.createClass({
     ],
 
     propTypes: {
+        path: React.PropTypes.string.isRequired,
         root: React.PropTypes.shape({
             array: React.PropTypes.arrayOf(React.PropTypes.shape({
                 types: React.PropTypes.object.isRequired,
@@ -25,6 +26,7 @@ module.exports = React.createClass({
                 })).isRequired,
             })),
         }).isRequired,
+        slug: React.PropTypes.string.isRequired,
         state: React.PropTypes.shape({
             crumbs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
             currPath: React.PropTypes.array.isRequired,

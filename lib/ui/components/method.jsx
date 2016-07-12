@@ -6,7 +6,6 @@ var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
-var isVisible = require('./utils').isVisible
 
 var DEFAULT_CRUMBS = ['/']
 var TABS = ['Request', 'Response']
@@ -167,7 +166,7 @@ module.exports = React.createClass({
                     </content>
                     <aside />
                 </row>
-                <row className="tabs-section" ref="tabs">
+                <row className="tabs-section">
                     <content>
                         <Tabs
                             tabs={TABS}
@@ -233,7 +232,6 @@ module.exports = React.createClass({
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
                                 onViewPropsClick={this.viewPropsHandler.bind(this, true)}
-                                onPropertyClick={this.props.onChange}
                             />
                         </section>
                     )}
@@ -282,7 +280,6 @@ module.exports = React.createClass({
                             onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
                             onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
                             onViewPropsClick={this.viewPropsHandler.bind(this, false)}
-                            onPropertyClick={this.props.onChange}
                         />
                     </section>
                 </content>
