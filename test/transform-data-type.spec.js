@@ -2,10 +2,6 @@ var expect = require('chai').expect
 var transform = require('../lib/transform-data-type')
 
 describe('transform-data-type()', function () {
-    it('should throw for unsupported type', function () {
-        expect(transform.bind(undefined, { type: 'bogus' })).to.throw(/bogus/)
-    })
-
     it('should transform any scalar', function () {
         expect(transform({
             type: 'number',
@@ -69,22 +65,6 @@ describe('transform-data-type()', function () {
                 properties: {},
             }],
         })
-    })
-
-    it('should throw an exception when an array has no items', function () {
-        expect(transform.bind(undefined, {
-            type: 'array',
-        })).to.throw()
-
-        expect(transform.bind(undefined, {
-            type: 'array',
-            items: [],
-        })).to.throw()
-
-        expect(transform.bind(undefined, {
-            type: 'array',
-            items: {},
-        })).to.throw()
     })
 
     it('should transform an array', function () {
