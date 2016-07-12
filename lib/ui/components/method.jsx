@@ -61,6 +61,7 @@ module.exports = React.createClass({
                     while (i < path.length) {
                         var subTypesPath = _.slice(partialPath, 0, i)
                         var crumb = ''
+                        var type = null
                         if (path[i] === 'object') {
                             if (i + 5 <= path.length) {
                                 partialPath = partialPath.concat(_.slice(path, i, i + 5))
@@ -71,15 +72,25 @@ module.exports = React.createClass({
                                 i = i + 2
                             }
                         }
+                        if (path[i] === 'type' && i + 2 <= path.length) {
+                            type = path[i + 1]
+                            i = i + 2
+                        }
                         if (path[i] === 'array' && i + 3 <= path.length) {
+                            if (path[i + 1] !== '0') {
+                                this.subTypeClickhandler(isRequest, partialPath, _.toNumber(path[i + 1]))
+                            }
                             partialPath = partialPath.concat(_.slice(path, i, i + 3))
                             i = i + 3
                             crumb = crumb + ' [ ]'
                         }
                         partialPath = this.numerize(partialPath)
-                        var index = this.findLastSubType(partialPath)
-                        if (partialPath.length > 1 && partialPath[index] !== 0) {
-                            this.subTypeClickhandler(isRequest, subTypesPath, partialPath[index])
+                        var subIndex = this.findLastSubType(partialPath)
+                        if (type !== null) {
+                            this.typeClickHandler(isRequest, partialPath, type)
+                        }
+                        if (subIndex !== -1 && partialPath[subIndex] !== 0) {
+                            this.subTypeClickhandler(isRequest, subTypesPath, partialPath[subIndex])
                         }
                         if (partialPath.length > 1 && partialPath[partialPath.length - 2] === 'object') {
                             partialPath = _.slice(partialPath, 0, partialPath.length - 2)
@@ -152,7 +163,13 @@ module.exports = React.createClass({
     getPath: function () {
         var obj = this.getTabState(this.state.activeTab === 'Request')
         var path = (obj.currPath.length === 1 ? '' : ('.' + _.slice(obj.currPath, 1).join('.')))
-        path = obj.paths[obj.currPath] ? (path + '.object.' + obj.paths[obj.currPath].subType) : path
+        if (obj.paths[obj.currPath]) {
+            if (obj.paths[obj.currPath].subType) {
+                path = path + '.object.' + obj.paths[obj.currPath].subType
+            } else if (obj.paths[obj.currPath].type) {
+                path = path + '.type.' + obj.paths[obj.currPath].type
+            }
+        }
         return path
     },
 

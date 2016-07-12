@@ -47,11 +47,6 @@ module.exports = React.createClass({
         this._updateHash(true)
         window.addEventListener('scroll', _.debounce(this._updateHash, 20))
         window.addEventListener('resize', this.resizeHandler)
-        this.onMount(function resetSlug() {
-            this.setState({
-                slug: null,
-            });
-        });
     },
 
     componentWillMount: function () {
