@@ -27,6 +27,7 @@ module.exports = React.createClass({
             description: React.PropTypes.string,
             displayName: React.PropTypes.string.isRequired,
             method: React.PropTypes.string.isRequired,
+            slug: React.PropTypes.string.isRequired,
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
     },
@@ -48,12 +49,12 @@ module.exports = React.createClass({
         if (slug) {
             var re = new RegExp(this.props.method.slug)
             if (slug.match(re)) {
-                var path = slug.indexOf('payload.') === - 1 ? null : slug.substring(slug.indexOf('payload.') + 8)
+                var path = slug.indexOf('payload.') === -1 ? null : slug.substring(slug.indexOf('payload.') + 8)
                 if (path) {
                     path = path.split('.')
                     _.pullAt(path, path.length - 1)
                     path = ROOT_PATH.concat(path)
-                    var isRequest = slug.match(/body/) != null
+                    var isRequest = slug.match(/body/) !== null
                     this.tabClickHandler(isRequest ? TABS[0] : TABS[1])
                     var i = 1
                     var partialPath = ROOT_PATH
@@ -85,7 +86,7 @@ module.exports = React.createClass({
                         }
                         if (crumb !== '') {
                             this.viewPropsHandler(isRequest, partialPath, crumb)
-                        } else  {
+                        } else {
                             i++
                         }
                     }

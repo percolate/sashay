@@ -40,7 +40,7 @@ describe('helper', function () {
                     300: {},
                     200: {},
                     400: {},
-                }
+                },
             })).to.equal('200')
         })
     })
@@ -58,7 +58,7 @@ describe('helper', function () {
                         },
                     },
                     400: {},
-                }
+                },
             })).to.deep.equal({ key: 'val' })
         })
     })
