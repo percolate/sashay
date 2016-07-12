@@ -30,10 +30,6 @@ module.exports = React.createClass({
         version: React.PropTypes.string.isRequired,
     },
 
-    getInitialState: function () {
-        return {}
-    },
-
     render: function () {
         return (
             <main ref="main">

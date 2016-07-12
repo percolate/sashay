@@ -35,13 +35,8 @@ module.exports = React.createClass({
         var slug = offset ? offset.slug : undefined
         if (slug === this.state.hash) return
         this.setState({ hash: slug })
-        var url = null
-        if (slug.indexOf('#') === -1) {
-            url = slug ? ['#', slug].join('') : ' '
-        } else {
-            url = slug
-        }
-        if (ignoreHistory !== true) {
+        var url = slug ? ['#', slug].join('') : ' '
+        if (ignoreHistory !== true && !(window.location.hash !== url && _.startsWith(window.location.hash, url))) {
             window.history.replaceState(undefined, undefined, url)
         }
     },

@@ -143,7 +143,9 @@ module.exports = React.createClass({
                 {_.map(sortedKeys, function (key) {
                     var prop = props[key]
                     var path = _.concat(this.getTypedPath(this.props.state.currPath), 'properties', key, 'types')
-                    var anchor = this.props.slug + '.' + key + (this.props.path ? this.props.path : '')
+                    var separator = _.endsWith(this.props.path, '.') ? '' : '.'
+                    var attributeLink = this.props.path ? (this.props.path + separator + key) : ''
+                    var anchor = this.props.slug + attributeLink
                     return (
                         <li className="property" key={key} id={anchor} >
                             <div className={`property-left ${prop.required && 'required'}`}>

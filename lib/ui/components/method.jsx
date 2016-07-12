@@ -11,7 +11,7 @@ var isVisible = require('./utils').isVisible
 var DEFAULT_CRUMBS = ['/']
 var TABS = ['Request', 'Response']
 var ROOT_PATH = ['root']
-var DELIMITER = '|'
+var REQUEST_BODY = '.body.payload'
 
 module.exports = React.createClass({
     displayName: 'Method',
@@ -45,53 +45,67 @@ module.exports = React.createClass({
     componentWillMount: function () {
         var slug = this.context.slug
         if (slug) {
-            var re = new RegExp('.*' + this.props.method.slug + '.*')
+            var re = new RegExp(this.props.method.slug)
             if (slug.match(re)) {
-                var path = slug.indexOf(DELIMITER) === - 1 ? null : slug.substring(slug.indexOf(DELIMITER) + 1)
+                var path = slug.indexOf('payload.') === - 1 ? null : slug.substring(slug.indexOf('payload.') + 8)
                 if (path) {
                     path = path.split('.')
-                    var isRequest = slug.match(/request/) != null
+                    _.pullAt(path, path.length - 1)
+                    path = ROOT_PATH.concat(path)
+                    var isRequest = slug.match(/body/) != null
                     this.tabClickHandler(isRequest ? TABS[0] : TABS[1])
                     var i = 1
                     var partialPath = ROOT_PATH
                     while (i < path.length) {
-                        var until = _.slice(partialPath, 0, i)
+                        var subTypesPath = _.slice(partialPath, 0, i)
                         var crumb = ''
                         if (path[i] === 'object') {
-                            partialPath = partialPath.concat(_.slice(path, i, i + 5))
-                            crumb = path[i + 3]
-                            i = i + 5
+                            if (i + 5 <= path.length) {
+                                partialPath = partialPath.concat(_.slice(path, i, i + 5))
+                                crumb = path[i + 3]
+                                i = i + 5
+                            } else {
+                                partialPath = partialPath.concat(_.slice(path, i, i + 2))
+                                i = i + 2
+                            }
                         }
-                        if (path[i] === 'array') {
+                        if (path[i] === 'array' && i + 3 <= path.length) {
                             partialPath = partialPath.concat(_.slice(path, i, i + 3))
                             i = i + 3
                             crumb = crumb + ' [ ]'
                         }
-                        if (crumb === '') {
-                            i++
-                        }
-                        partialPath = _.map(partialPath, function (part) {
-                            return !isNaN(part) ? _.toNumber(part) : part
-                        })
-                        var index = _.findLastIndex(partialPath, function (val, i) {
-                            if (i > 0) {
-                                return _.isNumber(val) && partialPath[i - 1] === 'object'
-                            }
-                            return false
-                        })
+                        partialPath = this.numerize(partialPath)
+                        var index = this.findLastSubType(partialPath)
                         if (partialPath.length > 1 && partialPath[index] !== 0) {
-                            this.subTypeClickhandler(isRequest, until, partialPath[index])
+                            this.subTypeClickhandler(isRequest, subTypesPath, partialPath[index])
                         }
                         if (partialPath.length > 1 && partialPath[partialPath.length - 2] === 'object') {
                             partialPath = _.slice(partialPath, 0, partialPath.length - 2)
                         }
                         if (crumb !== '') {
                             this.viewPropsHandler(isRequest, partialPath, crumb)
+                        } else  {
+                            i++
                         }
                     }
                 }
             }
         }
+    },
+
+    numerize: function (path) {
+        return _.map(path, function (part) {
+            return !isNaN(part) ? _.toNumber(part) : part
+        })
+    },
+
+    findLastSubType: function (path) {
+        return _.findLastIndex(path, function (val, i) {
+            if (i > 0) {
+                return _.isNumber(val) && path[i - 1] === 'object'
+            }
+            return false
+        })
     },
 
     getInitialPayloadState: function () {
@@ -135,9 +149,9 @@ module.exports = React.createClass({
 
     getPath: function () {
         var obj = this.getTabState(this.state.activeTab === 'Request')
-        var path = (this.state.activeTab === 'Request' ? 'request' : 'response') + (obj.currPath.length === 1 ? '' : ('.' + _.slice(obj.currPath, 1).join('.')))
+        var path = (obj.currPath.length === 1 ? '' : ('.' + _.slice(obj.currPath, 1).join('.')))
         path = obj.paths[obj.currPath] ? (path + '.object.' + obj.paths[obj.currPath].subType) : path
-        return DELIMITER + path
+        return path
     },
 
     render: function () {
@@ -214,7 +228,7 @@ module.exports = React.createClass({
                     {(body && body.payload) && (
                         <section>
                             <h1>Body</h1>
-                            <Payload root={body.payload} state={this.state.requestPayload} slug={this.props.method.slug} path={this.getPath()}
+                            <Payload root={body.payload} state={this.state.requestPayload} slug={this.props.method.slug} path={REQUEST_BODY + this.getPath()}
                                 onTypeClick={this.typeClickHandler.bind(this, true)}
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
@@ -257,13 +271,13 @@ module.exports = React.createClass({
     renderResponse: function () {
         var response = helper.getSuccessResponseFromMethod(this.props.method)
         if (!response || !response.payload) return null
-
+        var responsePath = '.responses.' + helper.getSuccessResponseCodeFromMethod(this.props.method) + '.payload'
         return (
             <row>
                 <content>
                     <section>
                         <h1>Body</h1>
-                        <Payload root={response.payload} state={this.state.responsePayload} slug={this.props.method.slug} path={this.getPath()}
+                        <Payload root={response.payload} state={this.state.responsePayload} slug={this.props.method.slug} path={responsePath + this.getPath()}
                             onTypeClick={this.typeClickHandler.bind(this, false)}
                             onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
                             onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
@@ -295,8 +309,6 @@ module.exports = React.createClass({
     tabClickHandler: function (tab) {
         this.setState({
             activeTab: tab,
-        }, function () {
-            this.refs.tabs.scrollIntoView()
         })
     },
 
