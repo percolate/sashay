@@ -5,6 +5,10 @@ var React = require('react')
 module.exports = React.createClass({
     displayName: 'Example',
 
+    contextTypes: {
+        onChange: React.PropTypes.func,
+    },
+
     mixins: [
         PureRenderMixin,
     ],
@@ -20,6 +24,10 @@ module.exports = React.createClass({
             'object',
             'string',
         ]).isRequired,
+    },
+
+    componentDidUpdate: function () {
+        if (this.context.onChange) this.context.onChange()
     },
 
     getInitialState: function () {
