@@ -13,6 +13,7 @@ module.exports = React.createClass({
     ],
 
     propTypes: {
+        path: React.PropTypes.string.isRequired,
         root: React.PropTypes.shape({
             array: React.PropTypes.arrayOf(React.PropTypes.shape({
                 types: React.PropTypes.object.isRequired,
@@ -24,14 +25,15 @@ module.exports = React.createClass({
                 })).isRequired,
             })),
         }).isRequired,
+        slug: React.PropTypes.string.isRequired,
         state: React.PropTypes.shape({
             crumbs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
             currPath: React.PropTypes.array.isRequired,
             paths: React.PropTypes.object.isRequired,
         }).isRequired,
-        onTypeClick: React.PropTypes.func.isRequired,
-        onSubTypeClick: React.PropTypes.func.isRequired,
         onBreadCrumbsClick: React.PropTypes.func.isRequired,
+        onSubTypeClick: React.PropTypes.func.isRequired,
+        onTypeClick: React.PropTypes.func.isRequired,
         onViewPropsClick: React.PropTypes.func.isRequired,
     },
 
@@ -141,12 +143,14 @@ module.exports = React.createClass({
                 {_.map(sortedKeys, function (key) {
                     var prop = props[key]
                     var path = _.concat(this.getTypedPath(this.props.state.currPath), 'properties', key, 'types')
-
+                    var separator = _.endsWith(this.props.path, '.') ? '' : '.'
+                    var attributeLink = this.props.path ? (this.props.path + separator + key) : ''
+                    var anchor = this.props.slug + attributeLink
                     return (
-                        <li className="property" key={key}>
+                        <li className="property" key={key} id={anchor} >
                             <div className={`property-left ${prop.required && 'required'}`}>
                                 <div className="property-key">
-                                    {key}
+                                    <a href={'#' + anchor} >{key}</a>
                                 </div>
                                 <Types
                                     isStacked

@@ -32,4 +32,34 @@ describe('helper', function () {
             })).to.equal('http://foo.com/bar/?scope_ids={scope_ids}&type={type}')
         })
     })
+
+    describe('getSuccessResponseCodeFromMethod()', function () {
+        it('should do', function () {
+            expect(helper.getSuccessResponseCodeFromMethod({
+                responses: {
+                    300: {},
+                    200: {},
+                    400: {},
+                },
+            })).to.equal('200')
+        })
+    })
+
+    describe('getSuccessResponseFromMethod()', function () {
+        it('should do', function () {
+            expect(helper.getSuccessResponseFromMethod({
+                responses: {
+                    300: {},
+                    200: {
+                        body: {
+                            'application/json': {
+                                key: 'val',
+                            },
+                        },
+                    },
+                    400: {},
+                },
+            })).to.deep.equal({ key: 'val' })
+        })
+    })
 })
