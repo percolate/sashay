@@ -444,6 +444,35 @@ describe('transform-data-type()', function () {
             }],
         })
     })
+
+    it('should extract examples', function () {
+        expect(transform({
+            type: 'object',
+            example: 'example1',
+            properties: {
+                a: {
+                    type: 'string',
+                    example: 'example2',
+                },
+            },
+        })).to.deep.equal({
+            object: [{
+                description: undefined,
+                example: '\"example1\"',
+                properties: {
+                    a: {
+                        required: false,
+                        types: {
+                            string: [{
+                                description: undefined,
+                                example: 'example2'
+                            }]
+                        }
+                    }
+                }
+            }]
+        })
+    })
 })
 
 

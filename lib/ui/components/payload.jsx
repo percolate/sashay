@@ -1,5 +1,6 @@
 var _ = require('lodash')
 var Breadcrumbs = require('./payload/breadcrumbs.jsx')
+var Example = require('./payload/example.jsx')
 var React = require('react')
 var Primitive = require('./payload/primitive.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
@@ -107,6 +108,7 @@ module.exports = React.createClass({
                 <Primitive
                     type={this.getCurrType(this.props.state.currPath)}
                     description={this.getCurrSchema(this.props.state.currPath).description}
+                    example={this.getCurrSchema(this.props.state.currPath).example}
                 />
                 {(currType === 'object') && (
                     <div>
@@ -193,6 +195,7 @@ module.exports = React.createClass({
                     type={this.getCurrType(path)}
                     description={schema.description}
                     metadata={schema.metadata}
+                    example={schema.example}
                 />
                 {viewProps}
             </div>

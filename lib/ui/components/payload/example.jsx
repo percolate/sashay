@@ -1,0 +1,54 @@
+var _ = require('lodash')
+var Code = require('../code.jsx')
+var PureRenderMixin = require('react-addons-pure-render-mixin')
+var React = require('react')
+
+module.exports = React.createClass({
+    displayName: 'Example',
+
+    mixins: [
+        PureRenderMixin,
+    ],
+
+    propTypes: {
+        example: React.PropTypes.string.isRequired,
+        type: React.PropTypes.oneOf([
+            'array',
+            'boolean',
+            'integer',
+            'null',
+            'number',
+            'object',
+            'string',
+        ]).isRequired,
+    },
+
+    getInitialState: function () {
+        return {
+            visible: false,
+        }
+    },
+
+    toggle: function () {
+        this.setState({
+            visible: !this.state.visible,
+        })
+    },
+
+    render: function () {
+        if (!this.props.type || !this.props.example) return null
+        var content = null
+        if (this.props.type === 'object' || this.props.type === 'array') {
+            content = <Code code={this.props.example} lang="json"/>
+        } else {
+            content = <pre><code className="inline">{this.props.example}</code></pre>
+        }
+        var example =  (
+            <div className="example">
+                <a className="link" onClick={this.toggle}>Example</a>
+                {this.state.visible && content}
+            </div>
+        )
+        return this.props.example ? example : null
+    },
+})
