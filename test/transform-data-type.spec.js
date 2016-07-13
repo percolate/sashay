@@ -465,11 +465,11 @@ describe('transform-data-type()', function () {
                         types: {
                             string: [{
                                 description: undefined,
-                                example: 'example2'
+                                example: 'example2',
                             }]
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             }]
         })
     })

@@ -1,4 +1,3 @@
-var _ = require('lodash')
 var Code = require('../code.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
@@ -43,7 +42,7 @@ module.exports = React.createClass({
         } else {
             content = <pre><code className="inline">{this.props.example}</code></pre>
         }
-        var example =  (
+        var example = (
             <div className="example">
                 <a className="link" onClick={this.toggle}>Example</a>
                 {this.state.visible && content}

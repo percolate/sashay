@@ -1,6 +1,5 @@
 var _ = require('lodash')
 var Breadcrumbs = require('./payload/breadcrumbs.jsx')
-var Example = require('./payload/example.jsx')
 var React = require('react')
 var Primitive = require('./payload/primitive.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
