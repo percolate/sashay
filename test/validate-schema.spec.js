@@ -72,6 +72,9 @@ var schema = {
                 },
                 oneOf: [{
                     type: 'object',
+                    example: {
+                        e: false,
+                    },
                     properties: {
                         e: {
                             type: 'boolean',
@@ -80,9 +83,13 @@ var schema = {
                     },
                 }, {
                     type: 'object',
+                    example: {
+                        f: '2016-03-03T01:01:01+00:00',
+                    },
                     properties: {
                         f: {
                             type: 'string',
+                            format: 'date-time',
                         },
                     },
                 }],
@@ -277,5 +284,18 @@ describe('validate-schema', function () {
                 },
             },
         })).to.throw(/.*Unsupported format bogus.*/)
+    })
+
+    it('should throw on invalid example', function () {
+        expect(validateSchema.bind(undefined, {
+            type: 'object',
+            oneOf: oneOf,
+        })).to.throw(/.*Missing example.*/)
+
+        var schemaCopy = _.cloneDeep(schema)
+        schemaCopy.properties.b.items.oneOf[0].example= {
+            e: 'string',
+        }
+        expect(validateSchema.bind(undefined, schemaCopy)).to.throw(/.*Example is not valid.*/)
     })
 })

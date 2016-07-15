@@ -32,6 +32,8 @@ properties:
       oneOf:
           -
             type: object
+            example:
+              e: false
             required:
               - e
             properties:
