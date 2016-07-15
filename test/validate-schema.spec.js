@@ -293,7 +293,7 @@ describe('validate-schema', function () {
         })).to.throw(/.*Missing example.*/)
 
         var schemaCopy = _.cloneDeep(schema)
-        schemaCopy.properties.b.items.oneOf[0].example= {
+        schemaCopy.properties.b.items.oneOf[0].example = {
             e: 'string',
         }
         expect(validateSchema.bind(undefined, schemaCopy)).to.throw(/.*Example is not valid.*/)
