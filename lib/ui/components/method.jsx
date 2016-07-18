@@ -195,23 +195,24 @@ module.exports = React.createClass({
 
     renderResponse: function () {
         var response = helper.getSuccessResponseFromMethod(this.props.method)
-        if (!response || !response.payload) return null
-
+        var content = response && response.payload ?
+            (<section>
+                <h1>Body</h1>
+                <Payload root={response.payload} state={this.state.responsePayload} onTypeClick={this.typeClickHandler.bind(this, false)}
+                    onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
+                    onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
+                    onViewPropsClick={this.viewPropsHandler.bind(this, false)}
+                    ref="payload"
+                />
+            </section>) :
+            <section><h1 className="no-response-title">No response body</h1></section>
         return (
             <row>
                 <content>
-                    <section>
-                        <h1>Body</h1>
-                        <Payload root={response.payload} state={this.state.responsePayload} onTypeClick={this.typeClickHandler.bind(this, false)}
-                            onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
-                            onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
-                            onViewPropsClick={this.viewPropsHandler.bind(this, false)}
-                            ref="payload"
-                        />
-                    </section>
+                    {content}
                 </content>
                 <aside>
-                    {(response.example) && (
+                    {(response && response.example) && (
                         <section>
                             <h1>Example response</h1>
                             <Code lang="json" code={response.example} />

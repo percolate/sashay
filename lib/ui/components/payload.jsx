@@ -171,14 +171,22 @@ module.exports = React.createClass({
         var schema = this.getCurrSchema(path)
 
         var viewProps
-        if (type === 'object' && !_.isEmpty(schema.properties)) {
-            viewProps = (
-                <div className="view-props-link">
-                    <a href="#" onClick={this.props.onViewPropsClick.bind(this, path, propKey)}>
-                        View {schema.title || type} properties
-                    </a>
-                </div>
-            )
+        if (type === 'object') {
+            if (!_.isEmpty(schema.properties)) {
+                viewProps = (
+                    <div className="view-props-link">
+                        <a href="#" onClick={this.props.onViewPropsClick.bind(this, path, propKey)}>
+                            View {schema.title || type} properties
+                        </a>
+                    </div>
+                )
+            } else {
+                viewProps = (
+                    <div className="no-props-title">
+                        No {schema.title || type} properties
+                    </div>
+                )
+            }
         }
 
         return (
