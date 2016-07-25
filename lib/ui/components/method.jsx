@@ -145,16 +145,16 @@ module.exports = React.createClass({
     },
 
     renderRequest: function () {
-        var { method } = this.props
-        var body = _.get(method, ['body', 'application/json'])
-        var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, method)
+        var { method, uriParameters, queryParameters } = this.props.method || {}
+        var { payload, example } = _.get(this.props.method, ['body', 'application/json']) || {}
+        var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, this.props.method)
         return (
             <row>
                 <content>
-                    {(body && body.payload) && (
+                    {(payload) && (
                         <section>
                             <h1>Body</h1>
-                            <Payload root={body.payload} state={this.state.requestPayload} onTypeClick={this.typeClickHandler.bind(this, true)}
+                            <Payload root={payload} state={this.state.requestPayload} onTypeClick={this.typeClickHandler.bind(this, true)}
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
                                 onViewPropsClick={this.viewPropsHandler.bind(this, true)}
@@ -162,30 +162,30 @@ module.exports = React.createClass({
                             />
                         </section>
                     )}
-                    {(method.uriParameters) && (
+                    {(uriParameters) && (
                         <section>
                             <h1>URI Parameters</h1>
-                            <Parameters parameters={method.uriParameters} />
+                            <Parameters parameters={uriParameters} />
                         </section>
                     )}
-                    {(method.queryParameters) && (
+                    {(queryParameters) && (
                         <section>
                             <h1>Query Parameters</h1>
-                            <Parameters parameters={method.queryParameters} />
+                            <Parameters parameters={queryParameters} />
                         </section>
                     )}
                 </content>
                 <aside>
-                    {(body && body.example) && (
+                    {(example) && (
                         <section>
                             <h1>Example request body</h1>
-                            <Code lang="json" code={body.example} />
+                            <Code lang="json" code={example} />
                         </section>
                     )}
-                    {(method.method) && (
+                    {(method) && (
                         <section>
                             <h1>Example curl request</h1>
-                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.method.toUpperCase(), '{your_api_key}')} />
+                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.toUpperCase(), '{your_api_key}')} />
                         </section>
                     )}
                 </aside>
@@ -194,27 +194,27 @@ module.exports = React.createClass({
     },
 
     renderResponse: function () {
-        var response = helper.getSuccessResponseFromMethod(this.props.method)
-        if (!response || !response.payload) return null
-
+        var { payload, example } = helper.getSuccessResponseFromMethod(this.props.method) || {}
         return (
             <row>
                 <content>
                     <section>
-                        <h1>Body</h1>
-                        <Payload root={response.payload} state={this.state.responsePayload} onTypeClick={this.typeClickHandler.bind(this, false)}
-                            onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
-                            onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
-                            onViewPropsClick={this.viewPropsHandler.bind(this, false)}
-                            ref="payload"
-                        />
+                        <h1>{payload ? 'Body' : 'Empty body'}</h1>
+                        {(payload) && (
+                            <Payload root={payload} state={this.state.responsePayload} onTypeClick={this.typeClickHandler.bind(this, false)}
+                                onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
+                                onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
+                                onViewPropsClick={this.viewPropsHandler.bind(this, false)}
+                                ref="payload"
+                            />
+                        )}
                     </section>
                 </content>
                 <aside>
-                    {(response.example) && (
+                    {(example) && (
                         <section>
                             <h1>Example response</h1>
-                            <Code lang="json" code={response.example} />
+                            <Code lang="json" code={example} />
                         </section>
                     )}
                 </aside>
