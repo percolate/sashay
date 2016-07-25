@@ -17,9 +17,18 @@
 
     .example {
         margin-top: @spacing;
-        .link {
-            cursor: pointer;
+        .example-label {
+            color: #999999;
+            font-size: 13px;
+            padding-right: 5px;
+        }
+        .example-toggler {
             color: #2477b2;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 

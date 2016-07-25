@@ -58,7 +58,7 @@ module.exports = React.createClass({
 
     renderExample: function () {
         if (!this.props.example) return null
-        return <Example example={this.props.example} type={this.props.type}/>
+        return <Example code={this.props.example} />
     },
 
     renderMetadata: function () {

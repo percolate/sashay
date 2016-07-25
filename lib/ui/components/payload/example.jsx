@@ -1,5 +1,4 @@
 var Code = require('../code.jsx')
-var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
 module.exports = React.createClass({
@@ -9,21 +8,8 @@ module.exports = React.createClass({
         onChange: React.PropTypes.func,
     },
 
-    mixins: [
-        PureRenderMixin,
-    ],
-
     propTypes: {
-        example: React.PropTypes.string.isRequired,
-        type: React.PropTypes.oneOf([
-            'array',
-            'boolean',
-            'integer',
-            'null',
-            'number',
-            'object',
-            'string',
-        ]).isRequired,
+        code: React.PropTypes.string.isRequired,
     },
 
     componentDidUpdate: function () {
@@ -32,30 +18,26 @@ module.exports = React.createClass({
 
     getInitialState: function () {
         return {
-            visible: false,
+            expanded: false,
         }
-    },
-
-    toggle: function () {
-        this.setState({
-            visible: !this.state.visible,
-        })
     },
 
     render: function () {
-        if (!this.props.type || !this.props.example) return null
-        var content = null
-        if (this.props.type === 'object' || this.props.type === 'array') {
-            content = <Code code={this.props.example} lang="json"/>
-        } else {
-            content = <pre><code className="inline">{this.props.example}</code></pre>
-        }
-        var example = (
+        return (
             <div className="example">
-                <a className="link" onClick={this.toggle}>Example</a>
-                {this.state.visible && content}
+                <span className="example-label">example:</span>
+                <a className="example-toggler" href="#" onClick={this.toggleHandler}>{this.state.expanded ? 'hide' : 'show'}</a>
+                {(this.state.expanded) && (<Code code={this.props.code} lang="json"/>)}
             </div>
         )
-        return this.props.example ? example : null
     },
+
+    toggleHandler: function (e) {
+        e.preventDefault()
+
+        this.setState({
+            expanded: !this.state.expanded,
+        })
+    },
+
 })
