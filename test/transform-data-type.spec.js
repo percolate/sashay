@@ -1,3 +1,4 @@
+var emptyScalar = require('./utils').emptyScalar
 var expect = require('chai').expect
 var transform = require('../lib/transform-data-type')
 
@@ -9,6 +10,7 @@ describe('transform-data-type()', function () {
         })).to.deep.equal({
             number: [{
                 description: undefined,
+                example: undefined,
             }],
         })
 
@@ -21,6 +23,7 @@ describe('transform-data-type()', function () {
                     text: 'foo',
                     type: 'text',
                 }],
+                example: undefined,
             }],
         })
     })
@@ -38,6 +41,7 @@ describe('transform-data-type()', function () {
                     text: 'hello',
                     type: 'text',
                 }],
+                example: undefined,
                 metadata: {
                     pattern: '\w+',
                     enum: ['hello', 'world'],
@@ -62,6 +66,7 @@ describe('transform-data-type()', function () {
         })).to.deep.equal({
             object: [{
                 description: undefined,
+                example: undefined,
                 properties: {},
             }],
         })
@@ -116,6 +121,7 @@ describe('transform-data-type()', function () {
                     text: 'hello',
                     type: 'text',
                 }],
+                example: undefined,
                 properties: {
                     id: {
                         required: false,
@@ -134,6 +140,7 @@ describe('transform-data-type()', function () {
                         types: {
                             object: [{
                                 description: undefined,
+                                example: undefined,
                                 properties: {},
                             }],
                         },
@@ -175,6 +182,7 @@ describe('transform-data-type()', function () {
         })).to.deep.equal({
             object: [{
                 description: undefined,
+                example: undefined,
                 properties: {
                     id: {
                         required: true,
@@ -209,6 +217,7 @@ describe('transform-data-type()', function () {
                         text: 'foo',
                         type: 'text',
                     }],
+                    example: undefined,
                     metadata: {
                         enum: ['foo'],
                     },
@@ -219,6 +228,7 @@ describe('transform-data-type()', function () {
                         text: 'foo',
                         type: 'text',
                     }],
+                    example: undefined,
                     metadata: {
                         enum: ['foo', 'bar'],
                     },
@@ -228,6 +238,7 @@ describe('transform-data-type()', function () {
                         text: 'foo',
                         type: 'text',
                     }],
+                    example: undefined,
                     metadata: {
                         enum: ['foo', 'bar'],
                     },
@@ -237,6 +248,7 @@ describe('transform-data-type()', function () {
                         text: 'foo',
                         type: 'text',
                     }],
+                    example: undefined,
                     metadata: {
                         enum: 'override',
                     },
@@ -246,6 +258,7 @@ describe('transform-data-type()', function () {
                         text: 'foo',
                         type: 'text',
                     }],
+                    example: undefined,
                     metadata: {
                         enum: ['foo'],
                         pattern: '\\w+',
@@ -258,6 +271,7 @@ describe('transform-data-type()', function () {
                     text: 'foo',
                     type: 'text',
                 }],
+                example: undefined,
             }],
         })
     })
@@ -300,29 +314,24 @@ describe('transform-data-type()', function () {
         })).to.deep.equal({
             object: [{
                 description: undefined,
+                example: undefined,
                 properties: {
                     a: {
                         required: false,
                         types: {
-                            string: [{
-                                description: undefined,
-                            }],
+                            string: emptyScalar('string'),
                         },
                     },
                     b: {
                         required: false,
                         types: {
-                            integer: [{
-                                description: undefined,
-                            }],
+                            integer: emptyScalar('integer'),
                         },
                     },
                     c: {
                         required: false,
                         types: {
-                            boolean: [{
-                                description: undefined,
-                            }],
+                            boolean: emptyScalar('boolean'),
                         },
                     },
                 },
@@ -351,26 +360,21 @@ describe('transform-data-type()', function () {
                 },
             ],
         })).to.deep.equal({
-            null: [{
-                description: undefined,
-            }],
+            null: emptyScalar('null'),
             object: [{
                 description: undefined,
+                example: undefined,
                 properties: {
                     a: {
                         required: false,
                         types: {
-                            string: [{
-                                description: undefined,
-                            }],
+                            string: emptyScalar('string'),
                         },
                     },
                     c: {
                         required: false,
                         types: {
-                            number: [{
-                                description: undefined,
-                            }],
+                            number: emptyScalar('number'),
                         },
                     },
                 },
@@ -415,29 +419,24 @@ describe('transform-data-type()', function () {
                     text: 'my desc',
                     type: 'text',
                 }],
+                example: undefined,
                 properties: {
                     a: {
                         required: false,
                         types: {
-                            string: [{
-                                description: undefined,
-                            }],
+                            string: emptyScalar('string'),
                         },
                     },
                     b: {
                         required: false,
                         types: {
-                            integer: [{
-                                description: undefined,
-                            }],
+                            integer: emptyScalar('integer'),
                         },
                     },
                     c: {
                         required: false,
                         types: {
-                            integer: [{
-                                description: undefined,
-                            }],
+                            integer: emptyScalar('integer'),
                         },
                     },
                 },
@@ -445,43 +444,34 @@ describe('transform-data-type()', function () {
         })
     })
 
-    it('should extract examples', function () {
+    it('should transform examples', function () {
         expect(transform({
             type: 'object',
-            example: 'example1',
+            example: {
+                a: 'b',
+            },
             properties: {
                 a: {
                     type: 'string',
-                    example: 'example2',
+                    example: 'b',
                 },
             },
         })).to.deep.equal({
             object: [{
                 description: undefined,
-                example: '\"example1\"',
+                example: '{\n  \"a\": \"b\"\n}',
                 properties: {
                     a: {
                         required: false,
                         types: {
                             string: [{
                                 description: undefined,
-                                example: 'example2',
-                            }]
+                                example: '\"b\"',
+                            }],
                         },
                     },
                 },
-            }]
+            }],
         })
     })
 })
-
-
-function emptyScalar (type, subTypeNumber) {
-    var formatted = { description: undefined }
-
-    if (subTypeNumber) {
-        formatted.title = `Subtype ${subTypeNumber}`
-    }
-
-    return [formatted]
-}
