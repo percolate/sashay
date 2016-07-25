@@ -15,6 +15,23 @@
         padding: @spacing * 1.5 0;
     }
 
+    .example {
+        margin-top: @spacing;
+        .example-label {
+            color: #999999;
+            font-size: 13px;
+            padding-right: 5px;
+        }
+        .example-toggler {
+            color: #2477b2;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
     .properties-title {
         .header();
         margin: @header-spacing 0 5px;

@@ -1,5 +1,6 @@
 var _ = require('lodash')
 var Code = require('../code.jsx')
+var Example = require('./example.jsx')
 var Markdown = require('../markdown.jsx')
 var Metadata = require('./metadata.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
@@ -14,6 +15,7 @@ module.exports = React.createClass({
 
     propTypes: {
         description: React.PropTypes.array,
+        example: React.PropTypes.string,
         metadata: React.PropTypes.object,
         type: React.PropTypes.oneOf([
             'array',
@@ -29,13 +31,14 @@ module.exports = React.createClass({
     render: function () {
         var metadata = this.renderMetadata()
         var description = this.renderDescription()
-
-        if (!metadata && !description) return null
+        var example = this.renderExample()
+        if (!metadata && !description && !example) return null
 
         return (
             <div className="primitive">
                 {description}
                 {metadata}
+                {example}
             </div>
         )
     },
@@ -51,6 +54,11 @@ module.exports = React.createClass({
                 return <Markdown key={index} content={content.text} />
             }
         })
+    },
+
+    renderExample: function () {
+        if (!this.props.example) return null
+        return <Example code={this.props.example} />
     },
 
     renderMetadata: function () {

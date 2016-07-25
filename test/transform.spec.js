@@ -1,4 +1,5 @@
 var _ = require('lodash')
+var emptyScalar = require('./utils').emptyScalar
 var expand = require('../lib/expand')
 var expect = require('chai').expect
 var transform = require('../lib/transform')
@@ -27,23 +28,26 @@ describe('transform()', function () {
                                             payload: {
                                                 object: [{
                                                     description: undefined,
+                                                    example: undefined,
                                                     properties: {
                                                         prop: {
                                                             required: false,
                                                             types: {
                                                                 object: [{
                                                                     description: undefined,
+                                                                    example: undefined,
                                                                     properties: {
                                                                         a: {
                                                                             required: false,
                                                                             types: {
                                                                                 object: [{
                                                                                     description: undefined,
+                                                                                    example: undefined,
                                                                                     properties: {
                                                                                         b: {
                                                                                             required: false,
                                                                                             types: {
-                                                                                                integer: [{ description: undefined }],
+                                                                                                integer: emptyScalar('integer'),
                                                                                             },
                                                                                         },
                                                                                     },
@@ -69,13 +73,12 @@ describe('transform()', function () {
                                                     payload: {
                                                         object: [{
                                                             description: undefined,
+                                                            example: undefined,
                                                             properties: {
                                                                 a: {
                                                                     required: false,
                                                                     types: {
-                                                                        string: [{
-                                                                            description: undefined,
-                                                                        }],
+                                                                        string: emptyScalar('string'),
                                                                     },
                                                                 },
                                                                 b: {
@@ -86,6 +89,7 @@ describe('transform()', function () {
                                                                             types: {
                                                                                 object: [{
                                                                                     description: undefined,
+                                                                                    example: undefined,
                                                                                     properties: {
                                                                                         c: {
                                                                                             required: false,
@@ -95,6 +99,7 @@ describe('transform()', function () {
                                                                                                         text: 'my object description',
                                                                                                         type: 'text',
                                                                                                     }],
+                                                                                                    example: undefined,
                                                                                                 }],
                                                                                             },
                                                                                         },
@@ -106,6 +111,7 @@ describe('transform()', function () {
                                                                                                         text: 'a unique ID',
                                                                                                         type: 'text',
                                                                                                     }],
+                                                                                                    example: undefined,
                                                                                                 }],
                                                                                             },
                                                                                         },
@@ -143,13 +149,12 @@ describe('transform()', function () {
                                                     payload: {
                                                         object: [{
                                                             description: undefined,
+                                                            example: undefined,
                                                             properties: {
                                                                 a: {
                                                                     required: false,
                                                                     types: {
-                                                                        string: [{
-                                                                            description: undefined,
-                                                                        }],
+                                                                        string: emptyScalar('string'),
                                                                     },
                                                                 },
                                                                 b: {
@@ -160,6 +165,7 @@ describe('transform()', function () {
                                                                             types: {
                                                                                 object: [{
                                                                                     description: undefined,
+                                                                                    example: undefined,
                                                                                     properties: {
                                                                                         c: {
                                                                                             required: false,
@@ -169,6 +175,7 @@ describe('transform()', function () {
                                                                                                         text: 'my object description',
                                                                                                         type: 'text',
                                                                                                     }],
+                                                                                                    example: undefined,
                                                                                                 }],
                                                                                             },
                                                                                         },
@@ -180,6 +187,7 @@ describe('transform()', function () {
                                                                                                         text: 'a unique ID',
                                                                                                         type: 'text',
                                                                                                     }],
+                                                                                                    example: undefined,
                                                                                                 }],
                                                                                             },
                                                                                         },
@@ -210,13 +218,12 @@ describe('transform()', function () {
                                                     payload: {
                                                         object: [{
                                                             description: undefined,
+                                                            example: undefined,
                                                             properties: {
                                                                 a: {
                                                                     required: false,
                                                                     types: {
-                                                                        string: [{
-                                                                            description: undefined,
-                                                                        }],
+                                                                        string: emptyScalar('string'),
                                                                     },
                                                                 },
                                                                 b: {
@@ -227,6 +234,7 @@ describe('transform()', function () {
                                                                             types: {
                                                                                 object: [{
                                                                                     description: undefined,
+                                                                                    example: undefined,
                                                                                     properties: {
                                                                                         c: {
                                                                                             required: false,
@@ -236,6 +244,7 @@ describe('transform()', function () {
                                                                                                         text: 'my object description',
                                                                                                         type: 'text',
                                                                                                     }],
+                                                                                                    example: undefined,
                                                                                                 }],
                                                                                             },
                                                                                         },
@@ -247,6 +256,7 @@ describe('transform()', function () {
                                                                                                         text: 'a unique ID',
                                                                                                         type: 'text',
                                                                                                     }],
+                                                                                                    example: undefined,
                                                                                                 }],
                                                                                             },
                                                                                         },

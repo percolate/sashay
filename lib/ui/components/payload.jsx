@@ -107,6 +107,7 @@ module.exports = React.createClass({
                 <Primitive
                     type={this.getCurrType(this.props.state.currPath)}
                     description={this.getCurrSchema(this.props.state.currPath).description}
+                    example={this.getCurrSchema(this.props.state.currPath).example}
                 />
                 {(currType === 'object') && (
                     <div>
@@ -193,6 +194,7 @@ module.exports = React.createClass({
                     type={this.getCurrType(path)}
                     description={schema.description}
                     metadata={schema.metadata}
+                    example={schema.example}
                 />
                 {viewProps}
             </div>
