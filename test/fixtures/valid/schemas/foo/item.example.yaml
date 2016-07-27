@@ -1,8 +1,1 @@
 a: hello
-b:
-  -
-    c: description
-    d: 123
-  -
-    c: description
-    d: 456

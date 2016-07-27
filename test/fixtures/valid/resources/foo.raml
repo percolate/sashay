@@ -12,7 +12,7 @@ description: |
     displayName: foo
     body:
       application/json:
-        schema: !include ../schemas/foo/post.json
+        schema: !include ../schemas/foo/item.json
         example: !include ../schemas/foo/item.example.json
     responses:
       201:
@@ -25,17 +25,7 @@ description: |
     get:
       displayName: foo
       responses:
-        201:
-          body:
-            application/json:
-              schema: !include ../schemas/foo/item.json
-              example: !include ../schemas/foo/item.example.json
-
-  /baz:
-    get:
-      displayName: foo
-      responses:
-        201:
+        200:
           body:
             application/json:
               schema: !include ../schemas/foo/item.json
