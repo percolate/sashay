@@ -20,7 +20,7 @@ module.exports = React.createClass({
     },
 
     render: function () {
-        if (_.isEmpty(this.props.types)) return null
+        if (_.isEmpty(this.props.types) || this.props.isSubTypes && this.props.types.length === 1) return null
 
         var classNames = ['types']
         if (this.props.isSubTypes) {
