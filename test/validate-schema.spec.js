@@ -1,281 +1,258 @@
-var _ = require('lodash')
 var expect = require('chai').expect
 var validateSchema = require('../lib/validate-schema')
 
-var oneOf = {
-    description: 'desc',
-    type: 'integer',
-    oneOf: [{
-        type: 'integer',
-    }, {
-        type: 'string',
-    }],
-}
+describe('validate-schema', function () {
+    describe('unsupported', function () {
+        it('should not support `not`', function () {
+            expectToThrow({
+                not: validSchema(),
+            }, /is not supported/)
+        })
 
-var allOf = {
-    description: 'desc',
-    type: 'integer',
-    allOf: [{
-        type: 'integer',
-    }, {
-        type: 'string',
-    }],
-}
+        it('should not support `anyOf`', function () {
+            expectToThrow({
+                anyOf: [validSchema()],
+            }, /is not supported/)
+        })
 
-var anyOf = {
-    description: 'desc',
-    type: 'integer',
-    anyOf: [{
-        type: 'integer',
-    }, {
-        type: 'string',
-    }],
-}
+        it('should not support `items: []`', function () {
+            expectToThrow({
+                type: 'array',
+                items: [],
+            }, /is not supported/)
+        })
+    })
 
-var schema = {
-    type: 'object',
-    properties: {
-        b: {
-            type: [
-                'array',
-                null,
-            ],
-            items: {
-                type: [
-                    'object',
-                    null,
-                ],
-                patternProperties: {
-                    a: {
-                        description: 'Filter by FIELD date (inclusive) (ex. `created_at:from=2016-03-02 00:38:00`)',
-                        type: 'string',
+    describe('allOf', function () {
+        it('should validate that allOf has at least one item', function () {
+            expectToThrow({
+                allOf: [],
+            }, /at least one item/)
+        })
+
+        it('should merge and validte nested allOf', function () {
+            expectToNotThrow({
+                allOf: [
+                    {
+                        format: 'bogus',
                     },
-                },
-                properties: {
-                    c: {
-                        description: 'my object description',
-                        type: [
-                            'string',
-                            null,
+                    {
+                        allOf: [
+                            {
+                                type: 'integer',
+                                description: 'foo',
+                            },
+                            {
+                                // this overrides format and integer type
+                                type: 'string',
+                                title: 'foo',
+                                format: 'uri',
+                            },
                         ],
                     },
-                    d: {
-                        type: 'array',
-                        items: [{
-                            type: 'string',
-                            description: 'object1',
-                        }, {
-                            type: 'integer',
-                            description: 'object2',
-                        }],
-                    },
-                },
+                ],
+            })
+        })
+    })
+
+    describe('oneOf', function () {
+        it('should validate oneOf has at least one item', function () {
+            expectToThrow({
+                oneOf: [],
+            }, /at least one item/)
+        })
+
+        it('should validate that type is not an array', function () {
+            expectToThrow({
+                oneOf: [{ type: ['null', 'string'] }],
+            }, /not supported directly inside oneOf/)
+        })
+
+        it('should validate that there is no nesting of oneOf, allOf', function () {
+            expectToThrow({
                 oneOf: [{
-                    type: 'object',
-                    properties: {
-                        e: {
-                            type: 'boolean',
-                            default: true,
-                        },
-                    },
-                }, {
-                    type: 'object',
-                    properties: {
-                        f: {
-                            type: 'string',
-                        },
-                    },
+                    oneOf: [validSchema()],
                 }],
-            },
-        },
-    },
-}
+            }, /not supported directly inside oneOf/)
 
-function createSchema (path, optionalSchema) {
-    var schema1 = _.cloneDeep(optionalSchema ? optionalSchema : schema)
-    if (_.isArray(path)) {
-        _.forEach(path, function (p) {
-            _.unset(schema1, p)
+            expectToThrow({
+                oneOf: [{
+                    allOf: [validSchema()],
+                }],
+            }, /not supported directly inside oneOf/)
         })
-    } else {
-        _.unset(schema1, path)
+
+        it('should validate that a type is present in all oneOf', function () {
+            expectToThrow({
+                oneOf: [
+                    validSchema(),
+                    { description: '' },
+                ],
+            }, /type is required/)
+
+            expectToNotThrow({
+                oneOf: [
+                    { type: 'string' },
+                    { type: 'null' },
+                ],
+            })
+        })
+
+        it('should validate title and example for objects', function () {
+            expectToThrow({
+                oneOf: [
+                    { type: 'object' },
+                    { type: 'object', title: 'bar' },
+                ],
+            }, /title is required/)
+
+            expectToThrow({
+                oneOf: [
+                    { type: 'object', title: 'foo' },
+                    { type: 'object', title: 'bar', example: 'bar' },
+                ],
+            }, /example is required/)
+
+            expectToNotThrow({
+                oneOf: [
+                    { type: 'object', title: 'foo', example: 'foo' },
+                    { type: 'object', title: 'bar', example: 'bar' },
+                ],
+            }, /example is required/)
+        })
+
+        it('should validate a well formed object', function () {
+            expectToNotThrow({
+                oneOf: [
+                    { type: 'object', title: 'foo', example: 'foo' },
+                    { type: 'object', title: 'bar', example: 'bar' },
+                ],
+            })
+        })
+
+        it('should merge oneOfs with keys in the root', function () {
+            expectToNotThrow({
+                type: 'object',
+                title: 'foo',
+                oneOf: [
+                    { example: 'foo' },
+                    { example: 'bar' },
+                ],
+            })
+        })
+    })
+
+    describe('object', function () {
+        it('should validate types', function () {
+            expectToThrow({
+                type: 'object',
+                properties: {
+                    bogus: { type: 'bogus' },
+                },
+            }, /invalid type/)
+
+            expectToNotThrow({
+                type: 'object',
+                properties: {
+                    array: { type: 'array', items: validSchema() },
+                    boolean: { type: 'boolean' },
+                    integer: { type: 'integer' },
+                    null: { type: 'null' },
+                    number: { type: 'number' },
+                    object: { type: 'object' },
+                    string: { type: 'string' },
+                },
+            })
+        })
+
+        it('should validate pattern properties', function () {
+            expectToThrow({
+                type: 'object',
+                patternProperties: {
+                    '\d+': { type: 'bogus' },
+                },
+            }, /invalid type/)
+        })
+
+        it('should validate format', function () {
+            expectToThrow({
+                type: 'object',
+                format: 'uri',
+            }, /invalid type/)
+
+            expectToThrow({
+                type: 'string',
+                format: 'bogus',
+            }, /invalid format/)
+
+            expectToNotThrow({
+                type: ['null', 'string'],
+                format: 'uri',
+            })
+
+            expectToNotThrow({
+                type: 'string',
+                format: 'uri',
+            })
+        })
+
+        it('should validate enum', function () {
+            expectToNotThrow({
+                type: ['object', 'null', 'string', 'number', 'integer', 'boolean'],
+                enum: [null, 'foo', 1, 0.01, true, false],
+            })
+
+            expectToNotThrow({
+                type: 'string',
+                enum: ['foo', 'bar'],
+            })
+
+            expectToThrow({
+                type: 'string',
+                enum: [null],
+            }, /does not match/)
+
+            expectToThrow({
+                type: 'string',
+                enum: [],
+            }, /at least one item/)
+        })
+    })
+
+    describe('array', function () {
+        it('should validate that items is defined', function () {
+            expectToThrow({
+                type: 'array',
+            }, /items must be defined/)
+
+            expectToThrow({
+                type: 'array',
+                items: {},
+            }, /items must be defined/)
+        })
+
+        it('should validate items', function () {
+            expectToThrow({
+                type: 'array',
+                items: { type: 'bogus' },
+            }, /invalid type/)
+
+            expectToNotThrow({
+                type: 'array',
+                items: validSchema(),
+            })
+        })
+    })
+
+    function validSchema () {
+        return { type: 'null' }
     }
-    return schema1
-}
-function validatePath (path, optionalSchema) {
-    expect(validateSchema.bind(undefined, createSchema(path, optionalSchema))).to.throw(/.*Missing type property.*/)
-}
 
-describe('validate-schema', function () {
-    it('should run', function () {
-        validateSchema(schema)
-    })
+    function expectToThrow (schema, message) {
+        expect(validateSchema.bind(undefined, schema)).to.throw(message)
+    }
 
-    it('should validate undefined schema', function () {
-        validateSchema(undefined)
-    })
-
-    it('should validate missing oneOf/allOf/anyOf type at the upper level', function () {
-        validateSchema(createSchema('type', oneOf))
-        validateSchema(createSchema('type', anyOf))
-    })
-
-    it('should throw different types in allOf', function () {
-        expect(validateSchema.bind(undefined, createSchema('type', allOf))).to.throw(/.*Different types.*/)
-    })
-
-    it('should throw missing type property with empty schema', function () {
-        expect(validateSchema.bind(undefined, {})).to.throw(/.*Missing type property.*/)
-    })
-
-    it('should validate oneOf/allOf/anyOf type and missing in one item', function () {
-        validateSchema(createSchema('oneOf[0].type', oneOf))
-        validateSchema(createSchema('allOf[0].type', allOf))
-        validateSchema(createSchema('anyOf[0].type', anyOf))
-    })
-
-    it('should throw missing oneOf/allOf/anyOf type', function () {
-        validatePath(['oneOf[1].type', 'type'], oneOf)
-        validatePath(['allOf[0].type', 'type'], allOf)
-        validatePath(['anyOf[1].type', 'type'], anyOf)
-    })
-
-    it('should run with oneOf', function () {
-        validateSchema(oneOf)
-    })
-
-    it('should throw types[] in oneOf', function () {
-        var oneOfCopy = _.cloneDeep(oneOf)
-        oneOfCopy.oneOf[0].type = ['string', 'null']
-        expect(validateSchema.bind(undefined, oneOfCopy)).to.throw(/`type: \[\.\.\.\]` is not supported directly inside `oneOf`/)
-    })
-
-    it('should throw nested oneOf', function () {
-        var oneOfCopy = _.cloneDeep(oneOf)
-        oneOfCopy.oneOf[0].oneOf = []
-        expect(validateSchema.bind(undefined, oneOfCopy)).to.throw(/nested `oneOf` are not supported/)
-    })
-
-    it('should throw unsupported type in oneOf', function () {
-        var oneOfCopy = _.cloneDeep(oneOf)
-        oneOfCopy.oneOf[0].type = 'bogus'
-        expect(validateSchema.bind(undefined, oneOfCopy)).to.throw(/bogus is not a supported type/)
-    })
-
-    it('should validate array type', function () {
-        validateSchema({ type: ['string', 'integer'] })
-    })
-
-    it('should throw missing object type', function () {
-        validatePath('type')
-    })
-
-    it('should throw missing items array type', function () {
-        validatePath('properties.b.items.properties.d.items[0].type')
-    })
-
-    it('should throw missing items object type', function () {
-        validatePath(['properties.b.items.type', 'properties.b.items.oneOf'])
-    })
-
-    it('should throw missing scalar type', function () {
-        validatePath('properties.b.items.properties.c.type')
-    })
-
-    it('should throw missing patternProperties type', function () {
-        validatePath('properties.b.items.patternProperties.a.type')
-    })
-
-    it('should throw an exception when an array has no items', function () {
-        expect(validateSchema.bind(undefined, {
-            type: 'array',
-        })).to.throw()
-
-        expect(validateSchema.bind(undefined, {
-            type: 'array',
-            items: [],
-        })).to.throw()
-
-        expect(validateSchema.bind(undefined, {
-            type: 'array',
-            items: {},
-        })).to.throw()
-    })
-
-    it('should throw for unsupported type', function () {
-        expect(validateSchema.bind(undefined, { type: 'bogus' })).to.throw(/bogus/)
-    })
-
-    it('should throw enum value is not string', function () {
-        expect(validateSchema.bind(undefined, { type: 'string', enum: [123, 'bogus'] })).to.throw(/.*Enum value is not string.*/)
-    })
-
-    it('should throw missing title on ID property', function () {
-        expect(validateSchema.bind(undefined, {
-            type: 'object',
-            properties: {
-                id: {
-                    type: 'string',
-                },
-            },
-        })).to.throw(/.*Id property must have a title with `ID.*/)
-
-        expect(validateSchema.bind(undefined, {
-            type: 'object',
-            properties: {
-                uid: {
-                    type: 'string',
-                    title: 'my',
-                },
-            },
-        })).to.throw(/.*Id property must have a title with `ID.*/)
-    })
-
-    it('should validate format', function () {
-        validateSchema({
-            type: 'object',
-            properties: {
-                a: {
-                    type: 'string',
-                    format: 'date-time',
-                },
-                b: {
-                    type: 'string',
-                    format: 'email',
-                },
-                c: {
-                    type: 'string',
-                    format: 'hostname',
-                },
-                d: {
-                    type: 'string',
-                    format: 'ipv4',
-                },
-                e: {
-                    type: 'string',
-                    format: 'ipv6',
-                },
-                f: {
-                    type: 'string',
-                    format: 'uri',
-                },
-                g: {
-                    type: 'string',
-                    format: 'legacy-date-time',
-                },
-            },
-        })
-    })
-
-    it('should throw unsupported format', function () {
-        expect(validateSchema.bind(undefined, {
-            type: 'object',
-            properties: {
-                id: {
-                    type: 'string',
-                    format: 'bogus',
-                },
-            },
-        })).to.throw(/.*Unsupported format bogus.*/)
-    })
+    function expectToNotThrow (schema) {
+        expect(validateSchema.bind(undefined, schema)).to.not.throw()
+    }
 })
