@@ -96,7 +96,7 @@ module.exports = React.createClass({
                 <Types
                     types={types}
                     currType={currType}
-                    onClick={this.props.onSubTypeClick.bind(this, this.props.state.currPath)}
+                    onClick={this.props.onTypeClick.bind(this, this.props.state.currPath)}
                 />
                 <Types
                     isSubTypes
