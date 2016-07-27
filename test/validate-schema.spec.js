@@ -115,8 +115,8 @@ describe('validate-schema', function () {
 
             expectToNotThrow({
                 oneOf: [
-                    { type: 'object', title: 'foo', example: 'foo' },
-                    { type: 'object', title: 'bar', example: 'bar' },
+                    { type: 'object', title: 'foo', example: {} },
+                    { type: 'object', title: 'bar', example: {} },
                 ],
             }, /example is required/)
         })
@@ -124,8 +124,8 @@ describe('validate-schema', function () {
         it('should validate a well formed object', function () {
             expectToNotThrow({
                 oneOf: [
-                    { type: 'object', title: 'foo', example: 'foo' },
-                    { type: 'object', title: 'bar', example: 'bar' },
+                    { type: 'object', title: 'foo', example: {} },
+                    { type: 'object', title: 'bar', example: {} },
                 ],
             })
         })
@@ -135,8 +135,8 @@ describe('validate-schema', function () {
                 type: 'object',
                 title: 'foo',
                 oneOf: [
-                    { example: 'foo' },
-                    { example: 'bar' },
+                    { example: {} },
+                    { example: {} },
                 ],
             })
         })
@@ -216,6 +216,37 @@ describe('validate-schema', function () {
                 type: 'string',
                 enum: [],
             }, /at least one item/)
+        })
+
+        it('should validate examples', function () {
+            expectToThrow({
+                type: 'string',
+                example: 1,
+            }, /invalid example/)
+
+            expectToNotThrow({
+                type: 'string',
+                title: 'no example',
+            })
+
+            expectToNotThrow({
+                type: 'object',
+                example: {
+                    foo: 'bar',
+                    hello: 1,
+                },
+                properties: {
+                    foo: {
+                        type: 'string',
+                        enum: ['bar'],
+                        example: 'bar',
+                    },
+                    hello: {
+                        type: 'integer',
+                        example: 2,
+                    },
+                },
+            })
         })
     })
 
