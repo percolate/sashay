@@ -98,7 +98,7 @@ describe('validate-schema', function () {
             })
         })
 
-        it('should validate title and example for objects', function () {
+        it('should validate title and example for polymorphic objects', function () {
             expectToThrow({
                 oneOf: [
                     { type: 'object' },
@@ -118,7 +118,14 @@ describe('validate-schema', function () {
                     { type: 'object', title: 'foo', example: {} },
                     { type: 'object', title: 'bar', example: {} },
                 ],
-            }, /example is required/)
+            })
+
+            expectToNotThrow({
+                oneOf: [
+                    { type: 'object' },
+                    { type: 'null' },
+                ],
+            })
         })
 
         it('should validate a well formed object', function () {
