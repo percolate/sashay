@@ -29,38 +29,54 @@ describe('helper', function () {
         })).to.equal('http://foo.com/bar/?scope_ids={scope_ids}&type={type}')
     })
 
-    it('should mergeOneOf', function () {
-        expect(helper.mergeOneOf({
-            type: 'string',
-            description: 'foo',
-            enum: ['foo'],
-            oneOf: [
-                { title: 'union', enum: ['bar'] },
-                { title: 'unique', enum: ['bar', 'foo'] },
-                { title: 'override', enum: 'override' },
-                { title: 'diff type', type: 'null' },
-            ],
-        })).to.deep.equal([{
-            type: 'string',
-            title: 'union',
-            description: 'foo',
-            enum: ['foo', 'bar'],
-        }, {
-            type: 'string',
-            title: 'unique',
-            description: 'foo',
-            enum: ['foo', 'bar'],
-        }, {
-            type: 'string',
-            title: 'override',
-            description: 'foo',
-            enum: 'override',
-        }, {
-            type: 'null',
-            title: 'diff type',
-            description: 'foo',
-            enum: ['foo'],
-        }])
+    describe('mergeOneOf', function () {
+        it('should merge oneOf items with base keys and concat arrays', function () {
+            expect(helper.mergeOneOf({
+                type: 'string',
+                description: 'foo',
+                enum: ['foo'],
+                oneOf: [
+                    { title: 'union', enum: ['bar'] },
+                    { title: 'unique', enum: ['bar', 'foo'] },
+                    { title: 'override', enum: 'override' },
+                    { title: 'diff type', type: 'null' },
+                ],
+            })).to.deep.equal([{
+                type: 'string',
+                title: 'union',
+                description: 'foo',
+                enum: ['foo', 'bar'],
+            }, {
+                type: 'string',
+                title: 'unique',
+                description: 'foo',
+                enum: ['foo', 'bar'],
+            }, {
+                type: 'string',
+                title: 'override',
+                description: 'foo',
+                enum: 'override',
+            }, {
+                type: 'null',
+                title: 'diff type',
+                description: 'foo',
+                enum: ['foo'],
+            }])
+        })
+
+        it('should merge keys after oneOf as final overrides', function () {
+            expect(helper.mergeOneOf({
+                type: 'string',
+                oneOf: [
+                    { description: 'foo', title: 'foo' },
+                ],
+                description: 'override',
+            })).to.deep.equal([{
+                type: 'string',
+                title: 'foo',
+                description: 'override',
+            }])
+        })
     })
 
     it('should mergeAllOf', function () {
