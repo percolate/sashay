@@ -3,6 +3,9 @@ var validateSchema = require('../lib/validate-schema')
 
 describe('validate-schema', function () {
     describe('unsupported', function () {
+        it('should only support objects', function () {
+            expectToThrow('', /schema must be an object/)
+        })
         it('should not support `not`', function () {
             expectToThrow({
                 not: validSchema(),

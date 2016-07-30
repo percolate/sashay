@@ -29,7 +29,7 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
-                expect(err.message).to.match(/^Invalid RAML at ".": .*/)
+                expect(err.message).to.match(/^Invalid RAML at "root"/)
                 return done()
             })
             .caught(done)
@@ -42,7 +42,7 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
-                expect(err.message).to.match(/^Invalid RAML at ".a": .*/)
+                expect(err.message).to.match(/^Invalid RAML at "a"/)
                 return done()
             })
             .caught(done)
@@ -55,33 +55,59 @@ describe('expand()', function () {
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
-                expect(err.message).to.match(/^Invalid RAML at ".a.get": .*/)
+                expect(err.message).to.match(/^Invalid RAML at "a.get"/)
                 return done()
             })
             .caught(done)
     })
 
-    it('should throw invalid method response example error', function (done) {
+    it('should validate response schema', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/invalid/invalid-method-response-schema.raml'),
+        }
+        expand(options)
+            .caught(function (err) {
+                expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.match(/^Invalid schema:.*at "a.get.responses.200.body.application\/json.schema"/)
+                return done()
+            })
+            .caught(done)
+    })
+
+    it('should validate response example', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid/invalid-method-response-example.raml'),
         }
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
-                expect(err.message).to.match(/^Example response does not validate against schema at ".a.get": .*/)
+                expect(err.message).to.match(/^Invalid example at "a.get.responses.200.body.application\/json.example"/)
                 return done()
             })
             .caught(done)
     })
 
-    it('should throw invalid method request example error', function (done) {
+    it('should validate request schema', function (done) {
+        var options = {
+            source: path.resolve(__dirname, './fixtures/invalid/invalid-method-request-schema.raml'),
+        }
+        expand(options)
+            .caught(function (err) {
+                expect(err).to.be.an.instanceof(Error)
+                expect(err.message).to.match(/^Invalid schema:.*at "a.post.body.application\/json.schema"/)
+                return done()
+            })
+            .caught(done)
+    })
+
+    it('should validate request example', function (done) {
         var options = {
             source: path.resolve(__dirname, './fixtures/invalid/invalid-method-request-example.raml'),
         }
         expand(options)
             .caught(function (err) {
                 expect(err).to.be.an.instanceof(Error)
-                expect(err.message).to.match(/^Example request does not validate against schema at ".a.post": .*/)
+                expect(err.message).to.match(/^Invalid example at "a.post.body.application\/json.example"/)
                 return done()
             })
             .caught(done)
