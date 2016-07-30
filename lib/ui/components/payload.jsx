@@ -139,6 +139,14 @@ module.exports = React.createClass({
 
         return (
             <ul className="properties">
+                {(_.isEmpty(props)) && (
+                    <li className="property">
+                        <div className="property-left">
+                            <div className="property-key">None</div>
+                        </div>
+                        <div className="property-right"></div>
+                    </li>
+                )}
                 {_.map(sortedKeys, function (key) {
                     var prop = props[key]
                     var path = _.concat(this.getTypedPath(this.props.state.currPath), 'properties', key, 'types')
