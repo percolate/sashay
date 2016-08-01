@@ -7,7 +7,7 @@ describe('helper', function () {
             a: 1,
             b: true,
             c: 'Hello world',
-        })).to.equal('curl http://foo.com/{bar_id} \\\n  -X POST \\\n  -H "Authorization: foo" \\\n  -H "Content-type: application/json; charset=utf-8" \\\n  -d \'EXAMPLE_REQUEST_BODY\'')
+        })).to.equal('curl http://foo.com/{bar_id} \\\n  -X POST \\\n  -H "Authorization: foo" \\\n  -H "Content-type: application/json; charset=utf-8" \\\n  -d \'{example_request_body}\'')
     })
 
     it('should addRequiredQueryParameters', function () {
