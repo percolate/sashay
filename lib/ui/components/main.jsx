@@ -60,7 +60,7 @@ module.exports = React.createClass({
         var aside
 
         if (content.type === 'code') {
-            aside = <Code lang={content.lang} code={content.text} />
+            aside = <Code lang={content.lang} code={content.text} theme="dark" />
         } else {
             text = <Markdown content={content.text} />
         }

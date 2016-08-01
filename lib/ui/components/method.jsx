@@ -179,13 +179,13 @@ module.exports = React.createClass({
                     {(example) && (
                         <section>
                             <h1>Example request body</h1>
-                            <Code lang="json" code={example} />
+                            <Code lang="json" code={example} theme="dark" />
                         </section>
                     )}
                     {(method) && (
                         <section>
                             <h1>Example curl request</h1>
-                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.toUpperCase(), '{your_api_key}')} />
+                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.toUpperCase(), '{your_api_key}')} theme="dark" />
                         </section>
                     )}
                 </aside>
@@ -214,7 +214,7 @@ module.exports = React.createClass({
                     {(example) && (
                         <section>
                             <h1>Example response</h1>
-                            <Code lang="json" code={example} />
+                            <Code lang="json" code={example} theme="dark" />
                         </section>
                     )}
                 </aside>
