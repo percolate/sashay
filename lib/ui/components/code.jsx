@@ -11,7 +11,7 @@ module.exports = React.createClass({
     propTypes: {
         lang: React.PropTypes.string,
         code: React.PropTypes.string.isRequired,
-        theme: React.PropTypes.oneOf(undefined, 'dark', 'light'),
+        theme: React.PropTypes.oneOf([undefined, 'dark', 'light']),
     },
 
     getDefaultProps: function () {
