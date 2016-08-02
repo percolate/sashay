@@ -1,9 +1,6 @@
+var hljs = require('highlight.js')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var PrismCode = require('react-prism').PrismCode
-var util = require('util')
-
-var LANG_CLASSNAME_TEMPLATE = 'language-%s'
 
 module.exports = React.createClass({
 
@@ -12,26 +9,33 @@ module.exports = React.createClass({
         PureRenderMixin,
     ],
     propTypes: {
-        lang: React.PropTypes.oneOf([
-            'http',
-            'javascript',
-            'json',
-            'raml',
-            'sh',
-        ]).isRequired,
+        lang: React.PropTypes.string,
         code: React.PropTypes.string.isRequired,
+        theme: React.PropTypes.oneOf([undefined, 'dark', 'light']),
+    },
+
+    getDefaultProps: function () {
+        return {
+            theme: 'light',
+        }
     },
 
     render: function () {
-        var className = util.format(LANG_CLASSNAME_TEMPLATE, this.props.lang)
-
+        var { language, value } = this.highlight()
         return (
-            <div className="code">
+            <div className={`code ${this.props.theme}`}>
                 <pre>
-                    <PrismCode className={className}>{this.props.code}</PrismCode>
+                    <code className={`hljs language-${language}`} dangerouslySetInnerHTML={{ __html: value }} />
                 </pre>
             </div>
         )
     },
 
+    highlight: function () {
+        var { lang, code } = this.props
+        if (lang) {
+            return hljs.highlight(lang, code)
+        }
+        return hljs.highlightAuto(code)
+    },
 })

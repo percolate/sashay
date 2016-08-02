@@ -22,111 +22,11 @@ describe('transform()', function () {
                             methods: [
                                 {
                                     absoluteUri: '/foo/{foo_id}',
-                                    body: {
-                                        'application/json': {
-                                            example: '{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}',
-                                            payload: {
-                                                object: [{
-                                                    description: undefined,
-                                                    example: undefined,
-                                                    properties: {
-                                                        prop: {
-                                                            required: false,
-                                                            types: {
-                                                                object: [{
-                                                                    description: undefined,
-                                                                    example: undefined,
-                                                                    properties: {
-                                                                        a: {
-                                                                            required: false,
-                                                                            types: {
-                                                                                object: [{
-                                                                                    description: undefined,
-                                                                                    example: undefined,
-                                                                                    properties: {
-                                                                                        b: {
-                                                                                            required: false,
-                                                                                            types: {
-                                                                                                integer: emptyScalar('integer'),
-                                                                                            },
-                                                                                        },
-                                                                                    },
-                                                                                }],
-                                                                            },
-                                                                        },
-                                                                    },
-                                                                }],
-                                                            },
-                                                        },
-                                                    },
-                                                }],
-                                            },
-                                        },
-                                    },
+                                    body: getResponse(),
                                     displayName: 'foo',
                                     method: 'post',
                                     responses: {
-                                        201: {
-                                            body: {
-                                                'application/json': {
-                                                    example: '{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}',
-                                                    payload: {
-                                                        object: [{
-                                                            description: undefined,
-                                                            example: undefined,
-                                                            properties: {
-                                                                a: {
-                                                                    required: false,
-                                                                    types: {
-                                                                        string: emptyScalar('string'),
-                                                                    },
-                                                                },
-                                                                b: {
-                                                                    required: false,
-                                                                    types: {
-                                                                        array: [{
-                                                                            description: undefined,
-                                                                            types: {
-                                                                                object: [{
-                                                                                    description: undefined,
-                                                                                    example: undefined,
-                                                                                    properties: {
-                                                                                        c: {
-                                                                                            required: false,
-                                                                                            types: {
-                                                                                                string: [{
-                                                                                                    description: [{
-                                                                                                        text: 'my object description',
-                                                                                                        type: 'text',
-                                                                                                    }],
-                                                                                                    example: undefined,
-                                                                                                }],
-                                                                                            },
-                                                                                        },
-                                                                                        d: {
-                                                                                            required: true,
-                                                                                            types: {
-                                                                                                integer: [{
-                                                                                                    description: [{
-                                                                                                        text: 'a unique ID',
-                                                                                                        type: 'text',
-                                                                                                    }],
-                                                                                                    example: undefined,
-                                                                                                }],
-                                                                                            },
-                                                                                        },
-                                                                                    },
-                                                                                }],
-                                                                            },
-                                                                        }],
-                                                                    },
-                                                                },
-                                                            },
-                                                        }],
-                                                    },
-                                                },
-                                            },
-                                        },
+                                        201: { body: getResponse() },
                                     },
                                     slug: 'foo.{foo_id}.post',
                                     uriParameters: {
@@ -142,138 +42,9 @@ describe('transform()', function () {
                                     displayName: 'foo',
                                     method: 'get',
                                     responses: {
-                                        201: {
-                                            body: {
-                                                'application/json': {
-                                                    example: '{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}',
-                                                    payload: {
-                                                        object: [{
-                                                            description: undefined,
-                                                            example: undefined,
-                                                            properties: {
-                                                                a: {
-                                                                    required: false,
-                                                                    types: {
-                                                                        string: emptyScalar('string'),
-                                                                    },
-                                                                },
-                                                                b: {
-                                                                    required: false,
-                                                                    types: {
-                                                                        array: [{
-                                                                            description: undefined,
-                                                                            types: {
-                                                                                object: [{
-                                                                                    description: undefined,
-                                                                                    example: undefined,
-                                                                                    properties: {
-                                                                                        c: {
-                                                                                            required: false,
-                                                                                            types: {
-                                                                                                string: [{
-                                                                                                    description: [{
-                                                                                                        text: 'my object description',
-                                                                                                        type: 'text',
-                                                                                                    }],
-                                                                                                    example: undefined,
-                                                                                                }],
-                                                                                            },
-                                                                                        },
-                                                                                        d: {
-                                                                                            required: true,
-                                                                                            types: {
-                                                                                                integer: [{
-                                                                                                    description: [{
-                                                                                                        text: 'a unique ID',
-                                                                                                        type: 'text',
-                                                                                                    }],
-                                                                                                    example: undefined,
-                                                                                                }],
-                                                                                            },
-                                                                                        },
-                                                                                    },
-                                                                                }],
-                                                                            },
-                                                                        }],
-                                                                    },
-                                                                },
-                                                            },
-                                                        }],
-                                                    },
-                                                },
-                                            },
-                                        },
+                                        200: { body: getResponse() },
                                     },
                                     slug: 'foo.{foo_id}.bar.get',
-                                },
-                                {
-                                    absoluteUri: '/foo/{foo_id}/baz',
-                                    displayName: 'foo',
-                                    method: 'get',
-                                    responses: {
-                                        201: {
-                                            body: {
-                                                'application/json': {
-                                                    example: '{\n  \"a\": \"hello\",\n  \"b\": [\n    {\n      \"c\": \"description\",\n      \"d\": 123\n    },\n    {\n      \"c\": \"description\",\n      \"d\": 456\n    }\n  ]\n}',
-                                                    payload: {
-                                                        object: [{
-                                                            description: undefined,
-                                                            example: undefined,
-                                                            properties: {
-                                                                a: {
-                                                                    required: false,
-                                                                    types: {
-                                                                        string: emptyScalar('string'),
-                                                                    },
-                                                                },
-                                                                b: {
-                                                                    required: false,
-                                                                    types: {
-                                                                        array: [{
-                                                                            description: undefined,
-                                                                            types: {
-                                                                                object: [{
-                                                                                    description: undefined,
-                                                                                    example: undefined,
-                                                                                    properties: {
-                                                                                        c: {
-                                                                                            required: false,
-                                                                                            types: {
-                                                                                                string: [{
-                                                                                                    description: [{
-                                                                                                        text: 'my object description',
-                                                                                                        type: 'text',
-                                                                                                    }],
-                                                                                                    example: undefined,
-                                                                                                }],
-                                                                                            },
-                                                                                        },
-                                                                                        d: {
-                                                                                            required: true,
-                                                                                            types: {
-                                                                                                integer: [{
-                                                                                                    description: [{
-                                                                                                        text: 'a unique ID',
-                                                                                                        type: 'text',
-                                                                                                    }],
-                                                                                                    example: undefined,
-                                                                                                }],
-                                                                                            },
-                                                                                        },
-                                                                                    },
-                                                                                }],
-                                                                            },
-                                                                        }],
-                                                                    },
-                                                                },
-                                                            },
-                                                        }],
-                                                    },
-                                                },
-                                            },
-                                        },
-                                    },
-                                    slug: 'foo.{foo_id}.baz.get',
                                 },
                             ],
                             slug: 'method.foo',
@@ -347,4 +118,26 @@ describe('transform()', function () {
             })
             .caught(done)
     })
+
+    function getResponse () {
+        return {
+            'application/json': {
+                example: '{\n  \"a\": \"hello\"\n}',
+                payload: {
+                    object: [{
+                        description: undefined,
+                        example: undefined,
+                        properties: {
+                            a: {
+                                required: false,
+                                types: {
+                                    string: emptyScalar('string'),
+                                },
+                            },
+                        },
+                    }],
+                },
+            },
+        }
+    }
 })

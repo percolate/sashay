@@ -11,10 +11,13 @@ schemas:
     displayName: a
     body:
       application/json:
-        schema: !include schemas/foo/post.json
-        example: |
+        schema: |
           {
-            "a": "1"
+            "properties": {
+              "a": {
+                "type": "string"
+              }
+            }
           }
     responses:
       200:
@@ -28,8 +31,4 @@ schemas:
                     "type": "string"
                   }
                 }
-              }
-            example: |
-              {
-                "a": "Hello"
               }

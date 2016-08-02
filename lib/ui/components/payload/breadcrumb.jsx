@@ -28,6 +28,7 @@ module.exports = React.createClass({
 
     onClick: function (e) {
         e.preventDefault()
+        if (this.props.isActive) return
         if (this.props.onClick) this.props.onClick()
     },
 })
