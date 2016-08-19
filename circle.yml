@@ -3,9 +3,10 @@ machine:
     version: 4.2.3
 test:
   override:
-    - npm run style
-    - npm run coverage
+    - make style
+    - make coverage-cli
+    - make coverage-ui
   post:
-    - cat ./coverage/coverage.json | ./node_modules/.bin/codecov:
+    - ./node_modules/.bin/codecov:
         environment:
           CODECOV_TOKEN: "a1186210-a38e-4e2d-a4e9-87dbe0f1ddde"
