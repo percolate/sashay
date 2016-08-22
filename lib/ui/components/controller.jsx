@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var IS_BROWSER = require('../../env').IS_BROWSER
+var IS_BROWSER = require('../env').IS_BROWSER
 var Main = require('./main.jsx')
 var Nav = require('./nav.jsx')
 var React = require('react')

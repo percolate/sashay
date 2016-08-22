@@ -1,6 +1,5 @@
 .env
 /build/
-/coverage/
-/data/*.json
+**/coverage/
 /node_modules/
-/test/fixtures/*/build/
+**/__test__/**/temp

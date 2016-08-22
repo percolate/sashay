@@ -1,5 +1,5 @@
 var _ = require('lodash')
-var IS_BROWSER = require('../../env').IS_BROWSER
+var IS_BROWSER = require('../env').IS_BROWSER
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
