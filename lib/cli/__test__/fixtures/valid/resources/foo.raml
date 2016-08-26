@@ -14,6 +14,10 @@ description: |
       application/json:
         schema: !include ../schemas/foo/item.json
         example: !include ../schemas/foo/item.example.json
+      application/x-www-form-urlencoded:
+        formParameters:
+          hello:
+            type: string
     responses:
       201:
         body:

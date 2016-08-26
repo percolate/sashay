@@ -147,6 +147,7 @@ module.exports = React.createClass({
     renderRequest: function () {
         var { method, uriParameters, queryParameters } = this.props.method || {}
         var { payload, example } = _.get(this.props.method, ['body', 'application/json']) || {}
+        var formParameters = _.get(this.props.method, ['body', 'application/x-www-form-urlencoded', 'formParameters'])
         var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, this.props.method)
         return (
             <row>
@@ -160,6 +161,12 @@ module.exports = React.createClass({
                                 onViewPropsClick={this.viewPropsHandler.bind(this, true)}
                                 ref="payload"
                             />
+                        </section>
+                    )}
+                    {(formParameters) && (
+                        <section>
+                            <h1>Form data</h1>
+                            <Parameters parameters={formParameters} />
                         </section>
                     )}
                     {(uriParameters) && (
@@ -182,7 +189,7 @@ module.exports = React.createClass({
                             <Code lang="json" code={example} theme="dark" />
                         </section>
                     )}
-                    {(method) && (
+                    {(method && !formParameters) && (
                         <section>
                             <h1>Example curl request</h1>
                                 <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.toUpperCase(), '{your_api_key}')} theme="dark" />
