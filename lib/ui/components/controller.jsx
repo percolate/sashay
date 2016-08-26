@@ -3,8 +3,12 @@ var IS_BROWSER = require('../env').IS_BROWSER
 var Main = require('./main.jsx')
 var Nav = require('./nav.jsx')
 var React = require('react')
+var WebFont
 
-if (IS_BROWSER) require('../less/index.less')
+if (IS_BROWSER) {
+    require('../less/index.less')
+    WebFont = require('webfontloader')
+}
 
 module.exports = React.createClass({
 
@@ -42,8 +46,18 @@ module.exports = React.createClass({
 
     componentDidMount: function () {
         if (!IS_BROWSER) return
-        this._updateOffsets()
-        this._updateHash(true)
+
+        // wait for font to load
+        WebFont.load({
+            active: function () {
+                this._updateOffsets()
+                this._updateHash(true)
+            }.bind(this),
+            custom: {
+                families: ['InterFace'],
+            },
+        })
+
         window.addEventListener('scroll', _.debounce(this._updateHash, 20))
         window.addEventListener('resize', this.resizeHandler)
     },
