@@ -5,6 +5,8 @@ var Method = require('./method.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
+var PROP_TYPES = require('../constants').propTypes
+
 module.exports = React.createClass({
 
     displayName: 'Main',
@@ -13,21 +15,16 @@ module.exports = React.createClass({
     ],
     propTypes: {
         baseUri: React.PropTypes.string.isRequired,
-        topics: React.PropTypes.arrayOf(
-            React.PropTypes.shape({
-                displayName: React.PropTypes.string.isRequired,
-                contents: React.PropTypes.arrayOf(
-                    React.PropTypes.shape({
-                        lang: React.PropTypes.string,
-                        text: React.PropTypes.string.isRequired,
-                        type: React.PropTypes.oneOf(['text', 'code']).isRequired,
-                    })
-                ),
-                slug: React.PropTypes.string.isRequired,
-            })
-        ).isRequired,
+        topics: PROP_TYPES.topics.id,
         groups: React.PropTypes.array.isRequired,
         version: React.PropTypes.string.isRequired,
+        onResize: React.PropTypes.func,
+    },
+
+    getDefaultProps: function () {
+        return {
+            onResize: _.noop,
+        }
     },
 
     render: function () {
@@ -100,6 +97,7 @@ module.exports = React.createClass({
                 <Method
                     method={method}
                     baseUri={this.props.baseUri}
+                    onResize={this.props.onResize}
                 />
             </div>
         )

@@ -1,24 +1,27 @@
 var _ = require('lodash')
-var IS_BROWSER = require('../env').IS_BROWSER
-var Main = require('./main.jsx')
-var Nav = require('./nav.jsx')
-var React = require('react')
-var WebFont
+var App = require('./app.jsx')
+var createClass = require('react').createClass
+var PropTypes = require('react').PropTypes
+var WebFont = require('webfontloader')
 
-if (IS_BROWSER) {
-    require('../less/index.less')
-    WebFont = require('webfontloader')
-}
+var PROP_TYPES = require('../constants').propTypes
+var LOGO = require('../img/api-logo-white.png')
+var DEBOUNCE_DELAY = 20
 
-module.exports = React.createClass({
+require('../less/index.less')
 
-    displayName: 'Controller',
-    childContextTypes: {
-        onChange: React.PropTypes.func.isRequired,
+module.exports = createClass({
+    displayName: 'ControlledApp',
+    propTypes: {
+        baseUri: PropTypes.string.isRequired,
+        groups: PropTypes.array.isRequired,
+        hash: PropTypes.string,
+        topics: PROP_TYPES.topics.id,
+        version: PropTypes.string.isRequired,
     },
 
     _updateOffsets: function () {
-        this._offsets = _.chain(this.refs.main.refs)
+        this._offsets = _.chain(this.refs.app.refs.main.refs)
             .map(function (ref, slug) {
                 if (slug === 'main') return undefined
                 return {
@@ -45,9 +48,6 @@ module.exports = React.createClass({
     },
 
     componentDidMount: function () {
-        if (!IS_BROWSER) return
-
-        // wait for font to load
         WebFont.load({
             active: function () {
                 this._updateOffsets()
@@ -57,21 +57,13 @@ module.exports = React.createClass({
                 families: ['InterFace'],
             },
         })
-
-        window.addEventListener('scroll', _.debounce(this._updateHash, 20))
-        window.addEventListener('resize', this.resizeHandler)
+        window.addEventListener('resize', this.onResize)
+        window.addEventListener('scroll', this.onScroll)
     },
 
     componentWillUnmount: function () {
-        if (!IS_BROWSER) return
-        window.removeEventListener('scroll')
-        window.removeEventListener('resize')
-    },
-
-    getChildContext: function () {
-        return {
-            onChange: this.resizeHandler,
-        }
+        window.removeEventListener('resize', this.onResize)
+        window.removeEventListener('scroll', this.onScroll)
     },
 
     getInitialState: function () {
@@ -80,25 +72,27 @@ module.exports = React.createClass({
         }
     },
 
-    render: function () {
-        return (
-            <div className="container">
-                <Nav
-                    {...this.props}
-                    {...this.state}
-                    ref="nav"
-                />
-                <Main
-                    {...this.props}
-                    ref="main"
-                />
-            </div>
-        )
-    },
-
-    resizeHandler: function () {
+    onResize: _.debounce(function () {
         this._updateOffsets()
         this._updateHash()
-    },
+    }, DEBOUNCE_DELAY),
 
+    onScroll: _.debounce(function () {
+        this._updateHash()
+    }, DEBOUNCE_DELAY),
+
+    render: function () {
+        return (
+            <App
+                baseUri={this.props.baseUri}
+                groups={this.props.groups}
+                hash={this.state.hash}
+                logo={LOGO}
+                onResize={this.onResize}
+                ref="app"
+                topics={this.props.topics}
+                version={this.props.version}
+            />
+        )
+    },
 })

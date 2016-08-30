@@ -14,11 +14,6 @@ var ROOT_PATH = ['root']
 
 module.exports = React.createClass({
     displayName: 'Method',
-
-    contextTypes: {
-        onChange: React.PropTypes.func,
-    },
-
     propTypes: {
         method: React.PropTypes.shape({
             description: React.PropTypes.string,
@@ -26,6 +21,13 @@ module.exports = React.createClass({
             method: React.PropTypes.string.isRequired,
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
+        onResize: React.PropTypes.func,
+    },
+
+    getDefaultProps: function () {
+        return {
+            onResize: _.noop,
+        }
     },
 
     getInitialState: function () {
@@ -37,7 +39,7 @@ module.exports = React.createClass({
     },
 
     componentDidUpdate: function () {
-        if (this.context.onChange) this.context.onChange()
+        this.props.onResize()
     },
 
     getInitialPayloadState: function () {
@@ -156,6 +158,7 @@ module.exports = React.createClass({
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
                                 onViewPropsClick={this.viewPropsHandler.bind(this, true)}
+                                onResize={this.props.onResize}
                                 ref="payload"
                             />
                         </section>

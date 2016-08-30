@@ -33,6 +33,13 @@ module.exports = React.createClass({
         onSubTypeClick: React.PropTypes.func.isRequired,
         onBreadCrumbsClick: React.PropTypes.func.isRequired,
         onViewPropsClick: React.PropTypes.func.isRequired,
+        onResize: React.PropTypes.func,
+    },
+
+    getDefaultProps: function () {
+        return {
+            onResize: _.noop,
+        }
     },
 
     getPathString: function (path) {
@@ -114,6 +121,7 @@ module.exports = React.createClass({
                     type={this.getCurrType(this.props.state.currPath)}
                     description={this.getCurrSchema(this.props.state.currPath).description}
                     example={this.getCurrSchema(this.props.state.currPath).example}
+                    onResize={this.props.onResize}
                 />
                 {(currType === 'object') && (
                     <div>

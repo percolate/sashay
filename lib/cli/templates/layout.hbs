@@ -8,6 +8,6 @@
     <body>
         <div id="root">{{&html}}</div>
         <script src="{{js}}"></script>
-        <script>app({{&data}})</script>
+        <script>app({{&data}}, document.getElementById('root'))</script>
     </body>
 </html>

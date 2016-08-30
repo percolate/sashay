@@ -1,19 +1,22 @@
 var Code = require('../code.jsx')
+var noop = require('lodash/noop')
 var React = require('react')
 
 module.exports = React.createClass({
     displayName: 'Example',
-
-    contextTypes: {
-        onChange: React.PropTypes.func,
-    },
-
     propTypes: {
         code: React.PropTypes.string.isRequired,
+        onResize: React.PropTypes.func,
     },
 
     componentDidUpdate: function () {
-        if (this.context.onChange) this.context.onChange()
+        this.props.onResize()
+    },
+
+    getDefaultProps: function () {
+        return {
+            onResize: noop,
+        }
     },
 
     getInitialState: function () {
