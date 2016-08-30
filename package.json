@@ -39,6 +39,7 @@
     "react": "15.3.0",
     "react-addons-pure-render-mixin": "15.3.0",
     "react-dom": "15.3.0",
+    "route-parser": "0.0.5",
     "style-loader": "0.13.0",
     "watchpack": "1.0.1",
     "webfontloader": "1.6.26",
