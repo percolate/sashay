@@ -1,0 +1,148 @@
+{
+  "object": [
+    {
+      "properties": {
+        "primary_object": {
+          "required": true,
+          "types": {
+            "object": [
+              {
+                "description": [
+                  {
+                    "type": "text",
+                    "text": "the primary object"
+                  }
+                ],
+                "properties": {
+                  "primary_object_id": {
+                    "required": true,
+                    "types": {
+                      "string": [
+                        {
+                          "description": [
+                            {
+                                "type": "text",
+                                "text": "the primary object id"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "secondary_object": {
+                    "required": true,
+                    "types": {
+                      "object": [
+                        {
+                          "description": [
+                            {
+                              "type": "text",
+                              "text": "the secondary object"
+                            }
+                          ],
+                          "properties": {
+                            "secondary_object_id": {
+                              "required": true,
+                              "types": {
+                                "string": [
+                                  {
+                                    "description": [
+                                      {
+                                        "type": "text",
+                                        "text": "the secondary object id"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "primary_array": {
+          "required": true,
+          "types": {
+            "array": [
+              {
+                "types": {
+                  "object": [
+                    {
+                      "description": [
+                        {
+                          "type": "text",
+                          "text": "the primary array"
+                        }
+                      ],
+                      "properties": {
+                        "primary_array_id": {
+                          "required": true,
+                          "types": {
+                            "string": [
+                              {
+                                "description": [
+                                  {
+                                      "type": "text",
+                                      "text": "the primary array id"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "secondary_array": {
+                          "required": true,
+                          "types": {
+                            "array": [
+                              {
+                                "types": {
+                                  "object": [
+                                    {
+                                      "description": [
+                                        {
+                                          "type": "text",
+                                          "text": "the secondary array"
+                                        }
+                                      ],
+                                      "properties": {
+                                        "secondary_array_id": {
+                                          "required": true,
+                                          "types": {
+                                            "string": [
+                                              {
+                                                "description": [
+                                                  {
+                                                    "type": "text",
+                                                    "text": "the secondary array id"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
