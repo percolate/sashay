@@ -1,44 +1,57 @@
-var _ = require('lodash')
-var Breadcrumb = require('./breadcrumb.jsx')
+var classNames = require('classnames')
+var createClass = require('react').createClass
+var fromJS = require('immutable').fromJS
+var List = require('immutable').List
+var noop = require('lodash/noop')
+var PropTypes = require('react').PropTypes
 var PureRenderMixin = require('react-addons-pure-render-mixin')
-var React = require('react')
 
-module.exports = React.createClass({
+module.exports = createClass({
     displayName: 'Breadcrumbs',
-
-    mixins: [
-        PureRenderMixin,
-    ],
-
+    mixins: [PureRenderMixin],
     propTypes: {
-        crumbs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-        onClick: React.PropTypes.func,
+        onClick: PropTypes.func,
+        pathKeys: PropTypes.instanceOf(List).isRequired,
+    },
+
+    getDefaultProps: function () {
+        return {
+            onClick: noop,
+        }
     },
 
     render: function () {
         return (
             <ul className="breadcrumbs">
-                {_.map(this.props.crumbs, function (crumb, index) {
-                    var isActive = index + 1 === this.props.crumbs.length
-                    return (
-                        <Breadcrumb
-                            name={crumb}
-                            isActive={isActive}
-                            key={index}
-                            onClick={this.onCrumbClick.bind(this, index)}
-                        />
-                    )
-                }.bind(this))}
+                {this.props.pathKeys
+                    .unshift(fromJS({
+                        key: 'root',
+                        schemaKeyPath: [],
+                    }))
+                    .map(function (pathKey, i, list) {
+                        var isLast = (pathKey === list.last())
+                        var name = [
+                            pathKey.get('key'),
+                            (pathKey.get('type') === 'array') ? '[ ]' : undefined,
+                        ].join(' ')
+                        return (
+                            <li
+                                className={classNames({ active: isLast })}
+                                key={pathKey.get('key')}
+                            >
+                                <a
+                                    href="javascript:void(0)"
+                                    onClick={(!isLast)
+                                        ? this.props.onClick.bind(undefined, pathKey.get('schemaKeyPath').toJS())
+                                        : noop
+                                    }
+                                >{name}</a>
+                            </li>
+                        )
+                    }.bind(this))
+                    .valueSeq()
+                }
             </ul>
         )
-    },
-
-    onCrumbClick: function (index) {
-        this.setState({
-            crumbs: _.first(this.props.crumbs, index + 1),
-        })
-        if (this.props.onClick) {
-            this.props.onClick(this.props.crumbs[index], index)
-        }
     },
 })

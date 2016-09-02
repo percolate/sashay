@@ -1,8 +1,9 @@
 var _ = require('lodash')
 var Breadcrumbs = require('./payload/breadcrumbs.jsx')
-var React = require('react')
+var parsePayload = require('../helper').parsePayload
 var Primitive = require('./payload/primitive.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
+var React = require('react')
 var Types = require('./payload/types.jsx')
 
 module.exports = React.createClass({
@@ -25,7 +26,6 @@ module.exports = React.createClass({
             })),
         }).isRequired,
         state: React.PropTypes.shape({
-            crumbs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
             currPath: React.PropTypes.array.isRequired,
             paths: React.PropTypes.object.isRequired,
         }).isRequired,
@@ -90,9 +90,15 @@ module.exports = React.createClass({
     render: function () {
         var types = this.getRootTypes()
         var currType = this.getRootCurrType()
+        var pathKeys = parsePayload(this.props.state.currPath.slice(1), this.props.root)
         return (
             <div className="payload">
-                {this.renderBreadcrumbs()}
+                {(!pathKeys.isEmpty()) && (
+                    <Breadcrumbs
+                        pathKeys={pathKeys}
+                        onClick={this.props.onBreadCrumbsClick}
+                    />
+                )}
                 <Types
                     types={types}
                     currType={currType}
@@ -117,16 +123,6 @@ module.exports = React.createClass({
                 )}
                 {(currType === 'array') && this.renderArrayTypes(this.props.state.currPath, '')}
             </div>
-        )
-    },
-
-    renderBreadcrumbs: function () {
-        if (this.props.state.crumbs.length <= 1) return undefined
-        return (
-            <Breadcrumbs
-                crumbs={this.props.state.crumbs}
-                onClick={this.props.onBreadCrumbsClick}
-            />
         )
     },
 
