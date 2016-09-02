@@ -3,7 +3,7 @@ var Code = require('./code.jsx')
 var React = require('react')
 var ReactDOM = require('react-dom')
 var helper = require('../../cli/helper')
-var isVisible = require('./utils').isVisible
+var isVisible = require('../helper').isVisible
 var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
@@ -249,8 +249,9 @@ module.exports = React.createClass({
         obj.currPath = path
 
         this.setTabState(isRequest, obj, function () {
-            if (!isVisible(this.refs.tabs)) {
-                ReactDOM.findDOMNode(this.refs.tabs).scrollIntoView()
+            var el = ReactDOM.findDOMNode(this.refs.tabs)
+            if (!isVisible(el)) {
+                el.scrollIntoView()
             }
         }.bind(this))
     },
