@@ -9,7 +9,6 @@ var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
 
-var DEFAULT_CRUMBS = ['root']
 var TABS = ['Request', 'Response']
 var ROOT_PATH = ['root']
 
@@ -43,10 +42,8 @@ module.exports = React.createClass({
 
     getInitialPayloadState: function () {
         return {
-            crumbs: DEFAULT_CRUMBS,
             currPath: ROOT_PATH,
             paths: {},
-            prevPaths: [],
         }
     },
 
@@ -246,8 +243,6 @@ module.exports = React.createClass({
     viewPropsHandler: function (isRequest, path, propKey, e) {
         e.preventDefault()
         var obj = this.getTabState(isRequest)
-        obj.prevPaths = _.concat(obj.prevPaths, [obj.currPath])
-        obj.crumbs = _.concat(obj.crumbs, propKey)
         obj.currPath = path
 
         this.setTabState(isRequest, obj, function () {
@@ -257,12 +252,9 @@ module.exports = React.createClass({
         }.bind(this))
     },
 
-    breadcrumbClickHandler: function (isRequest, name, index) {
+    breadcrumbClickHandler: function (isRequest, keyPath) {
         var obj = isRequest ? this.state.requestPayload : this.state.responsePayload
-        obj.crumbs = _.take(obj.crumbs, index + 1)
-        obj.currPath = obj.prevPaths[index]
-        obj.prevPaths = _.take(obj.prevPaths, index)
-
+        obj.currPath = ['root'].concat(keyPath)
         var key = isRequest ? this.state.requestPayload : this.state.responsePayload
         this.setState({
             [key]: obj,

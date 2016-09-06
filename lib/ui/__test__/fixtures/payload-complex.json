@@ -1,0 +1,141 @@
+{
+  "object": [
+    {
+      "properties": {
+        "object_array_a": {
+          "required": true,
+          "types": {
+            "array": [
+              {
+                "types": {
+                  "object": [
+                    {
+                      "title": "object array a object a",
+                      "properties": {
+                        "object_array_a_object_a_id": {
+                          "required": true,
+                          "types": {
+                            "string": [
+                              {
+                                "description": [
+                                  {
+                                      "type": "text",
+                                      "text": "object array a object a id"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "object array a object b",
+                      "properties": {
+                        "object_array_a_object_b_id": {
+                          "required": true,
+                          "types": {
+                            "string": [
+                              {
+                                "description": [
+                                  {
+                                      "type": "text",
+                                      "text": "object array a object b id"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "array": [
+    {
+      "types": {
+        "object": [
+          {
+            "title": "array object a",
+            "properties": {
+              "array_object_a_id": {
+                "required": true,
+                "types": {
+                  "string": [
+                    {
+                      "description": [
+                        {
+                            "type": "text",
+                            "text": "the array object a id"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              "array_object_a_secondary_object": {
+                "required": true,
+                "types": {
+                  "object": [
+                    {
+                      "description": [
+                        {
+                          "type": "text",
+                          "text": "the array object a secondary object"
+                        }
+                      ],
+                      "properties": {
+                        "array_object_a_secondary_object_id": {
+                          "required": true,
+                          "types": {
+                            "string": [
+                              {
+                                "description": [
+                                  {
+                                    "type": "text",
+                                    "text": "the array object a secondary object id"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "title": "array object b",
+            "properties": {
+              "array_object_b_id": {
+                "required": true,
+                "types": {
+                  "string": [
+                    {
+                      "description": [
+                        {
+                            "type": "text",
+                            "text": "the array object b id"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
