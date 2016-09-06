@@ -1,4 +1,5 @@
 var Main = require('./main.jsx')
+var Map = require('immutable').Map
 var Nav = require('./nav.jsx')
 var noop = require('lodash/noop')
 var PropTypes = require('react').PropTypes
@@ -12,8 +13,9 @@ module.exports = React.createClass({
     mixins: [PureRenderMixin],
     propTypes: {
         baseUri: PropTypes.string.isRequired,
+        currentSlug: PropTypes.string,
         groups: PropTypes.array.isRequired,
-        hash: PropTypes.string,
+        initialRoute: React.PropTypes.instanceOf(Map),
         logo: PropTypes.string,
         onResize: PropTypes.func,
         topics: PROP_TYPES.topics.id,
@@ -30,8 +32,8 @@ module.exports = React.createClass({
         return (
             <div className="container">
                 <Nav
+                    currentSlug={this.props.currentSlug}
                     groups={this.props.groups}
-                    hash={this.props.hash}
                     logo={this.props.logo}
                     ref="nav"
                     topics={this.props.topics}
@@ -39,6 +41,7 @@ module.exports = React.createClass({
                 <Main
                     baseUri={this.props.baseUri}
                     groups={this.props.groups}
+                    initialRoute={this.props.initialRoute}
                     onResize={this.props.onResize}
                     ref="main"
                     topics={this.props.topics}

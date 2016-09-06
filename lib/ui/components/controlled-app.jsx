@@ -1,7 +1,12 @@
 var _ = require('lodash')
 var App = require('./app.jsx')
 var createClass = require('react').createClass
+var fromJS = require('immutable').fromJS
+var getHashFromRoute = require('../helper').getHashFromRoute
+var getPathnameFromRoute = require('../helper').getPathnameFromRoute
+var parseRoute = require('../helper').parseRoute
 var PropTypes = require('react').PropTypes
+var PureRenderMixin = require('react-addons-pure-render-mixin')
 var WebFont = require('webfontloader')
 
 var PROP_TYPES = require('../constants').propTypes
@@ -12,6 +17,7 @@ require('../less/index.less')
 
 module.exports = createClass({
     displayName: 'ControlledApp',
+    mixins: [PureRenderMixin],
     propTypes: {
         baseUri: PropTypes.string.isRequired,
         groups: PropTypes.array.isRequired,
@@ -21,7 +27,7 @@ module.exports = createClass({
     },
 
     _updateOffsets: function () {
-        this._offsets = _.chain(this.refs.app.refs.main.refs)
+        var offsets = _.chain(this.refs.app.refs.main.refs)
             .map(function (ref, slug) {
                 if (slug === 'main') return undefined
                 return {
@@ -32,26 +38,29 @@ module.exports = createClass({
             .compact()
             .sortBy('top')
             .value()
+        this.setState({
+            offsets: offsets,
+        })
     },
 
-    _updateHash: function (ignoreHistory) {
-        var offset = _.findLast(this._offsets, function (_offset) {
+    _updateHash: function () {
+        var offset = _.findLast(this.state.offsets, function (_offset) {
             return (window.pageYOffset + 100) > _offset.top
         })
         var slug = offset ? offset.slug : undefined
-        if (slug === this.state.hash) return
-        this.setState({ hash: slug })
-        var url = slug ? ['#', slug].join('') : ' '
-        if (ignoreHistory !== true) {
-            window.history.replaceState(undefined, undefined, url)
-        }
+        if (slug === this.state.currentSlug) return
+        this.setState({
+            currentSlug: slug,
+        })
+        window.history.replaceState(undefined, undefined, getHashFromRoute(fromJS({ slug: slug })))
     },
 
     componentDidMount: function () {
         WebFont.load({
             active: function () {
                 this._updateOffsets()
-                this._updateHash(true)
+                var targetElement = document.getElementById(getPathnameFromRoute(this.state.initialRoute))
+                if (targetElement) targetElement.scrollIntoView()
             }.bind(this),
             custom: {
                 families: ['InterFace'],
@@ -61,6 +70,14 @@ module.exports = createClass({
         window.addEventListener('scroll', this.onScroll)
     },
 
+    componentWillMount: function () {
+        var route = parseRoute(_.trimStart(window.location.hash, '#'))
+        this.setState({
+            currentSlug: route.get('slug'),
+            initialRoute: route,
+        })
+    },
+
     componentWillUnmount: function () {
         window.removeEventListener('resize', this.onResize)
         window.removeEventListener('scroll', this.onScroll)
@@ -68,7 +85,13 @@ module.exports = createClass({
 
     getInitialState: function () {
         return {
-            hash: undefined,
+            currentSlug: undefined,
+            initialRoute: fromJS({
+                slug: undefined,
+                parameterPath: undefined,
+                parameterType: undefined,
+            }),
+            offsets: [],
         }
     },
 
@@ -85,8 +108,9 @@ module.exports = createClass({
         return (
             <App
                 baseUri={this.props.baseUri}
+                currentSlug={this.state.currentSlug}
                 groups={this.props.groups}
-                hash={this.state.hash}
+                initialRoute={this.state.initialRoute}
                 logo={LOGO}
                 onResize={this.onResize}
                 ref="app"

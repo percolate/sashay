@@ -1,6 +1,10 @@
 var _ = require('lodash')
+var DeepLink = require('./deep-link.jsx')
+var getPathnameFromRoute = require('../helper').getPathnameFromRoute
+var Map = require('immutable').Map
 var Markdown = require('./markdown.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
+var PropTypes = require('react').PropTypes
 var React = require('react')
 
 module.exports = React.createClass({
@@ -10,23 +14,26 @@ module.exports = React.createClass({
         PureRenderMixin,
     ],
     propTypes: {
-        parameters: React.PropTypes.object.isRequired,
+        parameters: PropTypes.object.isRequired,
+        parentRoute: PropTypes.instanceOf(Map).isRequired,
     },
 
     render: function () {
-        var parameters = this.props.parameters
-
         return (
             <div>
                 <ul className="parameters">
-                    {_.map(parameters, function (parameter, i) {
+                    {_.map(this.props.parameters, function (parameter, id) {
+                        var pathname = getPathnameFromRoute(this.props.parentRoute.merge({
+                            parameterPath: id,
+                        }))
                         return (
                             <li
                                 className="parameter"
-                                key={i}
+                                id={pathname}
+                                key={id}
                             >
                                 <div className="parameter-spec">
-                                    <div>{parameter.displayName}</div>
+                                    <div><DeepLink pathname={pathname} /> {parameter.displayName}</div>
                                     <div className="parameter-info">
                                         <div>{parameter.type}</div>
                                         {(_.toString(parameter.default) !== '') && (
@@ -62,7 +69,7 @@ module.exports = React.createClass({
                                 </div>
                             </li>
                         )
-                    }, this)}
+                    }.bind(this))}
                 </ul>
             </div>
         )
