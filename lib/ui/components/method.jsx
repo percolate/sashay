@@ -1,49 +1,73 @@
 var _ = require('lodash')
 var Code = require('./code.jsx')
+var DeepLink = require('./deep-link.jsx')
+var fromJS = require('immutable').fromJS
+var getPathnameFromRoute = require('../helper').getPathnameFromRoute
 var React = require('react')
 var ReactDOM = require('react-dom')
 var helper = require('../../cli/helper')
-var isVisible = require('./utils').isVisible
+var isVisible = require('../helper').isVisible
+var Map = require('immutable').Map
 var Markdown = require('./markdown.jsx')
 var Parameters = require('./parameters.jsx')
 var Payload = require('./payload.jsx')
 var Tabs = require('./tabs.jsx')
 
-var TABS = ['Request', 'Response']
-var ROOT_PATH = ['root']
+var TABS = {
+    request: { id: 'Request' },
+    response: { id: 'Response' },
+}
+var INITIAL_PAYLOAD_STATE = {
+    currPath: ['root'],
+    paths: {},
+}
+var PARAMETER_TYPES = require('../constants').parameterTypes
+var VALUES = require('../constants').values
 
 module.exports = React.createClass({
     displayName: 'Method',
-
-    contextTypes: {
-        onChange: React.PropTypes.func,
-    },
-
     propTypes: {
         method: React.PropTypes.shape({
             description: React.PropTypes.string,
             displayName: React.PropTypes.string.isRequired,
             method: React.PropTypes.string.isRequired,
+            slug: React.PropTypes.string.isRequired,
         }).isRequired,
         baseUri: React.PropTypes.string.isRequired,
+        onResize: React.PropTypes.func,
+        initialRoute: React.PropTypes.instanceOf(Map),
+    },
+
+    getDefaultProps: function () {
+        return {
+            initialRoute: fromJS({}),
+            onResize: _.noop,
+        }
     },
 
     getInitialState: function () {
         return {
-            activeTab: _.first(TABS),
-            requestPayload: this.getInitialPayloadState(),
-            responsePayload: this.getInitialPayloadState(),
+            activeTab: TABS.request.id,
+            requestPayload: _.cloneDeep(INITIAL_PAYLOAD_STATE),
+            responsePayload: _.cloneDeep(INITIAL_PAYLOAD_STATE),
         }
     },
 
     componentDidUpdate: function () {
-        if (this.context.onChange) this.context.onChange()
+        this.props.onResize()
     },
 
-    getInitialPayloadState: function () {
-        return {
-            currPath: ROOT_PATH,
-            paths: {},
+    componentWillMount: function () {
+        if (this.props.initialRoute.get('slug') !== this.props.method.slug) return
+        var isRequest = this.props.initialRoute.get('parameterType') !== PARAMETER_TYPES.response.id
+        var activeTab = (isRequest) ? TABS.request.id : TABS.response.id
+        this.setState({ activeTab: activeTab })
+        var parameterPath = this.props.initialRoute.get('parameterPath')
+        var obj
+        if (!_.isEmpty(parameterPath)) {
+            obj = this.getTabState(isRequest)
+            obj.currPath = INITIAL_PAYLOAD_STATE.currPath.concat(_.dropRight(parameterPath.split(VALUES.pathDelimeter.id)))
+            this.setTabState(isRequest, obj)
         }
     },
 
@@ -79,12 +103,16 @@ module.exports = React.createClass({
 
     render: function () {
         var { method } = this.props
+        var pathname = getPathnameFromRoute(fromJS({ slug: this.props.method.slug }))
 
         return (
-            <div className="method">
+            <div
+                className="method"
+                id={pathname}
+            >
                 <row>
                     <content>
-                        <h3>{method.displayName}</h3>
+                        <h3><DeepLink pathname={pathname} /> {method.displayName}</h3>
                         {this.renderMethod()}
                         {this.renderDescription()}
                     </content>
@@ -93,7 +121,7 @@ module.exports = React.createClass({
                 <row className="tabs-section">
                     <content>
                         <Tabs
-                            tabs={TABS}
+                            tabs={_.map(TABS, 'id')}
                             activeTab={this.state.activeTab}
                             onClick={this.tabClickHandler}
                             ref="tabs"
@@ -132,12 +160,8 @@ module.exports = React.createClass({
 
     renderActiveContent: function () {
         switch (this.state.activeTab) {
-            case 'Request':
-                return this.renderRequest()
-            case 'Response':
-                return this.renderResponse()
-            default:
-                throw new Error(`Unsupported tab: ${this.state.activeTab}`)
+            case TABS.request.id: return this.renderRequest()
+            case TABS.response.id: return this.renderResponse()
         }
     },
 
@@ -156,6 +180,11 @@ module.exports = React.createClass({
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, true)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, true)}
                                 onViewPropsClick={this.viewPropsHandler.bind(this, true)}
+                                onResize={this.props.onResize}
+                                parentRoute={fromJS({
+                                    parameterType: PARAMETER_TYPES.payload.id,
+                                    slug: this.props.method.slug,
+                                })}
                                 ref="payload"
                             />
                         </section>
@@ -163,19 +192,37 @@ module.exports = React.createClass({
                     {(formParameters) && (
                         <section>
                             <h1>Form data</h1>
-                            <Parameters parameters={formParameters} />
+                            <Parameters
+                                parameters={formParameters}
+                                parentRoute={fromJS({
+                                    parameterType: PARAMETER_TYPES.formPayload.id,
+                                    slug: this.props.method.slug,
+                                })}
+                            />
                         </section>
                     )}
                     {(uriParameters) && (
                         <section>
                             <h1>URI Parameters</h1>
-                            <Parameters parameters={uriParameters} />
+                            <Parameters
+                                parameters={uriParameters}
+                                parentRoute={fromJS({
+                                    parameterType: PARAMETER_TYPES.params.id,
+                                    slug: this.props.method.slug,
+                                })}
+                            />
                         </section>
                     )}
                     {(queryParameters) && (
                         <section>
                             <h1>Query Parameters</h1>
-                            <Parameters parameters={queryParameters} />
+                            <Parameters
+                                parameters={queryParameters}
+                                parentRoute={fromJS({
+                                    parameterType: PARAMETER_TYPES.query.id,
+                                    slug: this.props.method.slug,
+                                })}
+                            />
                         </section>
                     )}
                 </content>
@@ -209,6 +256,10 @@ module.exports = React.createClass({
                                 onSubTypeClick={this.subTypeClickhandler.bind(this, false)}
                                 onBreadCrumbsClick={this.breadcrumbClickHandler.bind(this, false)}
                                 onViewPropsClick={this.viewPropsHandler.bind(this, false)}
+                                parentRoute={fromJS({
+                                    parameterType: PARAMETER_TYPES.response.id,
+                                    slug: this.props.method.slug,
+                                })}
                                 ref="payload"
                             />
                         )}
@@ -240,21 +291,21 @@ module.exports = React.createClass({
         })
     },
 
-    viewPropsHandler: function (isRequest, path, propKey, e) {
-        e.preventDefault()
+    viewPropsHandler: function (isRequest, path) {
         var obj = this.getTabState(isRequest)
         obj.currPath = path
 
         this.setTabState(isRequest, obj, function () {
-            if (!isVisible(this.refs.tabs)) {
-                ReactDOM.findDOMNode(this.refs.tabs).scrollIntoView()
+            var el = ReactDOM.findDOMNode(this.refs.tabs)
+            if (!isVisible(el)) {
+                el.scrollIntoView()
             }
         }.bind(this))
     },
 
     breadcrumbClickHandler: function (isRequest, keyPath) {
         var obj = isRequest ? this.state.requestPayload : this.state.responsePayload
-        obj.currPath = ['root'].concat(keyPath)
+        obj.currPath = INITIAL_PAYLOAD_STATE.currPath.concat(keyPath)
         var key = isRequest ? this.state.requestPayload : this.state.responsePayload
         this.setState({
             [key]: obj,

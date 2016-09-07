@@ -26,6 +26,13 @@ module.exports = React.createClass({
             'object',
             'string',
         ]).isRequired,
+        onResize: React.PropTypes.func,
+    },
+
+    getDefaultProps: function () {
+        return {
+            onResize: _.noop,
+        }
     },
 
     render: function () {
@@ -58,7 +65,12 @@ module.exports = React.createClass({
 
     renderExample: function () {
         if (!this.props.example) return null
-        return <Example code={this.props.example} />
+        return (
+            <Example
+                code={this.props.example}
+                onResize={this.props.onResize}
+            />
+        )
     },
 
     renderMetadata: function () {

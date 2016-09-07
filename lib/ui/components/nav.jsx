@@ -1,10 +1,8 @@
 var _ = require('lodash')
-var IS_BROWSER = require('../env').IS_BROWSER
+var fromJS = require('immutable').fromJS
+var getHashFromRoute = require('../helper').getHashFromRoute
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-
-// url loader doesn't work for server rendering
-var logo = IS_BROWSER && require('../img/api-logo-white.png')
 
 module.exports = React.createClass({
 
@@ -13,17 +11,18 @@ module.exports = React.createClass({
         PureRenderMixin,
     ],
     propTypes: {
-        hash: React.PropTypes.string,
+        currentSlug: React.PropTypes.string,
         groups: React.PropTypes.array.isRequired,
+        logo: React.PropTypes.string,
         topics: React.PropTypes.array.isRequired,
     },
 
     render: function () {
         return (
             <nav>
-                {logo && (
+                {this.props.logo && (
                     <div className="logo">
-                        <img src={logo} alt="Percolate" />
+                        <img src={this.props.logo} alt="Percolate" />
                     </div>
                 )}
 
@@ -46,12 +45,12 @@ module.exports = React.createClass({
     },
 
     renderTopic: function (topic) {
-        var isSelected = (topic.slug === this.props.hash)
+        var isSelected = (topic.slug === this.props.currentSlug)
         return (
             <li key={topic.slug}>
                 <a
                     className={isSelected ? 'selected' : undefined}
-                    href={'#' + topic.slug}
+                    href={getHashFromRoute(fromJS({ slug: topic.slug }))}
                     ref={topic.slug}
                 >{topic.displayName}</a>
             </li>
@@ -59,13 +58,13 @@ module.exports = React.createClass({
     },
 
     renderGroup: function (group) {
-        var isSelected = (group.slug === this.props.hash)
-        var isExpanded = isSelected || !!_.find(group.methods, { slug: this.props.hash })
+        var isSelected = (group.slug === this.props.currentSlug)
+        var isExpanded = isSelected || !!_.find(group.methods, { slug: this.props.currentSlug })
         return (
             <li key={group.displayName}>
                 <a
                     className={isSelected ? 'selected' : undefined}
-                    href={'#' + group.slug}
+                    href={getHashFromRoute(fromJS({ slug: group.slug }))}
                     ref={group.slug}
                 >{group.displayName}</a>
                 <ul className={!isExpanded && 'hide'}>
@@ -79,8 +78,8 @@ module.exports = React.createClass({
         return (
             <li key={i}>
                 <a
-                    className={(method.slug === this.props.hash) ? 'selected' : undefined}
-                    href={'#' + method.slug}
+                    className={(method.slug === this.props.currentSlug) ? 'selected' : undefined}
+                    href={getHashFromRoute(fromJS({ slug: method.slug }))}
                     ref={method.slug}
                 >{method.displayName}</a>
             </li>

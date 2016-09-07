@@ -1,10 +1,15 @@
 var _ = require('lodash')
 var Breadcrumbs = require('./payload/breadcrumbs.jsx')
+var DeepLink = require('./deep-link.jsx')
+var getPathnameFromRoute = require('../helper').getPathnameFromRoute
+var Map = require('immutable').Map
 var parsePayload = require('../helper').parsePayload
 var Primitive = require('./payload/primitive.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 var Types = require('./payload/types.jsx')
+
+var VALUES = require('../constants').values
 
 module.exports = React.createClass({
     displayName: 'Payload',
@@ -33,6 +38,14 @@ module.exports = React.createClass({
         onSubTypeClick: React.PropTypes.func.isRequired,
         onBreadCrumbsClick: React.PropTypes.func.isRequired,
         onViewPropsClick: React.PropTypes.func.isRequired,
+        onResize: React.PropTypes.func,
+        parentRoute: React.PropTypes.instanceOf(Map).isRequired,
+    },
+
+    getDefaultProps: function () {
+        return {
+            onResize: _.noop,
+        }
     },
 
     getPathString: function (path) {
@@ -114,6 +127,7 @@ module.exports = React.createClass({
                     type={this.getCurrType(this.props.state.currPath)}
                     description={this.getCurrSchema(this.props.state.currPath).description}
                     example={this.getCurrSchema(this.props.state.currPath).example}
+                    onResize={this.props.onResize}
                 />
                 {(currType === 'object') && (
                     <div>
@@ -146,13 +160,18 @@ module.exports = React.createClass({
                 {_.map(sortedKeys, function (key) {
                     var prop = props[key]
                     var path = _.concat(this.getTypedPath(this.props.state.currPath), 'properties', key, 'types')
+                    var pathname = getPathnameFromRoute(this.props.parentRoute.merge({
+                        parameterPath: _.tail(this.props.state.currPath).concat([key]).join(VALUES.pathDelimeter.id),
+                    }))
 
                     return (
-                        <li className="property" key={key}>
+                        <li
+                            className="property"
+                            id={pathname}
+                            key={key}
+                        >
                             <div className={`property-left ${prop.required && 'required'}`}>
-                                <div className="property-key">
-                                    {key}
-                                </div>
+                                <div className="property-key"><DeepLink pathname={pathname} /> {key}</div>
                                 <Types
                                     isStacked
                                     types={this.getTypes(path)}
@@ -179,7 +198,7 @@ module.exports = React.createClass({
         if (type === 'object' && !_.isEmpty(schema.properties)) {
             viewProps = (
                 <div className="view-props-link">
-                    <a href="#" onClick={this.props.onViewPropsClick.bind(this, path, propKey)}>
+                    <a href="javascript:void(0)" onClick={this.props.onViewPropsClick.bind(this, path, propKey)}>
                         View {schema.title || type} properties
                     </a>
                 </div>
