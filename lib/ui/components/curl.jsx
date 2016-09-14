@@ -2,7 +2,7 @@ var _ = require('lodash')
 var Code = require('./code.jsx')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
-var securedBy = require('../../cli/constants').securedBy
+const SECURED_BY = require('../../cli/constants').securedBy
 
 const AUTH_HEADERS = {
     oauth2: { id: 'Bearer {your_access_token}' },
@@ -19,7 +19,7 @@ module.exports = React.createClass({
         method: React.PropTypes.oneOf(['post', 'get', 'put', 'delete']).isRequired,
         securedBy: React.PropTypes.arrayOf(
             React.PropTypes.oneOfType([
-                React.PropTypes.oneOf(_.keys(securedBy)),
+                React.PropTypes.oneOf(_.keys(SECURED_BY)),
                 React.PropTypes.shape({
                     oauth2: React.PropTypes.shape({
                         scopes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
