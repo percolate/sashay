@@ -18,7 +18,6 @@ module.exports = React.createClass({
         PureRenderMixin,
     ],
     propTypes: {
-        baseUri: React.PropTypes.string.isRequired,
         initialRoute: React.PropTypes.instanceOf(Map),
         topics: PROP_TYPES.topics.id,
         groups: React.PropTypes.array.isRequired,
@@ -103,7 +102,6 @@ module.exports = React.createClass({
             <div key={i} ref={method.slug}>
                 <Method
                     method={method}
-                    baseUri={this.props.baseUri}
                     initialRoute={this.props.initialRoute}
                     onResize={this.props.onResize}
                 />

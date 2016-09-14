@@ -1,5 +1,6 @@
 var _ = require('lodash')
 var Code = require('./code.jsx')
+var Curl = require('./curl.jsx')
 var DeepLink = require('./deep-link.jsx')
 var fromJS = require('immutable').fromJS
 var getPathnameFromRoute = require('../helper').getPathnameFromRoute
@@ -28,12 +29,15 @@ module.exports = React.createClass({
     displayName: 'Method',
     propTypes: {
         method: React.PropTypes.shape({
+            absoluteUri: React.PropTypes.string.isRequired,
             description: React.PropTypes.string,
             displayName: React.PropTypes.string.isRequired,
             method: React.PropTypes.string.isRequired,
             slug: React.PropTypes.string.isRequired,
+            queryParameters: React.PropTypes.object,
+            uriParameters: React.PropTypes.object,
+            formParameters: React.PropTypes.object,
         }).isRequired,
-        baseUri: React.PropTypes.string.isRequired,
         onResize: React.PropTypes.func,
         initialRoute: React.PropTypes.instanceOf(Map),
     },
@@ -139,11 +143,10 @@ module.exports = React.createClass({
     },
 
     renderMethod: function () {
-        var { baseUri, method } = this.props
-        var absoluteUri = baseUri + method.absoluteUri
+        var { absoluteUri, method } = this.props.method
         return (
             <section>
-                <Code lang="http" code={`${method.method.toUpperCase()} ${absoluteUri}`} />
+                <Code lang="http" code={`${method.toUpperCase()} ${absoluteUri}`} />
             </section>
         )
     },
@@ -166,10 +169,9 @@ module.exports = React.createClass({
     },
 
     renderRequest: function () {
-        var { method, uriParameters, queryParameters } = this.props.method || {}
+        var { uriParameters, queryParameters } = this.props.method || {}
         var { payload, example } = _.get(this.props.method, ['body', 'application/json']) || {}
         var formParameters = _.get(this.props.method, ['body', 'application/x-www-form-urlencoded', 'formParameters'])
-        var exampleAbsoluteUri = helper.addRequiredQueryParameters(this.props.baseUri, this.props.method)
         return (
             <row>
                 <content>
@@ -233,10 +235,10 @@ module.exports = React.createClass({
                             <Code lang="json" code={example} theme="dark" />
                         </section>
                     )}
-                    {(method && !formParameters) && (
+                    {(!formParameters) && (
                         <section>
                             <h1>Example curl request</h1>
-                                <Code lang="sh" code={helper.getCurl(exampleAbsoluteUri, method.toUpperCase(), '{your_api_key}')} theme="dark" />
+                            <Curl {...this.props.method} />
                         </section>
                     )}
                 </aside>

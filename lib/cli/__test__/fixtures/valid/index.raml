@@ -1,11 +1,36 @@
 #%RAML 0.8
 ---
-baseUri: foo
+baseUri: example.com
 title: foo
 version: foo
 documentation:
   -
     title: foo
     content: !include docs/foo.md
+securedBy:
+  - oauth2
+
+securitySchemes:
+  - oauth2:
+      type: OAuth 2.0
+      describedBy:
+        headers:
+          Authorization:
+            type: string
+        responses:
+          401:
+          403:
+      settings:
+        authorizationUri: https://example.com/authorize
+        accessTokenUri: https://example.com/token
+        authorizationGrants: [code, token]
+  - httpBasic:
+      type: x-http-basic
+      describedBy:
+        headers:
+          Authorization:
+            type: string
+        responses:
+          401:
 
 /foo: !include resources/foo.raml

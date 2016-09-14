@@ -19,7 +19,6 @@ module.exports = createClass({
     displayName: 'ControlledApp',
     mixins: [PureRenderMixin],
     propTypes: {
-        baseUri: PropTypes.string.isRequired,
         groups: PropTypes.array.isRequired,
         hash: PropTypes.string,
         topics: PROP_TYPES.topics.id,
@@ -107,7 +106,6 @@ module.exports = createClass({
     render: function () {
         return (
             <App
-                baseUri={this.props.baseUri}
                 currentSlug={this.state.currentSlug}
                 groups={this.props.groups}
                 initialRoute={this.state.initialRoute}
