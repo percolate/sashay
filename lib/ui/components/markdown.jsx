@@ -3,6 +3,17 @@ var marked = require('marked')
 var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
+var renderer = new marked.Renderer()
+renderer.link = function (href, title, text) {
+    if (!title) title = ''
+    if (!href) href = ''
+
+    var target = href.indexOf('#') === 0 ||
+        href.indexOf('mailto:') === 0 ? '_self' : '_blank'
+
+    return `<a href="${href}" title="${title}" target="${target}">${text}</a>`
+}
+
 var OPTIONS = {
     highlight: function (code, lang) {
         if (lang) {
@@ -11,6 +22,7 @@ var OPTIONS = {
 
         return hljs.highlightAuto(code).value
     },
+    renderer: renderer,
 }
 
 module.exports = React.createClass({

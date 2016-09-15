@@ -12,7 +12,6 @@ module.exports = React.createClass({
     displayName: 'App',
     mixins: [PureRenderMixin],
     propTypes: {
-        baseUri: PropTypes.string.isRequired,
         currentSlug: PropTypes.string,
         groups: PropTypes.array.isRequired,
         initialRoute: React.PropTypes.instanceOf(Map),
@@ -39,7 +38,6 @@ module.exports = React.createClass({
                     topics={this.props.topics}
                 />
                 <Main
-                    baseUri={this.props.baseUri}
                     groups={this.props.groups}
                     initialRoute={this.props.initialRoute}
                     onResize={this.props.onResize}
