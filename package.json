@@ -50,7 +50,6 @@
     "chai": "3.5.0",
     "chai-enzyme": "0.5.1",
     "codecov": "1.0.1",
-    "commander": "2.8.1",
     "enzyme": "2.4.1",
     "eslint": "1.10.3",
     "eslint-config-percolate": "git+https://git@github.com/percolate/eslint-config-percolate.git#v1.6.0",
