@@ -1,27 +1,20 @@
 .tabs {
     display: flex;
-
     .tab {
         border-bottom: 1px solid #e0e2e2;
+        cursor: pointer;
+        color: #c1c3c6;
         flex: 1 1 auto;
-
-        &.inactive:hover,
-        &.active {
-            .tab-label {
-                color: #f16421;
-            }
+        &:hover {
+            color: #f16421;
         }
-        &.inactive {
-            cursor: pointer;
-
-            .tab-label {
-                color: #c1c3c6;
-            }
+        &.active {
+            color: #f16421;
+            cursor: default;
         }
         &.active .tab-label {
             border-bottom: 2px solid #f16421;
         }
-
         .tab-label-wrapper {
             text-align: center;
             margin: 15px 0;

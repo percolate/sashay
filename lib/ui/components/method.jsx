@@ -122,7 +122,7 @@ module.exports = React.createClass({
                     </content>
                     <aside />
                 </row>
-                <row className="tabs-section">
+                <row>
                     <content>
                         <Tabs
                             tabs={_.map(TABS, 'id')}
@@ -131,11 +131,7 @@ module.exports = React.createClass({
                             ref="tabs"
                         />
                     </content>
-                    <aside>
-                        <Tabs
-                            tabs={[' ']}
-                        />
-                    </aside>
+                    <aside />
                 </row>
                 {this.renderActiveContent()}
             </div>
