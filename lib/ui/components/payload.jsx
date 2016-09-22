@@ -10,6 +10,7 @@ var React = require('react')
 var Types = require('./payload/types.jsx')
 
 var VALUES = require('../constants').values
+var PROP_TYPES = require('../constants').propTypes
 
 module.exports = React.createClass({
     displayName: 'Payload',
@@ -19,17 +20,7 @@ module.exports = React.createClass({
     ],
 
     propTypes: {
-        root: React.PropTypes.shape({
-            array: React.PropTypes.arrayOf(React.PropTypes.shape({
-                types: React.PropTypes.object.isRequired,
-            })),
-            object: React.PropTypes.arrayOf(React.PropTypes.shape({
-                properties: React.PropTypes.objectOf(React.PropTypes.shape({
-                    required: React.PropTypes.bool.isRequired,
-                    types: React.PropTypes.object.isRequired,
-                })).isRequired,
-            })),
-        }).isRequired,
+        root: PROP_TYPES.payloadSchema,
         state: React.PropTypes.shape({
             currPath: React.PropTypes.array.isRequired,
             paths: React.PropTypes.object.isRequired,
@@ -100,6 +91,22 @@ module.exports = React.createClass({
         return _.concat(path, this.getCurrType(path), this.getCurrSubType(path))
     },
 
+    onClickBreadcrumb: function (val) {
+        this.props.onBreadCrumbsClick(val)
+    },
+
+    onClickPath: function (path, propKey) {
+        this.props.onViewPropsClick(path, propKey)
+    },
+
+    onClickSubtype: function (val, i) {
+        this.props.onSubTypeClick(val, i)
+    },
+
+    onClickType: function (keyPath, type) {
+        this.props.onTypeClick(keyPath, type)
+    },
+
     render: function () {
         var types = this.getRootTypes()
         var currType = this.getRootCurrType()
@@ -115,13 +122,13 @@ module.exports = React.createClass({
                 <Types
                     types={types}
                     currType={currType}
-                    onClick={this.props.onTypeClick.bind(this, this.props.state.currPath)}
+                    onClick={this.onClickType.bind(this, this.props.state.currPath)}
                 />
                 <Types
                     isSubTypes
                     types={this.getSubTypes(this.props.state.currPath)}
                     currType={this.getCurrSubType(this.props.state.currPath)}
-                    onClick={this.props.onSubTypeClick.bind(this, this.props.state.currPath)}
+                    onClick={this.onClickSubtype.bind(this, this.props.state.currPath)}
                 />
                 <Primitive
                     type={this.getCurrType(this.props.state.currPath)}
@@ -176,12 +183,12 @@ module.exports = React.createClass({
                                     isStacked
                                     types={this.getTypes(path)}
                                     currType={this.getCurrType(path)}
-                                    onClick={this.props.onTypeClick.bind(this, path)}
+                                    onClick={this.onClickType.bind(this, path)}
                                 />
                             </div>
                             <div className="property-right">
-                                {this.renderPropTypes(path, key)}
-                                {this.renderArrayTypes(path, key)}
+                                {this.renderPropTypes(path)}
+                                {this.renderArrayTypes(path)}
                             </div>
                         </li>
                     )
@@ -190,7 +197,7 @@ module.exports = React.createClass({
         )
     },
 
-    renderPropTypes: function (path, propKey) {
+    renderPropTypes: function (path) {
         var type = this.getCurrType(path)
         var schema = this.getCurrSchema(path)
 
@@ -198,7 +205,7 @@ module.exports = React.createClass({
         if (type === 'object' && !_.isEmpty(schema.properties)) {
             viewProps = (
                 <div className="view-props-link">
-                    <a href="javascript:void(0)" onClick={this.props.onViewPropsClick.bind(this, path, propKey)}>
+                    <a href="javascript:void(0)" onClick={this.onClickPath.bind(this, path)}>
                         View {schema.title || type} properties
                     </a>
                 </div>
@@ -211,7 +218,7 @@ module.exports = React.createClass({
                     isSubTypes
                     types={this.getSubTypes(path)}
                     currType={this.getCurrSubType(path)}
-                    onClick={this.props.onSubTypeClick.bind(this, path)}
+                    onClick={this.onClickSubtype.bind(this, path)}
                 />
                 <Primitive
                     type={this.getCurrType(path)}
@@ -224,11 +231,10 @@ module.exports = React.createClass({
         )
     },
 
-    renderArrayTypes: function (arrayPath, propKey) {
+    renderArrayTypes: function (arrayPath) {
         var type = this.getCurrType(arrayPath)
         if (type !== 'array') return undefined
 
-        var arrayKey = `${propKey} [ ]`
         var path = _.concat(this.getTypedPath(arrayPath), 'types')
         return (
             <div className="array-types-wrapper">
@@ -237,9 +243,9 @@ module.exports = React.createClass({
                         <Types
                             types={this.getTypes(path)}
                             currType={this.getCurrType(path)}
-                            onClick={this.props.onTypeClick.bind(this, path)}
+                            onClick={this.onClickType.bind(this, path)}
                         />
-                        {this.renderPropTypes(path, arrayKey)}
+                        {this.renderPropTypes(path)}
                     </div>
             </div>
         )

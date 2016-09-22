@@ -9,18 +9,18 @@ module.exports = React.createClass({
     propTypes: {
         activeTab: React.PropTypes.string.isRequired,
         tabs: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
-        onClick: React.PropTypes.func,
+        onChange: React.PropTypes.func,
     },
 
     getDefaultProps: function () {
         return {
-            onClick: noop,
+            onChange: noop,
         }
     },
 
     onClick: function (tab) {
         if (this.props.activeTab === tab) return
-        this.props.onClick(tab)
+        this.props.onChange(tab)
     },
 
     render: function () {

@@ -20,6 +20,10 @@ module.exports = createClass({
         }
     },
 
+    onClick: function (path) {
+        this.props.onClick(path)
+    },
+
     render: function () {
         return (
             <ul className="breadcrumbs">
@@ -42,7 +46,7 @@ module.exports = createClass({
                                 <a
                                     href="javascript:void(0)"
                                     onClick={(!isLast)
-                                        ? this.props.onClick.bind(undefined, pathKey.get('schemaKeyPath').toJS())
+                                        ? this.onClick.bind(this, pathKey.get('schemaKeyPath').toJS())
                                         : noop
                                     }
                                 >{name}</a>
