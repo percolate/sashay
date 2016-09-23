@@ -4,8 +4,8 @@ nav {
     @logo-height: 32px;
     @right-border-width: 1px;
 
-    background-color: #fafcfc;
-    border-right: solid @right-border-width #e0e2e2;
+    background-color: @COLOR_BACKGROUND_2;
+    border-right: solid @right-border-width @COLOR_FOREGROUND_5;
     box-sizing: border-box;
     height: 100vh;
     overflow-y: scroll;
@@ -14,7 +14,7 @@ nav {
     width: @nav-width;
 
     .logo {
-        background-color: #f16421;
+        background-color: @COLOR_ACCENT_1;
         box-sizing: border-box;
         height: @logo-height;
         line-height: @logo-height;
@@ -41,23 +41,23 @@ nav {
         }
 
         h2 {
-            color: #555555;
+            color: @COLOR_FOREGROUND_2;
             font-weight: bold;
             margin-bottom: 15px;
             text-transform: uppercase;
         }
         a {
-            color: #999999;
+            color: @COLOR_FOREGROUND_3;
             display: block;
             line-height: 30px;
 
             &.selected {
-                background-color: #eaebeb;
-                color: #555555;
+                background-color: @COLOR_BACKGROUND_4;
+                color: @COLOR_FOREGROUND_2;
             }
             &:hover {
-                background-color: #f3f3f3;
-                color: #555555;
+                background-color: @COLOR_BACKGROUND_3;
+                color: @COLOR_FOREGROUND_2;
             }
         }
         ul {

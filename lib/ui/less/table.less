@@ -1,5 +1,5 @@
 .table {
-    @border-color: #d2d2d2;
+    @border-color: @COLOR_FOREGROUND_5;
     table {
         border: 1px solid @border-color;
         border-collapse: collapse;
@@ -20,12 +20,12 @@
         }
         thead tr th {
             border-bottom: 1px solid @border-color;
-            color: #999999;
+            color: @COLOR_FOREGROUND_3;
             font-weight: normal;
             text-transform: capitalize;
         }
         tbody tr:nth-child(odd) {
-            background-color: #fafafa;
+            background-color: @COLOR_BACKGROUND_2;
         }
     }
 }
