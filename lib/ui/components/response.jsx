@@ -1,13 +1,16 @@
 var Code = require('./code.jsx')
+var Dropdown = require('./dropdown-controller.jsx')
 var fromJS = require('immutable').fromJS
-var getSuccessResponseFromMethod = require('../helper').getSuccessResponseFromMethod
+var get = require('lodash/get')
+var head = require('lodash/head')
+var includes = require('lodash/includes')
+var keys = require('lodash/keys')
 var Map = require('immutable').Map
 var noop = require('lodash/noop')
 var PayloadController = require('./payload-controller.jsx')
 var PropTypes = require('react').PropTypes
 var React = require('react')
 
-var PARAMETER_TYPES = require('../constants').parameterTypes
 var PROP_TYPES = require('../constants').propTypes
 
 module.exports = React.createClass({
@@ -19,6 +22,14 @@ module.exports = React.createClass({
         onResize: PropTypes.func,
     },
 
+    componentWillMount: function () {
+        if (!this.props.initialRoute) return
+        if (!includes(keys(this.props.method.responses), this.props.initialRoute.get('parameterType'))) return
+        this.setState({
+            statusCode: this.props.initialRoute.get('parameterType'),
+        })
+    },
+
     getDefaultProps: function () {
         return {
             onChange: noop,
@@ -26,20 +37,46 @@ module.exports = React.createClass({
         }
     },
 
+    getInitialState: function () {
+        return {
+            statusCode: head(keys(this.props.method.responses)),
+        }
+    },
+
+    onChangeStatus: function (statusCode) {
+        this.setState({ statusCode: statusCode })
+    },
+
     render: function () {
-        var { payload, example } = getSuccessResponseFromMethod(this.props.method) || {}
+        var responseKeyPath = [
+            'responses',
+            this.state.statusCode,
+            'body',
+            'application/json',
+        ]
+        var { payload, example } = get(this.props.method, responseKeyPath) || {}
         return (
             <row>
                 <content>
                     <section>
-                        <h1>{payload ? 'Body' : 'Empty body'}</h1>
+                        <h1>
+                            {payload ? 'Body' : 'Empty body'}
+                            {(this.state.statusCode) && (
+                                <Dropdown
+                                    className="push-left-medium"
+                                    onChange={this.onChangeStatus}
+                                    options={fromJS(keys(this.props.method.responses))}
+                                    value={this.state.statusCode}
+                                />
+                            )}
+                        </h1>
                         {(payload) && (
                             <PayloadController
                                 initialRoute={this.props.initialRoute}
                                 onChange={this.props.onChange}
                                 onResize={this.props.onResize}
                                 parentRoute={fromJS({
-                                    parameterType: PARAMETER_TYPES.response.id,
+                                    parameterType: this.state.statusCode,
                                     slug: this.props.method.slug,
                                 })}
                                 schema={payload}

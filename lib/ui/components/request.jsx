@@ -9,7 +9,7 @@ var PayloadController = require('./payload-controller.jsx')
 var PropTypes = require('react').PropTypes
 var React = require('react')
 
-var PARAMETER_TYPES = require('../constants').parameterTypes
+var REQUEST_PARAMETER_TYPES = require('../constants').requestParameterTypes
 var PROP_TYPES = require('../constants').propTypes
 
 module.exports = React.createClass({
@@ -43,7 +43,7 @@ module.exports = React.createClass({
                                 onChange={this.props.onChange}
                                 onResize={this.props.onResize}
                                 parentRoute={fromJS({
-                                    parameterType: PARAMETER_TYPES.payload.id,
+                                    parameterType: REQUEST_PARAMETER_TYPES.payload.id,
                                     slug: this.props.method.slug,
                                 })}
                                 schema={payload}
@@ -56,7 +56,7 @@ module.exports = React.createClass({
                             <Parameters
                                 parameters={formParameters}
                                 parentRoute={fromJS({
-                                    parameterType: PARAMETER_TYPES.formPayload.id,
+                                    parameterType: REQUEST_PARAMETER_TYPES.formPayload.id,
                                     slug: this.props.method.slug,
                                 })}
                             />
@@ -68,7 +68,7 @@ module.exports = React.createClass({
                             <Parameters
                                 parameters={uriParameters}
                                 parentRoute={fromJS({
-                                    parameterType: PARAMETER_TYPES.params.id,
+                                    parameterType: REQUEST_PARAMETER_TYPES.params.id,
                                     slug: this.props.method.slug,
                                 })}
                             />
@@ -80,7 +80,7 @@ module.exports = React.createClass({
                             <Parameters
                                 parameters={queryParameters}
                                 parentRoute={fromJS({
-                                    parameterType: PARAMETER_TYPES.query.id,
+                                    parameterType: REQUEST_PARAMETER_TYPES.query.id,
                                     slug: this.props.method.slug,
                                 })}
                             />
