@@ -35,7 +35,7 @@ module.exports = React.createClass({
 
     componentWillMount: function () {
         if (this.props.initialRoute.get('slug') !== this.props.method.slug) return
-        var isRequest = includes(map(REQUEST_PARAMETER_TYPES, 'id'), this.props.initialRoute.get('parameterType'))
+        var isRequest = !this.props.initialRoute.get('parameterType') || includes(map(REQUEST_PARAMETER_TYPES, 'id'), this.props.initialRoute.get('parameterType'))
         var tab = (isRequest) ? TABS.request.id : TABS.response.id
         this.setState({
             initialRoute: this.props.initialRoute,
