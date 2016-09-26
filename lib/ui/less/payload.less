@@ -52,19 +52,16 @@
             padding: @row-spacing 10px;
         }
         .property-left {
-            @asterix-width: 10px;
             text-align: right;
 
             &.required .property-key:after {
                 color: @COLOR_ACCENT_1;
-                content: "*";
-                position: absolute;
-                text-align: center;
-                width: @asterix-width;
+                content: " *";
             }
 
             .property-key {
                 font-weight: bold;
+                white-space: nowrap
             }
         }
         .property-right {
