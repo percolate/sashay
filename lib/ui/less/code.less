@@ -19,7 +19,7 @@
         word-wrap: break-word;
     }
     pre code {
-        background: #fafcfc;
+        background: @COLOR_BACKGROUND_2;
         display: block;
         overflow-x: auto;
         padding: 20px;
@@ -27,7 +27,7 @@
 
     &.dark {
         pre code {
-            background: #33383a;
+            background: @COLOR_BACKGROUND_5;
         }
     }
 
@@ -40,7 +40,7 @@
     .hljs-meta-keyword,
     .hljs-doctag,
     .hljs-name {
-        color: #77bcd7;
+        color: @COLOR_SYNTAX_1;
         font-weight: 500;
     }
     .hljs-type,
@@ -51,12 +51,12 @@
     .hljs-quote,
     .hljs-template-tag,
     .hljs-deletion {
-      color: #ffae54;
+      color: @COLOR_SYNTAX_2;
     }
 
     .hljs-title,
     .hljs-section {
-        color: #880000;
+        color: @COLOR_SYNTAX_3;
         font-weight: bold;
     }
 
@@ -67,22 +67,22 @@
     .hljs-link,
     .hljs-selector-attr,
     .hljs-selector-pseudo {
-        color: #BC6060;
+        color: @COLOR_SYNTAX_4;
     }
     .hljs-literal {
-        color: #2b5b91;
+        color: @COLOR_SYNTAX_5;
     }
     .hljs-built_in,
     .hljs-bullet,
     .hljs-code,
     .hljs-addition {
-        color: #397300;
+        color: @COLOR_SYNTAX_6;
     }
     .hljs-meta {
-        color: #1f7199;
+        color: @COLOR_SYNTAX_7;
     }
     .hljs-meta-string {
-        color: #4d99bf;
+        color: @COLOR_SYNTAX_8;
     }
     .hljs-emphasis {
         font-style: italic;
@@ -92,10 +92,10 @@
     }
 }
 code.inline {
-    background-color: #fafcfc;
+    background-color: @COLOR_BACKGROUND_2;
     border-radius: 4px;
-    border: 1px solid #e0e2e2;
-    color: #b93d6a;
+    border: 1px solid @COLOR_FOREGROUND_5;
+    color: @COLOR_ACCENT_3;
     font-size: 0.8em;
     padding: 0 0.3em;
     word-wrap: break-word;

@@ -44,6 +44,10 @@ module.exports = React.createClass({
         })
     },
 
+    componentWillReceiveProps: function () {
+        this.setState(this.getInitialState())
+    },
+
     onClickBreadcrumb: function (keyPath) {
         this.setState({
             keyPath: this.getInitialState().keyPath.concat(keyPath),

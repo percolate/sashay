@@ -3,6 +3,7 @@ var DeepLink = require('./deep-link.jsx')
 var findDOMNode = require('react-dom').findDOMNode
 var fromJS = require('immutable').fromJS
 var getPathnameFromRoute = require('../helper').getPathnameFromRoute
+var includes = require('lodash/includes')
 var isVisible = require('../helper').isVisible
 var Map = require('immutable').Map
 var map = require('lodash/map')
@@ -17,7 +18,7 @@ var TABS = {
     request: { id: 'Request' },
     response: { id: 'Response' },
 }
-var PARAMETER_TYPES = require('../constants').parameterTypes
+var REQUEST_PARAMETER_TYPES = require('../constants').requestParameterTypes
 var PROP_TYPES = require('../constants').propTypes
 
 module.exports = React.createClass({
@@ -26,6 +27,20 @@ module.exports = React.createClass({
         method: PROP_TYPES.method,
         onResize: React.PropTypes.func,
         initialRoute: React.PropTypes.instanceOf(Map),
+    },
+
+    componentDidUpdate: function () {
+        this.props.onResize()
+    },
+
+    componentWillMount: function () {
+        if (this.props.initialRoute.get('slug') !== this.props.method.slug) return
+        var isRequest = !this.props.initialRoute.get('parameterType') || includes(map(REQUEST_PARAMETER_TYPES, 'id'), this.props.initialRoute.get('parameterType'))
+        var tab = (isRequest) ? TABS.request.id : TABS.response.id
+        this.setState({
+            initialRoute: this.props.initialRoute,
+            tab: tab,
+        })
     },
 
     getDefaultProps: function () {
@@ -40,20 +55,6 @@ module.exports = React.createClass({
             initialRoute: undefined,
             tab: TABS.request.id,
         }
-    },
-
-    componentDidUpdate: function () {
-        this.props.onResize()
-    },
-
-    componentWillMount: function () {
-        if (this.props.initialRoute.get('slug') !== this.props.method.slug) return
-        var isRequest = this.props.initialRoute.get('parameterType') !== PARAMETER_TYPES.response.id
-        var tab = (isRequest) ? TABS.request.id : TABS.response.id
-        this.setState({
-            initialRoute: this.props.initialRoute,
-            tab: tab,
-        })
     },
 
     onChangeTab: function (tab) {

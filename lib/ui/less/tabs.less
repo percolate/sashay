@@ -1,19 +1,19 @@
 .tabs {
     display: flex;
     .tab {
-        border-bottom: 1px solid #e0e2e2;
+        border-bottom: 1px solid @COLOR_FOREGROUND_5;
         cursor: pointer;
-        color: #c1c3c6;
+        color: @COLOR_FOREGROUND_4;
         flex: 1 1 auto;
         &:hover {
-            color: #f16421;
+            color: @COLOR_ACCENT_1;
         }
         &.active {
-            color: #f16421;
+            color: @COLOR_ACCENT_1;
             cursor: default;
         }
         &.active .tab-label {
-            border-bottom: 2px solid #f16421;
+            border-bottom: 2px solid @COLOR_ACCENT_1;
         }
         .tab-label-wrapper {
             text-align: center;

@@ -4,7 +4,7 @@
     @header-spacing: @spacing * 1.5;
 
     .header () {
-        color: #999;
+        color: @COLOR_FOREGROUND_3;
         font-size: 13px;
         font-weight: bold;
     }
@@ -18,12 +18,12 @@
     .example {
         margin-top: @spacing;
         .example-label {
-            color: #999999;
+            color: @COLOR_FOREGROUND_3;
             font-size: 13px;
             padding-right: 5px;
         }
         .example-toggler {
-            color: #2477b2;
+            color: @COLOR_ACCENT_2;
             text-decoration: none;
 
             &:hover {
@@ -39,7 +39,7 @@
 
     .properties {
         display: table;
-        border-top: solid 1px #e0e2e2;
+        border-top: solid 1px @COLOR_FOREGROUND_5;
         width: 100%;
 
         > .property {
@@ -47,24 +47,21 @@
         }
 
         .property-left, .property-right {
-            border-bottom: solid 1px #e0e2e2;
+            border-bottom: solid 1px @COLOR_FOREGROUND_5;
             display: table-cell;
             padding: @row-spacing 10px;
         }
         .property-left {
-            @asterix-width: 10px;
             text-align: right;
 
             &.required .property-key:after {
-                color: #ff7800;
-                content: "*";
-                position: absolute;
-                text-align: center;
-                width: @asterix-width;
+                color: @COLOR_ACCENT_1;
+                content: " *";
             }
 
             .property-key {
                 font-weight: bold;
+                white-space: nowrap
             }
         }
         .property-right {
@@ -86,7 +83,7 @@
             display: inline-block;
 
             &:after {
-                color: #999999;
+                color: @COLOR_FOREGROUND_3;
                 content: "|";
             }
             &:last-child:after {
@@ -118,14 +115,14 @@
             }
 
             &.selectable a {
-                color: #2477b2;
+                color: @COLOR_ACCENT_2;
 
                 &:hover {
                     text-decoration: underline;
                 }
             }
             &.selected a {
-                color: #999999;
+                color: @COLOR_FOREGROUND_3;
                 cursor: default;
             }
         }
@@ -140,7 +137,7 @@
         }
 
         .array-types {
-            border-left: solid 3px #e0e2e2;
+            border-left: solid 3px @COLOR_FOREGROUND_5;
             padding-left: 15px;
         }
     }
@@ -165,7 +162,7 @@
             }
 
             .metadata-label {
-                color: #999999;
+                color: @COLOR_FOREGROUND_3;
                 font-size: 13px;
                 padding-right: 5px;
             }
@@ -190,7 +187,7 @@
         margin-top: @spacing;
 
         a {
-            color: #2477b2;
+            color: @COLOR_ACCENT_2;
             text-decoration: none;
 
             &:hover {
