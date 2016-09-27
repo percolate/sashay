@@ -1,0 +1,14 @@
+#%RAML 0.8
+---
+baseUri: example.com
+title: foo
+version: foo
+
+/foo:
+  displayName: a
+  delete:
+    displayName: b
+    responses:
+      204:
+        body:
+          application/json: !!null
