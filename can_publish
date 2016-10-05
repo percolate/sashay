@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+var lt = require('semver').lt
+var remoteVersion = process.argv[2] || '0.0.0'
+process.exit(lt(remoteVersion, require('./package.json').version) ? 0 : 1)
