@@ -1,5 +1,5 @@
 #!/bin/bash
 if ./can_publish `npm show sashay version` ; then
     echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
-    npm publish
+    npm publish --access public
 fi
