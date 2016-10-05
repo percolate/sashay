@@ -1,0 +1,8 @@
+.env
+**/coverage/
+**/__test__/
+/build/
+.eslintrc
+circle.yml
+codecov.yml
+Makefile

@@ -1,4 +1,5 @@
 .env
+.npmrc
 /build/
 **/coverage/
 /node_modules/

@@ -10,3 +10,10 @@ test:
     - ./node_modules/.bin/codecov:
         environment:
           CODECOV_TOKEN: "a1186210-a38e-4e2d-a4e9-87dbe0f1ddde"
+deployment:
+  live:
+    branch: master
+    commands:
+      - ./publish $NPMJS_TOKEN:
+          environment:
+            NPMJS_TOKEN: "$NPMJS_TOKEN"

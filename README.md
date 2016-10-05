@@ -8,7 +8,7 @@ A library for generating API documentation from a [RAML v0.8](https://github.com
 ## Installation
 
 ```
-npm install git+ssh://git@sashay.git.prclt.net:percolate/sashay.git
+npm install sashay
 ```
 
 ## Usage
@@ -63,3 +63,12 @@ aws s3 sync ./build/ s3://your-bucket/ \
     --include '*.css' \
     --include '*.html'
 ```
+
+## Publishing
+
+1. Run `make version v=x.x.x`.
+2. Create a pull request and merge.
+
+## License
+
+See [LICENSE](https://github.com/percolate/sashay/blob/master/LICENSE.md).

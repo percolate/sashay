@@ -25,3 +25,8 @@ test-cli:
 
 test-ui:
 	./node_modules/.bin/karma start ./lib/ui/__test__/karma.config.js
+
+version:
+	git checkout -b version
+	npm version $(v)
+	git push origin version --tags
