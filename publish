@@ -1,5 +1,16 @@
-#!/bin/bash
-if ./can_publish `npm show sashay version` ; then
-    echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
-    npm publish --access public
-fi
+#!/usr/bin/env node
+var execSync = require('child_process').execSync
+var format = require('util').format
+var gt = require('semver').gt
+var pkg = require('./package.json')
+
+var TOKEN = process.argv[2]
+
+publish()
+
+function publish () {
+    var remoteVersion = execSync(format('npm show %s version', pkg.name)).toString().trim() || '0.0.0'
+    if (gt(remoteVersion, pkg.version)) return
+    execSync(format('echo //registry.npmjs.org/:_authToken=%s > ./.npmrc', TOKEN))
+    execSync('npm publish --access public')
+}
