@@ -9,7 +9,10 @@ var TOKEN = process.argv[2]
 publish()
 
 function publish () {
-    var remoteVersion = execSync(format('npm show %s version', pkg.name)).toString().trim() || '0.0.0'
+    var remoteVersion = '0.0.0'
+    try {
+        remoteVersion = execSync(format('npm show %s version', pkg.name)).toString().trim() || remoteVersion
+    } catch (ex) {}
     if (gt(remoteVersion, pkg.version)) return
     execSync(format('echo //registry.npmjs.org/:_authToken=%s > ./.npmrc', TOKEN))
     execSync('npm publish --access public')
