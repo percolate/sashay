@@ -51,6 +51,10 @@ sashay(options)
 
     Watches files for changes and rebuilds. In `'web'` mode, starts a preview server at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). Default `false`.
 
+- **`validate`** `Boolean`
+
+    Whether to validate RAML schema or not.
+
 ## Deploying website to AWS S3
 
 Using the [AWS CLI](https://aws.amazon.com/cli/):
