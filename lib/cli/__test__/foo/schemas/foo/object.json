@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "b": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "d"
+        ],
+        "properties": {
+          "c": {
+            "description": "my object description",
+            "type": "string"
+          },
+          "d": {
+            "description": "a unique ID",
+            "type": "integer"
+          }
+        }
+      }
+    }
+  }
+}

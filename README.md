@@ -35,9 +35,9 @@ sashay(options)
 
     The build directory. Default `'./build/'`.
 
-- **`output`** `String`
+- **`output`** `Array`
 
-    The output format. Must be `'json'` or `'web'`. Default `'json'`.
+    The output format. Must be `'json'` or `'web'`. Default `['json']`.
 
 - **`quiet`** `Boolean`
 
