@@ -1,6 +1,6 @@
 .env
 .npmrc
 /build/
+/tmp/
 **/coverage/
 /node_modules/
-**/__test__/**/temp
