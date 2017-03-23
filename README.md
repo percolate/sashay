@@ -35,9 +35,9 @@ sashay(options)
 
     The build directory. Default `'./build/'`.
 
-- **`output`** `String`
+- **`output`** `Array`
 
-    The output format. Must be `'json'` or `'web'`. Default `'json'`.
+    The output format. Must be `'json'` or `'web'`. Default `['json']`.
 
 - **`quiet`** `Boolean`
 
@@ -50,6 +50,10 @@ sashay(options)
 - **`watch`** `Boolean`
 
     Watches files for changes and rebuilds. In `'web'` mode, starts a preview server at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). Default `false`.
+
+- **`validate`** `Boolean`
+
+    Whether to validate RAML schema or not.
 
 ## Deploying website to AWS S3
 
