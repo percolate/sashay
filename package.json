@@ -1,7 +1,7 @@
 {
   "name": "sashay",
   "description": "A documentation generator for the Percolate API.",
-  "version": "3.6.2",
+  "version": "3.6.3",
   "engines": {
     "node": "4.2.x",
     "npm": "2.14.x"
