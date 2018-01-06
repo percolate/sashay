@@ -3,8 +3,8 @@
   "description": "A documentation generator for the Percolate API.",
   "version": "3.6.3",
   "engines": {
-    "node": "4.2.x",
-    "npm": "2.14.x"
+    "node": "4.2.x || 8.x.x",
+    "npm": "2.14.x || 5.x.x"
   },
   "bin": {
     "sashay": "./bin/sashay"
