@@ -15,7 +15,6 @@ dev-ui:
 
 style:
 	./node_modules/.bin/eslint ./lib/ \
-		--config ./node_modules/eslint-config-percolate/.eslintrc \
 		--ext '.js,.jsx' \
 		--ignore-pattern **/coverage/**
 
