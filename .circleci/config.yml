@@ -19,10 +19,10 @@ jobs:
 
   eslint:
     docker:
-      - image: node
+      - image: node:8
     steps:
       - checkout
-      - run: npm install eslint
+      - run: npm install
       - run: make style
 
   tests:
@@ -37,10 +37,10 @@ jobs:
 
   publish:
     docker:
-      - image: node
+      - image: node:8
     steps:
       - checkout
       - run: echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
-      - run: npm install semver
+      - run: npm install
       - deploy:
           command: ./publish
