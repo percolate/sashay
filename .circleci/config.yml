@@ -1,6 +1,14 @@
 version: 2
+
+workflows:
+  version: 2
+  sashay:
+    jobs:
+      - legacy
+
+
 jobs:
-  build:
+  legacy:
     docker:
       - image: circleci/node:8-browsers
     steps:
