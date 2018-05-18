@@ -42,4 +42,4 @@ jobs:
       - checkout
       - run: echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
       - deploy:
-          command: ./publish $NPMJS_TOKEN
+          command: ./publish
