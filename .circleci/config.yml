@@ -4,25 +4,42 @@ workflows:
   version: 2
   sashay:
     jobs:
-      - legacy
+      - eslint
+      - tests
+      - publish:
+          requires:
+            - eslint
+            - tests
+          filters:
+            branches:
+              only: master
 
 
 jobs:
-  legacy:
+
+  eslint:
+    docker:
+      - image: node
+    steps:
+      - checkout
+      - run: npm install
+      - run: make style
+
+  tests:
     docker:
       - image: circleci/node:8-browsers
     steps:
       - checkout
       - run: npm install
-      - run: make style
       - run: make coverage-cli
       - run: make coverage-ui
-      - run:
-          command: ./node_modules/.bin/codecov
-          environment:
-            CODECOV_TOKEN: "a1186210-a38e-4e2d-a4e9-87dbe0f1ddde"
+      - run: ./node_modules/.bin/codecov
+
+  publish:
+    docker:
+      - image: node
+    steps:
+      - checkout
+      - run: echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
       - deploy:
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ./publish $NPMJS_TOKEN
-            fi
+          command: ./publish $NPMJS_TOKEN
