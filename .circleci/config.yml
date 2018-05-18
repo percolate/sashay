@@ -12,7 +12,7 @@ workflows:
             - tests
           filters:
             branches:
-              only: cci_v2
+              only: master
 
 
 jobs:
