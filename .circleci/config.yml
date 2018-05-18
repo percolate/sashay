@@ -22,7 +22,7 @@ jobs:
       - image: node
     steps:
       - checkout
-      - run: npm install
+      - run: npm install eslint
       - run: make style
 
   tests:
@@ -41,5 +41,6 @@ jobs:
     steps:
       - checkout
       - run: echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
+      - run: npm install semver
       - deploy:
           command: ./publish
