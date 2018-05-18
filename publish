@@ -12,6 +12,5 @@ function publish () {
         remoteVersion = execSync(format('npm show %s version', pkg.name)).toString().trim() || remoteVersion
     } catch (ex) {}
     if (gt(remoteVersion, pkg.version)) return
-    execSync('npm pack')
-    // execSync('npm publish --access public')
+    execSync('npm publish --access public')
 }
