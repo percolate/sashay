@@ -1,0 +1,45 @@
+version: 2
+
+workflows:
+  version: 2
+  sashay:
+    jobs:
+      - eslint
+      - tests
+      - publish:
+          requires:
+            - eslint
+            - tests
+          filters:
+            branches:
+              only: master
+
+jobs:
+
+  eslint:
+    docker:
+      - image: node:8
+    steps:
+      - checkout
+      - run: npm install
+      - run: make style
+
+  tests:
+    docker:
+      - image: circleci/node:8-browsers
+    steps:
+      - checkout
+      - run: npm install
+      - run: make coverage-cli
+      - run: make coverage-ui
+      - run: ./node_modules/.bin/codecov
+
+  publish:
+    docker:
+      - image: node:8
+    steps:
+      - checkout
+      - run: echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
+      - run: npm install
+      - deploy:
+          command: ./publish
