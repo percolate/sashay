@@ -46,6 +46,7 @@
     "webpack-dev-server": "1.14.1"
   },
   "devDependencies": {
+    "@percolate/publisher": "^0.0.5",
     "chai": "3.5.0",
     "chai-enzyme": "0.5.1",
     "codecov": "1.0.1",
