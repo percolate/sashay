@@ -18,7 +18,7 @@ style:
 		--ext '.js,.jsx' \
 		--ignore-pattern **/coverage/**
 	
-	./node_modules/.bin/prettier README.md .eslintrc.js "lib/**/*.{js,jsx}" --list-different
+	./node_modules/.bin/prettier README.md .eslintrc.js .circleci/config.yml "lib/**/*.{js,jsx}" --list-different
 
 test-cli:
 	./node_modules/.bin/mocha ./lib/cli/__test__/*.spec.js \

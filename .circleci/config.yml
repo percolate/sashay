@@ -15,13 +15,12 @@ workflows:
               only: master
 
 jobs:
-
   eslint:
     docker:
-      - image: node:8
+      - image: node:10
     steps:
       - checkout
-      - run: npm install
+      - run: yarn install --frozen-lockfile
       - run: make style
 
   tests:
@@ -29,17 +28,17 @@ jobs:
       - image: circleci/node:8-browsers
     steps:
       - checkout
-      - run: npm install
+      - run: yarn install --frozen-lockfile
       - run: make coverage-cli
       - run: make coverage-ui
       - run: ./node_modules/.bin/codecov
 
   publish:
     docker:
-      - image: node:8
+      - image: node:10
     steps:
       - checkout
       - run: echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
-      - run: npm install
+      - run: yarn install --frozen-lockfile
       - deploy:
           command: ./node_modules/.bin/publish
