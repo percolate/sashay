@@ -1,4 +1,13 @@
-version: 2
+version: 2.1
+
+docker: &image
+  - image: gmathieu/node-browsers:3.0.0
+
+commands:
+  install:
+    steps:
+      - checkout
+      - run: yarn install --frozen-lockfile
 
 workflows:
   version: 2
@@ -16,29 +25,23 @@ workflows:
 
 jobs:
   eslint:
-    docker:
-      - image: node:10
+    docker: *image
     steps:
-      - checkout
-      - run: yarn install --frozen-lockfile
+      - install
       - run: make style
 
   tests:
-    docker:
-      - image: circleci/node:8-browsers
+    docker: *image
     steps:
-      - checkout
-      - run: yarn install --frozen-lockfile
+      - install
       - run: make coverage-cli
       - run: make coverage-ui
       - run: ./node_modules/.bin/codecov
 
   publish:
-    docker:
-      - image: node:10
+    docker: *image
     steps:
-      - checkout
+      - install
       - run: echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
-      - run: yarn install --frozen-lockfile
       - deploy:
           command: ./node_modules/.bin/publish
