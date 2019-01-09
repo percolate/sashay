@@ -22,32 +22,38 @@ module.exports = React.createClass({
         onResize: PropTypes.func,
     },
 
-    componentWillMount: function () {
+    componentWillMount: function() {
         if (!this.props.initialRoute) return
-        if (!includes(keys(this.props.method.responses), this.props.initialRoute.get('parameterType'))) return
+        if (
+            !includes(
+                keys(this.props.method.responses),
+                this.props.initialRoute.get('parameterType')
+            )
+        )
+            return
         this.setState({
             statusCode: this.props.initialRoute.get('parameterType'),
         })
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             onChange: noop,
             onResize: noop,
         }
     },
 
-    getInitialState: function () {
+    getInitialState: function() {
         return {
             statusCode: head(keys(this.props.method.responses)),
         }
     },
 
-    onChangeStatus: function (statusCode) {
+    onChangeStatus: function(statusCode) {
         this.setState({ statusCode: statusCode })
     },
 
-    render: function () {
+    render: function() {
         var responseKeyPath = [
             'responses',
             this.state.statusCode,
@@ -61,16 +67,18 @@ module.exports = React.createClass({
                     <section>
                         <h1>
                             {payload ? 'Body' : 'Empty body'}
-                            {(this.state.statusCode) && (
+                            {this.state.statusCode && (
                                 <Dropdown
                                     className="push-left-medium"
                                     onChange={this.onChangeStatus}
-                                    options={fromJS(keys(this.props.method.responses))}
+                                    options={fromJS(
+                                        keys(this.props.method.responses)
+                                    )}
                                     value={this.state.statusCode}
                                 />
                             )}
                         </h1>
-                        {(payload) && (
+                        {payload && (
                             <PayloadController
                                 initialRoute={this.props.initialRoute}
                                 onChange={this.props.onChange}
@@ -85,14 +93,10 @@ module.exports = React.createClass({
                     </section>
                 </content>
                 <aside>
-                    {(example) && (
+                    {example && (
                         <section>
                             <h1>Example response</h1>
-                            <Code
-                                code={example}
-                                lang="json"
-                                theme="dark"
-                            />
+                            <Code code={example} lang="json" theme="dark" />
                         </section>
                     )}
                 </aside>

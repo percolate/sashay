@@ -12,35 +12,37 @@ module.exports = React.createClass({
         onChange: React.PropTypes.func,
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             onChange: noop,
         }
     },
 
-    onClick: function (tab) {
+    onClick: function(tab) {
         if (this.props.activeTab === tab) return
         this.props.onChange(tab)
     },
 
-    render: function () {
+    render: function() {
         return (
             <div className="tabs">
-                {this.props.tabs.map(function (tab) {
-                    return (
-                        <div
-                            className={classNames('tab', {
-                                active: (tab === this.props.activeTab),
-                            })}
-                            key={tab}
-                            onClick={this.onClick.bind(this, tab)}
-                        >
-                            <div className="tab-label-wrapper">
-                                <span className="tab-label">{tab}</span>
+                {this.props.tabs.map(
+                    function(tab) {
+                        return (
+                            <div
+                                className={classNames('tab', {
+                                    active: tab === this.props.activeTab,
+                                })}
+                                key={tab}
+                                onClick={this.onClick.bind(this, tab)}
+                            >
+                                <div className="tab-label-wrapper">
+                                    <span className="tab-label">{tab}</span>
+                                </div>
                             </div>
-                        </div>
-                    )
-                }.bind(this))}
+                        )
+                    }.bind(this)
+                )}
             </div>
         )
     },

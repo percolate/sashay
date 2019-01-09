@@ -12,21 +12,33 @@ module.exports = React.createClass({
     propTypes: {
         absoluteUri: React.PropTypes.string.isRequired,
         queryParameters: React.PropTypes.object,
-        method: React.PropTypes.oneOf(['post', 'get', 'put', 'delete']).isRequired,
+        method: React.PropTypes.oneOf(['post', 'get', 'put', 'delete'])
+            .isRequired,
         securedBy: React.PropTypes.arrayOf(
             React.PropTypes.oneOfType([
                 React.PropTypes.oneOf(_.keys(SECURED_BY)),
                 React.PropTypes.shape({
                     oauth2: React.PropTypes.shape({
-                        scopes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
+                        scopes: React.PropTypes.arrayOf(React.PropTypes.string)
+                            .isRequired,
                     }).isRequired,
                 }),
             ])
         ).isRequired,
     },
 
-    render: function () {
-        var url = addRequiredQueryParameters(this.props.absoluteUri, this.props.method, this.props.queryParameters)
-        return <Code lang="sh" code={getCurl(url, this.props.method, this.props.securedBy)} theme="dark" />
+    render: function() {
+        var url = addRequiredQueryParameters(
+            this.props.absoluteUri,
+            this.props.method,
+            this.props.queryParameters
+        )
+        return (
+            <Code
+                lang="sh"
+                code={getCurl(url, this.props.method, this.props.securedBy)}
+                theme="dark"
+            />
+        )
     },
 })

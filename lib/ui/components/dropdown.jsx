@@ -17,7 +17,7 @@ module.exports = React.createClass({
         value: PropTypes.string.isRequired,
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             isOpen: false,
             onClickSwitch: noop,
@@ -25,40 +25,45 @@ module.exports = React.createClass({
         }
     },
 
-    onClickSwitch: function () {
+    onClickSwitch: function() {
         this.props.onClickSwitch()
     },
 
-    onClickOption: function (option) {
+    onClickOption: function(option) {
         this.props.onClickOption(option)
     },
 
-    render: function () {
+    render: function() {
         return (
             <div className={classNames('dropdown', this.props.className)}>
-                <div
-                    className="dropdown-switch"
-                    onClick={this.onClickSwitch}
-                >{this.props.value}</div>
-                {(this.props.isOpen) && (
+                <div className="dropdown-switch" onClick={this.onClickSwitch}>
+                    {this.props.value}
+                </div>
+                {this.props.isOpen && (
                     <div className="dropdown-body">
                         {this.props.options
-                            .map(function (option) {
-                                return (
-                                    <div key={option}>
-                                        {(this.props.value === option) ? (
-                                            <span>{option}</span>
-                                        ) : (
-                                            <a
-                                                href="javascript:void(0)"
-                                                onClick={this.onClickOption.bind(this, option)}
-                                            >{option}</a>
-                                        )}
-                                    </div>
-                                )
-                            }.bind(this))
-                            .valueSeq()
-                        }
+                            .map(
+                                function(option) {
+                                    return (
+                                        <div key={option}>
+                                            {this.props.value === option ? (
+                                                <span>{option}</span>
+                                            ) : (
+                                                <a
+                                                    href="javascript:void(0)"
+                                                    onClick={this.onClickOption.bind(
+                                                        this,
+                                                        option
+                                                    )}
+                                                >
+                                                    {option}
+                                                </a>
+                                            )}
+                                        </div>
+                                    )
+                                }.bind(this)
+                            )
+                            .valueSeq()}
                     </div>
                 )}
             </div>

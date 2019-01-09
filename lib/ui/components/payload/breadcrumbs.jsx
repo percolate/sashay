@@ -14,47 +14,60 @@ module.exports = createClass({
         pathKeys: PropTypes.instanceOf(List).isRequired,
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             onClick: noop,
         }
     },
 
-    onClick: function (path) {
+    onClick: function(path) {
         this.props.onClick(path)
     },
 
-    render: function () {
+    render: function() {
         return (
             <ul className="breadcrumbs">
                 {this.props.pathKeys
-                    .unshift(fromJS({
-                        key: 'root',
-                        schemaKeyPath: [],
-                    }))
-                    .map(function (pathKey, i, list) {
-                        var isLast = (pathKey === list.last())
-                        var name = [
-                            pathKey.get('key'),
-                            (pathKey.get('type') === 'array') ? '[ ]' : undefined,
-                        ].join(' ')
-                        return (
-                            <li
-                                className={classNames({ active: isLast })}
-                                key={pathKey.get('key')}
-                            >
-                                <a
-                                    href="javascript:void(0)"
-                                    onClick={(!isLast)
-                                        ? this.onClick.bind(this, pathKey.get('schemaKeyPath').toJS())
-                                        : noop
-                                    }
-                                >{name}</a>
-                            </li>
-                        )
-                    }.bind(this))
-                    .valueSeq()
-                }
+                    .unshift(
+                        fromJS({
+                            key: 'root',
+                            schemaKeyPath: [],
+                        })
+                    )
+                    .map(
+                        function(pathKey, i, list) {
+                            var isLast = pathKey === list.last()
+                            var name = [
+                                pathKey.get('key'),
+                                pathKey.get('type') === 'array'
+                                    ? '[ ]'
+                                    : undefined,
+                            ].join(' ')
+                            return (
+                                <li
+                                    className={classNames({ active: isLast })}
+                                    key={pathKey.get('key')}
+                                >
+                                    <a
+                                        href="javascript:void(0)"
+                                        onClick={
+                                            !isLast
+                                                ? this.onClick.bind(
+                                                      this,
+                                                      pathKey
+                                                          .get('schemaKeyPath')
+                                                          .toJS()
+                                                  )
+                                                : noop
+                                        }
+                                    >
+                                        {name}
+                                    </a>
+                                </li>
+                            )
+                        }.bind(this)
+                    )
+                    .valueSeq()}
             </ul>
         )
     },

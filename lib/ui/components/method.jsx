@@ -29,61 +29,76 @@ module.exports = React.createClass({
         initialRoute: React.PropTypes.instanceOf(Map),
     },
 
-    componentDidUpdate: function () {
+    componentDidUpdate: function() {
         this.props.onResize()
     },
 
-    componentWillMount: function () {
-        if (this.props.initialRoute.get('slug') !== this.props.method.slug) return
-        var isRequest = !this.props.initialRoute.get('parameterType') || includes(map(REQUEST_PARAMETER_TYPES, 'id'), this.props.initialRoute.get('parameterType'))
-        var tab = (isRequest) ? TABS.request.id : TABS.response.id
+    componentWillMount: function() {
+        if (this.props.initialRoute.get('slug') !== this.props.method.slug)
+            return
+        var isRequest =
+            !this.props.initialRoute.get('parameterType') ||
+            includes(
+                map(REQUEST_PARAMETER_TYPES, 'id'),
+                this.props.initialRoute.get('parameterType')
+            )
+        var tab = isRequest ? TABS.request.id : TABS.response.id
         this.setState({
             initialRoute: this.props.initialRoute,
             tab: tab,
         })
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             initialRoute: fromJS({}),
             onResize: noop,
         }
     },
 
-    getInitialState: function () {
+    getInitialState: function() {
         return {
             initialRoute: undefined,
             tab: TABS.request.id,
         }
     },
 
-    onChangeTab: function (tab) {
+    onChangeTab: function(tab) {
         this.setState({ tab: tab })
     },
 
-    onChangeTabContent: function () {
+    onChangeTabContent: function() {
         var el = findDOMNode(this.refs.tabs)
         if (!isVisible(el)) {
             el.scrollIntoView()
         }
     },
 
-    render: function () {
-        var pathname = getPathnameFromRoute(fromJS({ slug: this.props.method.slug }))
+    render: function() {
+        var pathname = getPathnameFromRoute(
+            fromJS({ slug: this.props.method.slug })
+        )
         return (
-            <div
-                className="method"
-                id={pathname}
-            >
+            <div className="method" id={pathname}>
                 <row>
                     <content>
-                        <h3><DeepLink pathname={pathname} /> {this.props.method.displayName}</h3>
+                        <h3>
+                            <DeepLink pathname={pathname} />{' '}
+                            {this.props.method.displayName}
+                        </h3>
                         <section>
-                            <Code lang="http" code={`${this.props.method.method.toUpperCase()} ${this.props.method.absoluteUri}`} />
+                            <Code
+                                lang="http"
+                                code={`${this.props.method.method.toUpperCase()} ${
+                                    this.props.method.absoluteUri
+                                }`}
+                            />
                         </section>
-                        {(this.props.method.description) && (
+                        {this.props.method.description && (
                             <section>
-                                <Markdown content={this.props.method.description} />
+                                <Markdown
+                                    content={this.props.method.description}
+                                />
                             </section>
                         )}
                     </content>
@@ -100,26 +115,28 @@ module.exports = React.createClass({
                     </content>
                     <aside />
                 </row>
-                {(function () {
+                {function() {
                     switch (this.state.tab) {
-                        case TABS.request.id: return (
-                            <Request
-                                initialRoute={this.state.initialRoute}
-                                method={this.props.method}
-                                onChange={this.onChangeTabContent}
-                                onResize={this.props.onResize}
-                            />
-                        )
-                        case TABS.response.id: return (
-                            <Response
-                                initialRoute={this.state.initialRoute}
-                                method={this.props.method}
-                                onChange={this.onChangeTabContent}
-                                onResize={this.props.onResize}
-                            />
-                        )
+                        case TABS.request.id:
+                            return (
+                                <Request
+                                    initialRoute={this.state.initialRoute}
+                                    method={this.props.method}
+                                    onChange={this.onChangeTabContent}
+                                    onResize={this.props.onResize}
+                                />
+                            )
+                        case TABS.response.id:
+                            return (
+                                <Response
+                                    initialRoute={this.state.initialRoute}
+                                    method={this.props.method}
+                                    onChange={this.onChangeTabContent}
+                                    onResize={this.props.onResize}
+                                />
+                            )
                     }
-                }.bind(this))()}
+                }.bind(this)()}
             </div>
         )
     },

@@ -9,9 +9,7 @@ var React = require('react')
 module.exports = React.createClass({
     displayName: 'Primitive',
 
-    mixins: [
-        PureRenderMixin,
-    ],
+    mixins: [PureRenderMixin],
 
     propTypes: {
         description: React.PropTypes.array,
@@ -29,13 +27,13 @@ module.exports = React.createClass({
         onResize: React.PropTypes.func,
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             onResize: _.noop,
         }
     },
 
-    render: function () {
+    render: function() {
         var metadata = this.renderMetadata()
         var description = this.renderDescription()
         var example = this.renderExample()
@@ -50,32 +48,30 @@ module.exports = React.createClass({
         )
     },
 
-    renderDescription: function () {
+    renderDescription: function() {
         var description = this.props.description
         if (_.isEmpty(description)) return null
 
-        return _.map(description, function (content, index) {
+        return _.map(description, function(content, index) {
             if (content.type === 'code') {
-                return <Code key={index} lang={content.lang} code={content.text} />
+                return (
+                    <Code key={index} lang={content.lang} code={content.text} />
+                )
             } else {
                 return <Markdown key={index} content={content.text} />
             }
         })
     },
 
-    renderExample: function () {
+    renderExample: function() {
         if (!this.props.example) return null
         return (
-            <Example
-                code={this.props.example}
-                onResize={this.props.onResize}
-            />
+            <Example code={this.props.example} onResize={this.props.onResize} />
         )
     },
 
-    renderMetadata: function () {
+    renderMetadata: function() {
         if (_.isEmpty(this.props.metadata)) return null
         return <Metadata metadata={this.props.metadata} />
     },
-
 })

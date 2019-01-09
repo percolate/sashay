@@ -21,13 +21,13 @@ module.exports = React.createClass({
         version: PropTypes.string.isRequired,
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             onResize: noop,
         }
     },
 
-    render: function () {
+    render: function() {
         return (
             <div className="container">
                 <Nav

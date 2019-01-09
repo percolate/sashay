@@ -31,27 +31,27 @@ sashay(options)
 
 ### **`options`** `Object`
 
-- **`destination`** `String`
+-   **`destination`** `String`
 
     The build directory. Default `'./build/'`.
 
-- **`output`** `Array`
+-   **`output`** `Array`
 
     The output format. Must be `'json'` or `'web'`. Default `['json']`.
 
-- **`quiet`** `Boolean`
+-   **`quiet`** `Boolean`
 
     Set to `true` to suppress logs. Default `false`.
 
-- **`source`** `String`
+-   **`source`** `String`
 
     The source file. Must be valid RAML. Required.
 
-- **`watch`** `Boolean`
+-   **`watch`** `Boolean`
 
     Watches files for changes and rebuilds. In `'web'` mode, starts a preview server at [http://127.0.0.1:8000/](http://127.0.0.1:8000/). Default `false`.
 
-- **`validate`** `Boolean`
+-   **`validate`** `Boolean`
 
     Whether to validate RAML schema or not.
 

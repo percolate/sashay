@@ -21,7 +21,7 @@ module.exports = React.createClass({
         schema: PROP_TYPES.payloadSchema,
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             initialRoute: fromJS({}),
             onChange: noop,
@@ -29,52 +29,57 @@ module.exports = React.createClass({
         }
     },
 
-    getInitialState: function () {
+    getInitialState: function() {
         return {
             keyPath: fromJS(['root']),
             propertyTypeModifiers: fromJS({}),
         }
     },
 
-    componentWillMount: function () {
+    componentWillMount: function() {
         var parameterPath = this.props.initialRoute.get('parameterPath')
         if (isEmpty(parameterPath)) return
         this.setState({
-            keyPath: this.getInitialState().keyPath.concat(dropRight(parameterPath.split(VALUES.pathDelimeter.id))),
+            keyPath: this.getInitialState().keyPath.concat(
+                dropRight(parameterPath.split(VALUES.pathDelimeter.id))
+            ),
         })
     },
 
-    componentWillReceiveProps: function () {
+    componentWillReceiveProps: function() {
         this.setState(this.getInitialState())
     },
 
-    onClickBreadcrumb: function (keyPath) {
-        this.setState({
-            keyPath: this.getInitialState().keyPath.concat(keyPath),
-        }, this.props.onChange)
+    onClickBreadcrumb: function(keyPath) {
+        this.setState(
+            {
+                keyPath: this.getInitialState().keyPath.concat(keyPath),
+            },
+            this.props.onChange
+        )
     },
 
-    onClickPath: function (keyPath) {
+    onClickPath: function(keyPath) {
         this.setState({ keyPath: fromJS(keyPath) }, this.props.onChange)
     },
 
-    onClickSubtype: function (typeKeyPath, i) {
+    onClickSubtype: function(typeKeyPath, i) {
         this.setState({
-            propertyTypeModifiers: this.state.propertyTypeModifiers.merge(fromJS(fromPairs([
-                [typeKeyPath, { subType: i }],
-            ]))),
+            propertyTypeModifiers: this.state.propertyTypeModifiers.merge(
+                fromJS(fromPairs([[typeKeyPath, { subType: i }]]))
+            ),
         })
     },
 
-    onClickType: function (typeKeyPath, type) {
+    onClickType: function(typeKeyPath, type) {
         this.setState({
-            propertyTypeModifiers: this.state.propertyTypeModifiers.merge(fromJS(fromPairs([
-                [typeKeyPath, { type: type }],
-            ]))),
+            propertyTypeModifiers: this.state.propertyTypeModifiers.merge(
+                fromJS(fromPairs([[typeKeyPath, { type: type }]]))
+            ),
         })
     },
 
-    render: function () {
+    render: function() {
         return (
             <Payload
                 onBreadCrumbsClick={this.onClickBreadcrumb}

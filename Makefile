@@ -17,6 +17,8 @@ style:
 	./node_modules/.bin/eslint ./lib/ \
 		--ext '.js,.jsx' \
 		--ignore-pattern **/coverage/**
+	
+	./node_modules/.bin/prettier README.md .eslintrc.js "lib/**/*.{js,jsx}" --list-different
 
 test-cli:
 	./node_modules/.bin/mocha ./lib/cli/__test__/*.spec.js \
