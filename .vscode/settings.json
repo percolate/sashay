@@ -1,0 +1,10 @@
+{
+    // runs prettier
+    "editor.formatOnSave": true,
+    // eslint
+    "eslint.autoFixOnSave": true,
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+    ],
+}
