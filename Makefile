@@ -1,3 +1,8 @@
+.DEFAULT_GOAL := install
+
+install:
+	yarn install --frozen-lockfile
+
 coverage-cli:
 	./node_modules/.bin/istanbul cover \
 		--root ./lib/cli \
