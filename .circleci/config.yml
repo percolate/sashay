@@ -36,7 +36,7 @@ jobs:
       - install
       - run: make coverage-cli
       - run: make coverage-ui
-      - run: ./node_modules/.bin/codecov
+      - run: bash <(curl -s https://codecov.io/bash)
 
   publish:
     docker: *image
