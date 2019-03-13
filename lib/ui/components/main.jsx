@@ -12,11 +12,8 @@ var React = require('react')
 var PROP_TYPES = require('../constants').propTypes
 
 module.exports = React.createClass({
-
     displayName: 'Main',
-    mixins: [
-        PureRenderMixin,
-    ],
+    mixins: [PureRenderMixin],
     propTypes: {
         initialRoute: React.PropTypes.instanceOf(Map),
         topics: PROP_TYPES.topics.id,
@@ -25,44 +22,54 @@ module.exports = React.createClass({
         onResize: React.PropTypes.func,
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             onResize: _.noop,
         }
     },
 
-    render: function () {
+    render: function() {
         return (
             <main ref="main">
-                {_.map(this.props.topics, function (topic) {
-                    var pathname = getPathnameFromRoute(fromJS({ slug: topic.slug }))
-                    return (
-                        <article
-                            id={pathname}
-                            ref={topic.slug}
-                            key={topic.slug}
-                        >
-                            <row>
-                                <content>
-                                    <h2><DeepLink pathname={pathname} /> {topic.displayName}</h2>
-                                </content>
-                                <aside />
-                            </row>
-                            {_.map(topic.contents, this.renderContent)}
-                        </article>
-                    )
-                }.bind(this))}
+                {_.map(
+                    this.props.topics,
+                    function(topic) {
+                        var pathname = getPathnameFromRoute(
+                            fromJS({ slug: topic.slug })
+                        )
+                        return (
+                            <article
+                                id={pathname}
+                                ref={topic.slug}
+                                key={topic.slug}
+                            >
+                                <row>
+                                    <content>
+                                        <h2>
+                                            <DeepLink pathname={pathname} />{' '}
+                                            {topic.displayName}
+                                        </h2>
+                                    </content>
+                                    <aside />
+                                </row>
+                                {_.map(topic.contents, this.renderContent)}
+                            </article>
+                        )
+                    }.bind(this)
+                )}
                 {_.map(this.props.groups, this.renderGroup)}
             </main>
         )
     },
 
-    renderContent: function (content, index) {
+    renderContent: function(content, index) {
         var text
         var aside
 
         if (content.type === 'code') {
-            aside = <Code lang={content.lang} code={content.text} theme="dark" />
+            aside = (
+                <Code lang={content.lang} code={content.text} theme="dark" />
+            )
         } else {
             text = <Markdown content={content.text} />
         }
@@ -75,29 +82,30 @@ module.exports = React.createClass({
         )
     },
 
-    renderGroup: function (group) {
+    renderGroup: function(group) {
         var pathname = getPathnameFromRoute(fromJS({ slug: group.slug }))
         return (
-            <article
-                id={pathname}
-                key={group.displayName}
-                ref={group.slug}
-            >
+            <article id={pathname} key={group.displayName} ref={group.slug}>
                 <row>
                     <content>
-                        <h2><DeepLink pathname={pathname} /> {group.displayName}</h2>
+                        <h2>
+                            <DeepLink pathname={pathname} /> {group.displayName}
+                        </h2>
                         {!_.isEmpty(group.description) && (
                             <Markdown content={group.description} />
                         )}
                     </content>
                     <aside />
                 </row>
-                {_.chain(group.methods).map(this.renderMethod).flatten().value()}
+                {_.chain(group.methods)
+                    .map(this.renderMethod)
+                    .flatten()
+                    .value()}
             </article>
         )
     },
 
-    renderMethod: function (method, i) {
+    renderMethod: function(method, i) {
         return (
             <div key={i} ref={method.slug}>
                 <Method
@@ -108,5 +116,4 @@ module.exports = React.createClass({
             </div>
         )
     },
-
 })

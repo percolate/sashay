@@ -15,9 +15,7 @@ var PROP_TYPES = require('../constants').propTypes
 module.exports = React.createClass({
     displayName: 'Payload',
 
-    mixins: [
-        PureRenderMixin,
-    ],
+    mixins: [PureRenderMixin],
 
     propTypes: {
         root: PROP_TYPES.payloadSchema,
@@ -33,31 +31,34 @@ module.exports = React.createClass({
         parentRoute: React.PropTypes.instanceOf(Map).isRequired,
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             onResize: _.noop,
         }
     },
 
-    getPathString: function (path) {
+    getPathString: function(path) {
         if (!_.isArray(path)) throw new Error('path must be an array')
         return path.join(',')
     },
 
-    getSchema: function (path) {
+    getSchema: function(path) {
         return _.get(this.props, path)
     },
 
-    getStateValue: function (path, key) {
+    getStateValue: function(path, key) {
         var pathString = this.getPathString(path)
-        return _.get(this.props.state.paths, key ? [pathString, key] : pathString)
+        return _.get(
+            this.props.state.paths,
+            key ? [pathString, key] : pathString
+        )
     },
 
-    getTypes: function (path) {
+    getTypes: function(path) {
         return _.keys(this.getSchema(path))
     },
 
-    getSubTypes: function (path) {
+    getSubTypes: function(path) {
         var subTypes = _.get(this.getSchema(path), this.getCurrType(path))
         return _.chain(subTypes)
             .map('title')
@@ -65,55 +66,66 @@ module.exports = React.createClass({
             .value()
     },
 
-    getRootTypes: function () {
-        return _.filter(this.getTypes(this.props.state.currPath), function (type) {
+    getRootTypes: function() {
+        return _.filter(this.getTypes(this.props.state.currPath), function(
+            type
+        ) {
             return type === 'object' || type === 'array'
         })
     },
 
-    getRootCurrType: function () {
-        return this.getStateValue(this.props.state.currPath, 'type') || _.first(this.getRootTypes())
+    getRootCurrType: function() {
+        return (
+            this.getStateValue(this.props.state.currPath, 'type') ||
+            _.first(this.getRootTypes())
+        )
     },
 
-    getCurrType: function (path) {
+    getCurrType: function(path) {
         return this.getStateValue(path, 'type') || _.first(this.getTypes(path))
     },
 
-    getCurrSubType: function (path) {
+    getCurrSubType: function(path) {
         return this.getStateValue(path, 'subType') || 0
     },
 
-    getCurrSchema: function (path) {
-        return _.get(this.getSchema(path), [this.getCurrType(path), this.getCurrSubType(path)])
+    getCurrSchema: function(path) {
+        return _.get(this.getSchema(path), [
+            this.getCurrType(path),
+            this.getCurrSubType(path),
+        ])
     },
 
-    getTypedPath: function (path) {
+    getTypedPath: function(path) {
         return _.concat(path, this.getCurrType(path), this.getCurrSubType(path))
     },
 
-    onClickBreadcrumb: function (val) {
+    onClickBreadcrumb: function(val) {
         this.props.onBreadCrumbsClick(val)
     },
 
-    onClickPath: function (path, propKey) {
+    onClickPath: function(path, propKey) {
         this.props.onViewPropsClick(path, propKey)
     },
 
-    onClickSubtype: function (val, i) {
+    onClickSubtype: function(val, i) {
         this.props.onSubTypeClick(val, i)
     },
 
-    onClickType: function (keyPath, type) {
+    onClickType: function(keyPath, type) {
         this.props.onTypeClick(keyPath, type)
     },
 
-    render: function () {
+    render: function() {
         var types = this.getRootTypes()
         var currType = this.getRootCurrType()
-        var pathKeys = parsePayload(this.props.state.currPath.slice(1), this.props.root)
+        var pathKeys = parsePayload(
+            this.props.state.currPath.slice(1),
+            this.props.root
+        )
         return (
             <div className="payload">
-                {(!pathKeys.isEmpty()) && (
+                {!pathKeys.isEmpty() && (
                     <Breadcrumbs
                         pathKeys={pathKeys}
                         onClick={this.props.onBreadCrumbsClick}
@@ -122,32 +134,44 @@ module.exports = React.createClass({
                 <Types
                     types={types}
                     currType={currType}
-                    onClick={this.onClickType.bind(this, this.props.state.currPath)}
+                    onClick={this.onClickType.bind(
+                        this,
+                        this.props.state.currPath
+                    )}
                 />
                 <Types
                     isSubTypes
                     types={this.getSubTypes(this.props.state.currPath)}
                     currType={this.getCurrSubType(this.props.state.currPath)}
-                    onClick={this.onClickSubtype.bind(this, this.props.state.currPath)}
+                    onClick={this.onClickSubtype.bind(
+                        this,
+                        this.props.state.currPath
+                    )}
                 />
                 <Primitive
                     type={this.getCurrType(this.props.state.currPath)}
-                    description={this.getCurrSchema(this.props.state.currPath).description}
-                    example={this.getCurrSchema(this.props.state.currPath).example}
+                    description={
+                        this.getCurrSchema(this.props.state.currPath)
+                            .description
+                    }
+                    example={
+                        this.getCurrSchema(this.props.state.currPath).example
+                    }
                     onResize={this.props.onResize}
                 />
-                {(currType === 'object') && (
+                {currType === 'object' && (
                     <div>
                         <div className="properties-title">Properties:</div>
                         {this.renderProps()}
                     </div>
                 )}
-                {(currType === 'array') && this.renderArrayTypes(this.props.state.currPath, '')}
+                {currType === 'array' &&
+                    this.renderArrayTypes(this.props.state.currPath, '')}
             </div>
         )
     },
 
-    renderProps: function () {
+    renderProps: function() {
         var props = this.getCurrSchema(this.props.state.currPath).properties
         var sortedKeys = _.chain(props)
             .keys()
@@ -156,48 +180,64 @@ module.exports = React.createClass({
 
         return (
             <ul className="properties">
-                {(_.isEmpty(props)) && (
+                {_.isEmpty(props) && (
                     <li className="property">
                         <div className="property-left">
                             <div className="property-key">None</div>
                         </div>
-                        <div className="property-right"></div>
+                        <div className="property-right" />
                     </li>
                 )}
-                {_.map(sortedKeys, function (key) {
-                    var prop = props[key]
-                    var path = _.concat(this.getTypedPath(this.props.state.currPath), 'properties', key, 'types')
-                    var pathname = getPathnameFromRoute(this.props.parentRoute.merge({
-                        parameterPath: _.tail(this.props.state.currPath).concat([key]).join(VALUES.pathDelimeter.id),
-                    }))
+                {_.map(
+                    sortedKeys,
+                    function(key) {
+                        var prop = props[key]
+                        var path = _.concat(
+                            this.getTypedPath(this.props.state.currPath),
+                            'properties',
+                            key,
+                            'types'
+                        )
+                        var pathname = getPathnameFromRoute(
+                            this.props.parentRoute.merge({
+                                parameterPath: _.tail(this.props.state.currPath)
+                                    .concat([key])
+                                    .join(VALUES.pathDelimeter.id),
+                            })
+                        )
 
-                    return (
-                        <li
-                            className="property"
-                            id={pathname}
-                            key={key}
-                        >
-                            <div className={`property-left ${prop.required && 'required'}`}>
-                                <div className="property-key"><DeepLink pathname={pathname} /> {key}</div>
-                                <Types
-                                    isStacked
-                                    types={this.getTypes(path)}
-                                    currType={this.getCurrType(path)}
-                                    onClick={this.onClickType.bind(this, path)}
-                                />
-                            </div>
-                            <div className="property-right">
-                                {this.renderPropTypes(path)}
-                                {this.renderArrayTypes(path)}
-                            </div>
-                        </li>
-                    )
-                }.bind(this))}
+                        return (
+                            <li className="property" id={pathname} key={key}>
+                                <div
+                                    className={`property-left ${prop.required &&
+                                        'required'}`}
+                                >
+                                    <div className="property-key">
+                                        <DeepLink pathname={pathname} /> {key}
+                                    </div>
+                                    <Types
+                                        isStacked
+                                        types={this.getTypes(path)}
+                                        currType={this.getCurrType(path)}
+                                        onClick={this.onClickType.bind(
+                                            this,
+                                            path
+                                        )}
+                                    />
+                                </div>
+                                <div className="property-right">
+                                    {this.renderPropTypes(path)}
+                                    {this.renderArrayTypes(path)}
+                                </div>
+                            </li>
+                        )
+                    }.bind(this)
+                )}
             </ul>
         )
     },
 
-    renderPropTypes: function (path) {
+    renderPropTypes: function(path) {
         var type = this.getCurrType(path)
         var schema = this.getCurrSchema(path)
 
@@ -205,7 +245,10 @@ module.exports = React.createClass({
         if (type === 'object' && !_.isEmpty(schema.properties)) {
             viewProps = (
                 <div className="view-props-link">
-                    <a href="javascript:void(0)" onClick={this.onClickPath.bind(this, path)}>
+                    <a
+                        href="javascript:void(0)"
+                        onClick={this.onClickPath.bind(this, path)}
+                    >
                         View {schema.title || type} properties
                     </a>
                 </div>
@@ -231,7 +274,7 @@ module.exports = React.createClass({
         )
     },
 
-    renderArrayTypes: function (arrayPath) {
+    renderArrayTypes: function(arrayPath) {
         var type = this.getCurrType(arrayPath)
         if (type !== 'array') return undefined
 
@@ -239,14 +282,14 @@ module.exports = React.createClass({
         return (
             <div className="array-types-wrapper">
                 <div className="array-types-title">Array items:</div>
-                    <div className="array-types">
-                        <Types
-                            types={this.getTypes(path)}
-                            currType={this.getCurrType(path)}
-                            onClick={this.onClickType.bind(this, path)}
-                        />
-                        {this.renderPropTypes(path)}
-                    </div>
+                <div className="array-types">
+                    <Types
+                        types={this.getTypes(path)}
+                        currType={this.getCurrType(path)}
+                        onClick={this.onClickType.bind(this, path)}
+                    />
+                    {this.renderPropTypes(path)}
+                </div>
             </div>
         )
     },

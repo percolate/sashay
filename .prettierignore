@@ -1,0 +1,6 @@
+.env
+.npmrc
+/build/
+/tmp/
+**/coverage/
+/node_modules/

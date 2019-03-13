@@ -9,38 +9,45 @@ module.exports = React.createClass({
         onResize: React.PropTypes.func,
     },
 
-    componentDidUpdate: function () {
+    componentDidUpdate: function() {
         this.props.onResize()
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             onResize: noop,
         }
     },
 
-    getInitialState: function () {
+    getInitialState: function() {
         return {
             expanded: false,
         }
     },
 
-    render: function () {
+    render: function() {
         return (
             <div className="example">
                 <span className="example-label">example:</span>
-                <a className="example-toggler" href="#" onClick={this.toggleHandler}>{this.state.expanded ? 'hide' : 'show'}</a>
-                {(this.state.expanded) && (<Code code={this.props.code} lang="json"/>)}
+                <a
+                    className="example-toggler"
+                    href="#"
+                    onClick={this.toggleHandler}
+                >
+                    {this.state.expanded ? 'hide' : 'show'}
+                </a>
+                {this.state.expanded && (
+                    <Code code={this.props.code} lang="json" />
+                )}
             </div>
         )
     },
 
-    toggleHandler: function (e) {
+    toggleHandler: function(e) {
         e.preventDefault()
 
         this.setState({
             expanded: !this.state.expanded,
         })
     },
-
 })

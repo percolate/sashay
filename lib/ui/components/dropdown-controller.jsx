@@ -15,36 +15,36 @@ module.exports = React.createClass({
         value: PropTypes.string.isRequired,
     },
 
-    componentDidMount: function () {
+    componentDidMount: function() {
         document.addEventListener('click', this.onClickDocument)
     },
 
-    componentWillUnmount: function () {
+    componentWillUnmount: function() {
         document.removeEventListener('click', this.onClickDocument)
     },
 
-    getInitialState: function () {
+    getInitialState: function() {
         return {
             isOpen: false,
         }
     },
 
-    onClickDocument: function (e) {
+    onClickDocument: function(e) {
         if (!this.state.isOpen) return
         if (findDOMNode(this).contains(e.target)) return
         this.setState({ isOpen: false })
     },
 
-    onClickOption: function (option) {
+    onClickOption: function(option) {
         this.setState({ isOpen: false })
         this.props.onChange(option)
     },
 
-    onClickSwitch: function () {
+    onClickSwitch: function() {
         this.setState({ isOpen: !this.state.isOpen })
     },
 
-    render: function () {
+    render: function() {
         return (
             <Dropdown
                 className={this.props.className}

@@ -10,12 +10,14 @@ module.exports = React.createClass({
         pathname: PropTypes.string.isRequired,
     },
 
-    render: function () {
+    render: function() {
         return (
             <a
                 className="deepLink"
                 href={getHashFromPathname(this.props.pathname)}
-            >#</a>
+            >
+                #
+            </a>
         )
     },
 })

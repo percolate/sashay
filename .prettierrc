@@ -1,0 +1,16 @@
+{
+    "tabWidth": 4,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": false,
+    "overrides": [
+        {
+            "files": "*.less",
+            "options": { "singleQuote": false }
+        },
+        {
+            "files": "*.yml",
+            "options": { "tabWidth": 2 }
+        }
+    ]
+}

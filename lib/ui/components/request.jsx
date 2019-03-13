@@ -21,21 +21,26 @@ module.exports = React.createClass({
         onResize: PropTypes.func,
     },
 
-    getDefaultProps: function () {
+    getDefaultProps: function() {
         return {
             onChange: noop,
             onResize: noop,
         }
     },
 
-    render: function () {
+    render: function() {
         var { uriParameters, queryParameters } = this.props.method || {}
-        var { payload, example } = get(this.props.method, ['body', 'application/json']) || {}
-        var formParameters = get(this.props.method, ['body', 'application/x-www-form-urlencoded', 'formParameters'])
+        var { payload, example } =
+            get(this.props.method, ['body', 'application/json']) || {}
+        var formParameters = get(this.props.method, [
+            'body',
+            'application/x-www-form-urlencoded',
+            'formParameters',
+        ])
         return (
             <row>
                 <content>
-                    {(payload) && (
+                    {payload && (
                         <section>
                             <h1>Body</h1>
                             <PayloadController
@@ -43,44 +48,48 @@ module.exports = React.createClass({
                                 onChange={this.props.onChange}
                                 onResize={this.props.onResize}
                                 parentRoute={fromJS({
-                                    parameterType: REQUEST_PARAMETER_TYPES.payload.id,
+                                    parameterType:
+                                        REQUEST_PARAMETER_TYPES.payload.id,
                                     slug: this.props.method.slug,
                                 })}
                                 schema={payload}
                             />
                         </section>
                     )}
-                    {(formParameters) && (
+                    {formParameters && (
                         <section>
                             <h1>Form data</h1>
                             <Parameters
                                 parameters={formParameters}
                                 parentRoute={fromJS({
-                                    parameterType: REQUEST_PARAMETER_TYPES.formPayload.id,
+                                    parameterType:
+                                        REQUEST_PARAMETER_TYPES.formPayload.id,
                                     slug: this.props.method.slug,
                                 })}
                             />
                         </section>
                     )}
-                    {(uriParameters) && (
+                    {uriParameters && (
                         <section>
                             <h1>URI Parameters</h1>
                             <Parameters
                                 parameters={uriParameters}
                                 parentRoute={fromJS({
-                                    parameterType: REQUEST_PARAMETER_TYPES.params.id,
+                                    parameterType:
+                                        REQUEST_PARAMETER_TYPES.params.id,
                                     slug: this.props.method.slug,
                                 })}
                             />
                         </section>
                     )}
-                    {(queryParameters) && (
+                    {queryParameters && (
                         <section>
                             <h1>Query Parameters</h1>
                             <Parameters
                                 parameters={queryParameters}
                                 parentRoute={fromJS({
-                                    parameterType: REQUEST_PARAMETER_TYPES.query.id,
+                                    parameterType:
+                                        REQUEST_PARAMETER_TYPES.query.id,
                                     slug: this.props.method.slug,
                                 })}
                             />
@@ -88,23 +97,21 @@ module.exports = React.createClass({
                     )}
                 </content>
                 <aside>
-                    {(example) && (
+                    {example && (
                         <section>
                             <h1>Example request body</h1>
-                            <Code
-                                code={example}
-                                lang="json"
-                                theme="dark"
-                            />
+                            <Code code={example} lang="json" theme="dark" />
                         </section>
                     )}
-                    {(!formParameters) && (
+                    {!formParameters && (
                         <section>
                             <h1>Example curl request</h1>
                             <Curl
                                 absoluteUri={this.props.method.absoluteUri}
                                 method={this.props.method.method}
-                                queryParameters={this.props.method.queryParameters}
+                                queryParameters={
+                                    this.props.method.queryParameters
+                                }
                                 securedBy={this.props.method.securedBy}
                             />
                         </section>

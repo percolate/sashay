@@ -3,9 +3,7 @@ var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
 module.exports = React.createClass({
-    mixins: [
-        PureRenderMixin,
-    ],
+    mixins: [PureRenderMixin],
 
     displayName: 'Types',
     propTypes: {
@@ -19,8 +17,12 @@ module.exports = React.createClass({
         onClick: React.PropTypes.func,
     },
 
-    render: function () {
-        if (_.isEmpty(this.props.types) || this.props.isSubTypes && this.props.types.length === 1) return null
+    render: function() {
+        if (
+            _.isEmpty(this.props.types) ||
+            (this.props.isSubTypes && this.props.types.length === 1)
+        )
+            return null
 
         var classNames = ['types']
         if (this.props.isSubTypes) {
@@ -37,31 +39,56 @@ module.exports = React.createClass({
 
         return (
             <ul className={classNames.join(' ')}>
-                {_.map(this.props.types, function (type, index) {
-                    return (
-                        <li key={index} className={`type-list-item ${this.getSelectedClass(type, index)}`}>
-                            <a href="#" onClick={this.clickHandler.bind(this, type, index)}>{type}</a>
-                        </li>
-                    )
-                }.bind(this))}
+                {_.map(
+                    this.props.types,
+                    function(type, index) {
+                        return (
+                            <li
+                                key={index}
+                                className={`type-list-item ${this.getSelectedClass(
+                                    type,
+                                    index
+                                )}`}
+                            >
+                                <a
+                                    href="#"
+                                    onClick={this.clickHandler.bind(
+                                        this,
+                                        type,
+                                        index
+                                    )}
+                                >
+                                    {type}
+                                </a>
+                            </li>
+                        )
+                    }.bind(this)
+                )}
             </ul>
         )
     },
 
-    getSelectedClass: function (type, index) {
-        if (this.props.currType === index || this.props.currType === type || type === 'null') {
+    getSelectedClass: function(type, index) {
+        if (
+            this.props.currType === index ||
+            this.props.currType === type ||
+            type === 'null'
+        ) {
             return 'selected'
         } else {
             return 'selectable'
         }
     },
 
-    clickHandler: function (type, index, e) {
+    clickHandler: function(type, index, e) {
         e.preventDefault()
-        if (type === this.props.currType
-            || index === this.props.currType
-            || type === 'null'
-            || !_.isFunction(this.props.onClick)) return
+        if (
+            type === this.props.currType ||
+            index === this.props.currType ||
+            type === 'null' ||
+            !_.isFunction(this.props.onClick)
+        )
+            return
 
         var typeOrIndex = _.isString(this.props.currType) ? type : index
         this.props.onClick(typeOrIndex)

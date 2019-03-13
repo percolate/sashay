@@ -4,18 +4,20 @@ var PureRenderMixin = require('react-addons-pure-render-mixin')
 var React = require('react')
 
 var renderer = new marked.Renderer()
-renderer.link = function (href, title, text) {
+renderer.link = function(href, title, text) {
     if (!title) title = ''
     if (!href) href = ''
 
-    var target = href.indexOf('#') === 0 ||
-        href.indexOf('mailto:') === 0 ? '_self' : '_blank'
+    var target =
+        href.indexOf('#') === 0 || href.indexOf('mailto:') === 0
+            ? '_self'
+            : '_blank'
 
     return `<a href="${href}" title="${title}" target="${target}">${text}</a>`
 }
 
 var OPTIONS = {
-    highlight: function (code, lang) {
+    highlight: function(code, lang) {
         if (lang) {
             return hljs.highlight(lang, code).value
         }
@@ -26,16 +28,13 @@ var OPTIONS = {
 }
 
 module.exports = React.createClass({
-
     displayName: 'Markdown',
-    mixins: [
-        PureRenderMixin,
-    ],
+    mixins: [PureRenderMixin],
     propTypes: {
         content: React.PropTypes.string.isRequired,
     },
 
-    render: function () {
+    render: function() {
         return (
             <div
                 dangerouslySetInnerHTML={{
@@ -45,5 +44,4 @@ module.exports = React.createClass({
             />
         )
     },
-
 })

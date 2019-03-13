@@ -25,9 +25,9 @@ module.exports = createClass({
         version: PropTypes.string.isRequired,
     },
 
-    _updateOffsets: function () {
+    _updateOffsets: function() {
         var offsets = _.chain(this.refs.app.refs.main.refs)
-            .map(function (ref, slug) {
+            .map(function(ref, slug) {
                 if (slug === 'main') return undefined
                 return {
                     top: ref.getBoundingClientRect().top + window.pageYOffset,
@@ -42,23 +42,29 @@ module.exports = createClass({
         })
     },
 
-    _updateHash: function () {
-        var offset = _.findLast(this.state.offsets, function (_offset) {
-            return (window.pageYOffset + 100) > _offset.top
+    _updateHash: function() {
+        var offset = _.findLast(this.state.offsets, function(_offset) {
+            return window.pageYOffset + 100 > _offset.top
         })
         var slug = offset ? offset.slug : undefined
         if (slug === this.state.currentSlug) return
         this.setState({
             currentSlug: slug,
         })
-        window.history.replaceState(undefined, undefined, getHashFromRoute(fromJS({ slug: slug })))
+        window.history.replaceState(
+            undefined,
+            undefined,
+            getHashFromRoute(fromJS({ slug: slug }))
+        )
     },
 
-    componentDidMount: function () {
+    componentDidMount: function() {
         WebFont.load({
-            active: function () {
+            active: function() {
                 this._updateOffsets()
-                var targetElement = document.getElementById(getPathnameFromRoute(this.state.initialRoute))
+                var targetElement = document.getElementById(
+                    getPathnameFromRoute(this.state.initialRoute)
+                )
                 if (targetElement) targetElement.scrollIntoView()
             }.bind(this),
             custom: {
@@ -69,7 +75,7 @@ module.exports = createClass({
         window.addEventListener('scroll', this.onScroll)
     },
 
-    componentWillMount: function () {
+    componentWillMount: function() {
         var route = parseRoute(_.trimStart(window.location.hash, '#'))
         this.setState({
             currentSlug: route.get('slug'),
@@ -77,12 +83,12 @@ module.exports = createClass({
         })
     },
 
-    componentWillUnmount: function () {
+    componentWillUnmount: function() {
         window.removeEventListener('resize', this.onResize)
         window.removeEventListener('scroll', this.onScroll)
     },
 
-    getInitialState: function () {
+    getInitialState: function() {
         return {
             currentSlug: undefined,
             initialRoute: fromJS({
@@ -94,16 +100,16 @@ module.exports = createClass({
         }
     },
 
-    onResize: _.debounce(function () {
+    onResize: _.debounce(function() {
         this._updateOffsets()
         this._updateHash()
     }, DEBOUNCE_DELAY),
 
-    onScroll: _.debounce(function () {
+    onScroll: _.debounce(function() {
         this._updateHash()
     }, DEBOUNCE_DELAY),
 
-    render: function () {
+    render: function() {
         return (
             <App
                 currentSlug={this.state.currentSlug}
