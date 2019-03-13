@@ -5,12 +5,13 @@ install:
 
 coverage-cli:
 	rm -rf lib/cli/coverage
-	./node_modules/.bin/istanbul cover \
-		--root ./lib/cli \
-		--dir ./lib/cli/coverage \
-		-x **/__test__/** \
+	./node_modules/.bin/nyc \
+		--report-dir "lib/cli/coverage" \
+		--include "lib/cli/**" \
+		--exclude "**/__test__/**" \
+		--reporter lcovonly \
+		--reporter html \
 		./node_modules/.bin/_mocha ./lib/cli/__test__/*.spec.js
-	rm lib/cli/coverage/coverage.json
 
 coverage-ui:
 	rm -rf lib/ui/coverage
