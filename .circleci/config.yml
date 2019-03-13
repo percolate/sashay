@@ -42,6 +42,6 @@ jobs:
     docker: *image
     steps:
       - install
-      - run: echo //registry.npmjs.org/:_authToken=${NPMJS_TOKEN} > ./.npmrc
+      - run: echo "//registry.npmjs.org/:_authToken=$NPMJS_TOKEN" >> ~/.npmrc
       - deploy:
           command: ./node_modules/.bin/publish
