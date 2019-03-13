@@ -48,14 +48,12 @@
   },
   "devDependencies": {
     "@percolate/publisher": "^0.0.5",
-    "chai": "3.5.0",
-    "chai-enzyme": "0.5.1",
+    "chai": "4.2.0",
     "enzyme": "2.4.1",
-    "eslint": "1.10.3",
-    "eslint-plugin-mocha": "1.1.0",
-    "eslint-plugin-react": "3.11.3",
-    "eslint-plugin-sinon": "0.1.0",
-    "istanbul": "0.4.5",
+    "eslint": "5.15.1",
+    "eslint-plugin-mocha": "5.3.0",
+    "eslint-plugin-react": "7.12.4",
+    "eslint-plugin-sinon": "0.2.0",
     "istanbul-instrumenter-loader": "3.0.1",
     "karma": "4.0.1",
     "karma-chai": "0.1.0",
@@ -65,11 +63,12 @@
     "karma-sinon": "1.0.5",
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "3.0.5",
-    "mocha": "2.4.5",
-    "prettier": "^1.15.3",
+    "mocha": "6.0.2",
+    "nyc": "^13.3.0",
+    "prettier": "^1.16.4",
     "react-addons-test-utils": "15.4.2",
     "semver": "5.3.0",
-    "sinon": "1.15.4",
-    "sinon-chai": "2.8.0"
+    "sinon": "7.2.7",
+    "sinon-chai": "3.3.0"
   }
 }
