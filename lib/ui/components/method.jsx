@@ -136,6 +136,7 @@ module.exports = React.createClass({
                                 />
                             )
                     }
+                    return null
                 }.bind(this)()}
             </div>
         )

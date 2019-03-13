@@ -1,11 +1,6 @@
 module.exports = {
-    ecmaVersion: 5,
-    ecmaFeatures: {
-        jsx: true,
-    },
     env: {
         es6: true,
-        jasmine: true,
         mocha: true,
         node: true,
     },
@@ -23,7 +18,15 @@ module.exports = {
         URL: false,
         XMLHttpRequest: false,
     },
+    parserOptions: {
+        ecmaFeatures: {
+            jsx: true,
+        },
+    },
     plugins: ['mocha', 'react', 'sinon'],
+    settings: {
+        react: { version: '15.4.2' },
+    },
     rules: {
         'accessor-pairs': 0,
         'array-bracket-spacing': [2, 'never'],
@@ -80,7 +83,6 @@ module.exports = {
         'no-else-return': 0,
         'no-empty': 2,
         'no-empty-character-class': 2,
-        'no-empty-label': 2,
         'no-eq-null': 2,
         'no-eval': 2,
         'no-ex-assign': 2,
@@ -143,7 +145,6 @@ module.exports = {
         'no-unneeded-ternary': 2,
         'no-unreachable': 2,
         'no-unused-expressions': 0, // mostly caused by `options || (options = {})`, doesn't play well with mocha chai `expect().to.be.true`
-        'no-unused-vars': 2,
         'no-use-before-define': [2, 'nofunc'],
         'no-useless-call': 2,
         'no-var': 0, // es6 only
@@ -166,12 +167,6 @@ module.exports = {
         semi: [1, 'never'], // death to the semicolon
         'semi-spacing': 0,
         'sort-vars': 0,
-        'space-after-keywords': [2, 'always'],
-        'space-before-blocks': [2, 'always'],
-        'space-in-parens': [2, 'never'],
-        'space-infix-ops': 2,
-        'space-return-throw-case': 2,
-        'space-unary-ops': 2,
         'spaced-comment': [2, 'always'],
         strict: [2, 'never'],
         'use-isnan': 2,
@@ -184,7 +179,7 @@ module.exports = {
         'mocha/no-exclusive-tests': 2,
 
         // https://github.com/yannickcr/eslint-plugin-react
-        'react/display-name': 2,
+        'react/display-name': 0,
         'react/jsx-boolean-value': [2, 'never'],
         'react/jsx-closing-bracket-location': 2,
         'react/jsx-curly-spacing': [2, 'never'],
@@ -193,13 +188,13 @@ module.exports = {
         'react/jsx-no-literals': 0, // currently broken but would be good to turn on
         'react/jsx-no-undef': 2,
         'react/jsx-uses-react': 2,
+        'react/jsx-uses-vars': 2,
         'react/no-did-mount-set-state': 2,
         'react/no-did-update-set-state': 2,
         'react/no-multi-comp': [2, { ignoreStateless: true }],
         'react/no-unknown-property': 2,
-        'react/prop-types': [2, { ignore: 'children' }],
+        'react/prop-types': [2, { ignore: ['children'] }],
         'react/self-closing-comp': 2,
-        'react/wrap-multilines': 2,
 
         // sinon
         'sinon/no-fakes': 2,
