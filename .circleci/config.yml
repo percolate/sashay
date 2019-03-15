@@ -1,7 +1,9 @@
 version: 2.1
 
-docker: &image
-  - image: gmathieu/node-browsers:3.0.0
+executors:
+  node:
+    docker:
+      - image: gmathieu/node-browsers:3.0.0
 
 commands:
   install:
@@ -14,10 +16,12 @@ workflows:
   sashay:
     jobs:
       - eslint
+      - npx
       - tests
       - publish:
           requires:
             - eslint
+            - npx
             - tests
           filters:
             branches:
@@ -25,13 +29,19 @@ workflows:
 
 jobs:
   eslint:
-    docker: *image
+    executor: node
     steps:
       - install
       - run: make style
 
+  npx:
+    executor: node
+    steps:
+      - checkout
+      - run: make test-npx
+
   tests:
-    docker: *image
+    executor: node
     steps:
       - install
       - run: make coverage-cli
@@ -39,7 +49,7 @@ jobs:
       - run: bash <(curl -s https://codecov.io/bash)
 
   publish:
-    docker: *image
+    executor: node
     steps:
       - install
       - run: echo "//registry.npmjs.org/:_authToken=$NPMJS_TOKEN" >> ~/.npmrc
