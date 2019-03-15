@@ -1,8 +1,8 @@
-.env
-**/coverage/
+.*
+*.yml
 **/__test__/
-/build/
-.eslintrc.js
-circle.yml
-codecov.yml
+**/coverage/
+build/
 Makefile
+tmp/
+yarn.lock
