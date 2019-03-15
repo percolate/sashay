@@ -663,14 +663,14 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@percolate/publisher@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@percolate/publisher/-/publisher-0.0.5.tgz#3f155e085313e0e234fc5fee3d48e763f076ceed"
-  integrity sha512-ggtmhXCK+gpaDpY+CJvRbjj+PW0xhtLE8GAo7+G7VXtlG38xXlxFuBVJDm17C2TMQYSHfDThW7QiIV6Ixkjxjw==
+"@percolate/publisher@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@percolate/publisher/-/publisher-0.0.8.tgz#099bcd00f147f08585cdf2d36915c9022ddfab6b"
+  integrity sha512-XFeK1n9RROGSEFxV4gk+Gz9KD9nfLd5g+1dZ037YEFzzWSpF7V5wVzQVm9HjfQIzEMjPyWG8RHkO5ANSxg2vNg==
   dependencies:
     docopt "0.6.2"
-    semver "5.3.0"
-    shelljs "0.7.6"
+    semver "5.5.1"
+    shelljs "0.8.3"
 
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.0.2", "@sinonjs/commons@^1.3.1":
   version "1.4.0"
@@ -6434,6 +6434,11 @@ semver@5.3.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
   integrity sha1-myzl094C0XxgEq0yaqa00M9U+U8=
 
+semver@5.5.1:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.1.tgz#7dfdd8814bdb7cabc7be0fb1d734cfb66c940477"
+  integrity sha512-PqpAxfrEhlSUWge8dwIp4tZnQ25DIOthpiaHNIthsjEFQD6EvqUKUDM7L8O2rShkFccYo1VjJR0coWfNkCubRw==
+
 send@0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/send/-/send-0.16.2.tgz#6ecca1e0f8c156d141597559848df64730a6bbc1"
@@ -6536,10 +6541,10 @@ shebang-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
 
-shelljs@0.7.6:
-  version "0.7.6"
-  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.7.6.tgz#379cccfb56b91c8601e4793356eb5382924de9ad"
-  integrity sha1-N5zM+1a5HIYB5HkzVutTgpJN6a0=
+shelljs@0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.3.tgz#a7f3319520ebf09ee81275b2368adb286659b097"
+  integrity sha512-fc0BKlAWiLpwZljmOvAOTE/gXawtCoNrP5oaY7KIaQbbyHeQVg01pSEuEGvGh3HEdBU4baCD7wQBwADmM/7f7A==
   dependencies:
     glob "^7.0.0"
     interpret "^1.0.0"
