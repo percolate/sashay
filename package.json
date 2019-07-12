@@ -34,7 +34,7 @@
     "json-schema-ref-parser": "6.1.0",
     "less": "2.7.1",
     "less-loader": "4.1.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "marked": "0.3.9",
     "mini-css-extract-plugin": "^0.5.0",
     "raml-parser": "0.8.18",
