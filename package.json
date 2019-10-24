@@ -1,12 +1,11 @@
 {
   "name": "sashay",
   "description": "A documentation generator for the Percolate API.",
-  "version": "4.0.5",
+  "version": "5.0.0",
   "repository": "https://github.com/percolate/sashay",
   "license": "CPAL-1.0",
   "engines": {
-    "node": "10.x.x",
-    "yarn": "^1.12"
+    "node": "12.x.x"
   },
   "bin": {
     "sashay": "./bin/sashay"
