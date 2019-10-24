@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node:
     docker:
-      - image: gmathieu/node-browsers:3.0.0
+      - image: gmathieu/node-browsers:4.0.1
 
 commands:
   install:
