@@ -35,12 +35,6 @@ test-cli:
 	./node_modules/.bin/mocha ./lib/cli/__test__/*.spec.js \
 		--reporter spec
 
-test-npx:
-	npm link
-	cd /tmp && npx sashay ${current_dir}/lib/cli/__test__/fixtures/valid/index.raml -o web
-	npm unlink
-	rm package-lock.json
-
 test-ui:
 	./node_modules/.bin/karma start ./lib/ui/__test__/karma.config.js
 

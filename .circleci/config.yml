@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node:
     docker:
-      - image: gmathieu/node-browsers:4.0.1
+      - image: circleci/node:12-browsers
 
 commands:
   install:
@@ -38,7 +38,10 @@ jobs:
     executor: node
     steps:
       - checkout
-      - run: make test-npx
+      - run: sudo npm link
+      - run:
+          command: npx sashay ~/project/lib/cli/__test__/fixtures/valid/index.raml -o web
+          working_directory: /tmp
 
   tests:
     executor: node
